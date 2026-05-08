@@ -99,6 +99,7 @@
       backdrop-filter: blur(18px);
       box-shadow: var(--shadow);
       overflow: auto;
+      font-size: 30px;
     }
 
     .side-title {
@@ -120,7 +121,7 @@
       border: 1px solid #d6e0ef;
       background: #fff;
       color: var(--ink);
-      font-size: 13px;
+      font-size: 26px;
       font-weight: 900;
     }
 
@@ -184,7 +185,7 @@
       padding-right: 28px;
       min-width: 0;
       overflow: hidden;
-      font-size: 14px;
+      font-size: 28px;
       font-weight: 900;
     }
 
@@ -199,7 +200,7 @@
       flex: 0 0 auto;
       padding: 2px 6px;
       border-radius: 999px;
-      font-size: 11px;
+      font-size: 22px;
       font-weight: 900;
       line-height: 1.25;
     }
@@ -226,7 +227,7 @@
 
     .record-meta {
       color: var(--muted);
-      font-size: 12px;
+      font-size: 24px;
       font-weight: 800;
     }
 
@@ -245,7 +246,7 @@
       grid-template-columns: 1fr 1fr;
       gap: 6px 10px;
       color: #2c3f5f;
-      font-size: 12px;
+      font-size: 24px;
       line-height: 1.25;
     }
 
@@ -256,7 +257,7 @@
     .record-line span {
       display: block;
       color: var(--muted);
-      font-size: 11px;
+      font-size: 22px;
       font-weight: 700;
     }
 
@@ -266,7 +267,7 @@
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      font-size: 13px;
+      font-size: 26px;
       font-weight: 900;
     }
 
@@ -283,7 +284,7 @@
       background: #fff1f4;
       color: #bd284d;
       border: 1px solid #ffd3dd;
-      font-size: 16px;
+      font-size: 32px;
       font-weight: 900;
       line-height: 1;
       touch-action: manipulation;
@@ -297,7 +298,7 @@
 
     .empty-records {
       color: var(--muted);
-      font-size: 13px;
+      font-size: 26px;
       line-height: 1.5;
     }
 
@@ -556,6 +557,28 @@
       color: #cfd6df;
       font-size: 12px;
       font-weight: 700;
+    }
+
+    .dynamic-stop {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 8px;
+      background: var(--field);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+    }
+
+    .dynamic-stop-label {
+      color: #e6eefb;
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .dynamic-stop .tag-control,
+    .dynamic-stop .new-tag,
+    .dynamic-stop .tag-list {
+      margin-bottom: 0;
     }
 
     .summary-row {
@@ -996,7 +1019,7 @@
         justify-items: center;
         gap: 6px;
         margin-bottom: 8px;
-        font-size: 13px;
+        font-size: 26px;
       }
 
       .sidebar.is-compact .side-title span {
@@ -1011,7 +1034,7 @@
         min-width: 0;
         height: 28px;
         padding: 0;
-        font-size: 12px;
+        font-size: 24px;
       }
 
       .record-list {
@@ -1025,32 +1048,32 @@
       }
 
       .record-title {
-        font-size: 12px;
+        font-size: 24px;
         padding-right: 30px;
       }
 
       .logic-badge {
         padding: 1px 5px;
-        font-size: 9px;
+        font-size: 18px;
       }
 
       .record-meta {
-        font-size: 10px;
+        font-size: 20px;
       }
 
       .record-detail {
         grid-template-columns: repeat(2, 1fr);
         gap: 3px 6px;
-        font-size: 10px;
+        font-size: 20px;
         line-height: 1.12;
       }
 
       .record-line span {
-        font-size: 9px;
+        font-size: 18px;
       }
 
       .record-line strong {
-        font-size: 10px;
+        font-size: 20px;
       }
 
       .record-delete {
@@ -1059,7 +1082,7 @@
         width: 32px;
         height: 32px;
         border-radius: 6px;
-        font-size: 13px;
+        font-size: 26px;
       }
 
       .sidebar.is-compact .record-pill {
@@ -1080,7 +1103,7 @@
         gap: 3px;
         width: 100%;
         text-align: center;
-        font-size: 10px;
+        font-size: 20px;
         font-weight: 900;
         line-height: 1.1;
       }
@@ -1109,7 +1132,7 @@
       .sidebar.is-compact .record-delete {
         width: 20px;
         height: 20px;
-        font-size: 12px;
+        font-size: 24px;
       }
 
       .toolbar {
@@ -1391,6 +1414,18 @@
             <span class="label">止损单价 <small id="lossMeta">-1.0000 （-10%）</small></span>
             <input id="stopPrice" data-save="stopPrice" type="number" inputmode="decimal" step="0.001" value="9">
           </label>
+          <div class="dynamic-stop" id="dynamicStopControl" aria-label="&#21160;&#24577;&#27490;&#25439;">
+            <span class="dynamic-stop-label">&#21160;&#24577;&#27490;&#25439;</span>
+            <div class="tag-control">
+              <select id="dynamicStopSelect" aria-label="&#21160;&#24577;&#27490;&#25439;&#36873;&#39033;"></select>
+              <button type="button" id="dynamicStopOpenAdd" aria-label="&#28155;&#21152;&#21160;&#24577;&#27490;&#25439;">+</button>
+            </div>
+            <div class="new-tag" id="dynamicStopNewTag">
+              <input id="dynamicStopInput" type="text" placeholder="&#36755;&#20837;&#21160;&#24577;&#27490;&#25439;">
+              <button type="button" id="dynamicStopSaveTag" aria-label="&#20445;&#23384;&#21160;&#24577;&#27490;&#25439;">&#10003;</button>
+            </div>
+            <div class="tag-list" id="dynamicStopList"></div>
+          </div>
           <div class="chip-row" aria-label="盈亏比快捷选择">
             <button class="chip" type="button" data-ratio="3">3 : 1</button>
             <button class="chip" type="button" data-ratio="2.8">2.8 : 1</button>
@@ -1488,6 +1523,10 @@
         { id: "breakout", label: "形态突破" },
         { id: "pullback", label: "回调反弹" }
       ];
+      var extraTagRows = [
+        { id: "dynamicStop", label: "\u52a8\u6001\u6b62\u635f", icon: "\u52a8" }
+      ];
+      var tagRows = rows.concat(extraTagRows);
       var state = {
         currentId: null,
         records: [],
@@ -1537,7 +1576,7 @@
       }
 
       function createEmptyTagLibrary() {
-        return rows.reduce(function (library, row) {
+        return tagRows.reduce(function (library, row) {
           library[row.id] = [];
           return library;
         }, {});
@@ -1568,6 +1607,7 @@
           id: id,
           fields: fields || createDefaultFields(),
           cells: cells || {},
+          dynamicStopTags: [],
           selectedLogic: "breakout",
           updatedAt: new Date().toISOString()
         };
@@ -1584,6 +1624,7 @@
         }
         if (!record.fields) record.fields = createDefaultFields();
         if (!record.cells) record.cells = {};
+        if (!Array.isArray(record.dynamicStopTags)) record.dynamicStopTags = [];
         if (!record.selectedLogic) record.selectedLogic = "breakout";
         return record;
       }
@@ -1599,7 +1640,7 @@
       function normalizeTagLibrary(library) {
         var normalized = createEmptyTagLibrary();
         if (Array.isArray(library)) return normalized;
-        rows.forEach(function (row) {
+        tagRows.forEach(function (row) {
           if (library && Array.isArray(library[row.id])) {
             normalized[row.id] = library[row.id].filter(Boolean);
           }
@@ -1724,6 +1765,7 @@
           ratio: ratio > 0 ? ratio.toFixed(2) + " : 1" : "-",
           logic: getLogicLabel(logicId),
           logicId: logicId,
+          dynamicStop: (record.dynamicStopTags || []).join(" / ") || "-",
           timeStopDays: (fields.timeStopDays || "7") + " 天",
           holdingDays: holdingDaysFrom(fields.buyTime)
         };
@@ -1760,6 +1802,7 @@
               '<span class="record-line"><span>数量</span><strong>' + escapeHtml(summary.quantity) + '</strong></span>' +
               '<span class="record-line"><span>金额</span><strong>' + escapeHtml(summary.amount) + '</strong></span>' +
               '<span class="record-line"><span>盈亏比</span><strong>' + escapeHtml(summary.ratio) + '</strong></span>' +
+              '<span class="record-line"><span>&#21160;&#24577;&#27490;&#25439;</span><strong>' + escapeHtml(summary.dynamicStop) + '</strong></span>' +
               '<span class="record-line"><span>时间止损</span><strong>' + escapeHtml(summary.timeStopDays) + '</strong></span>' +
               '<span class="record-line"><span>持有</span><strong>' + escapeHtml(summary.holdingDays) + '</strong></span>' +
             '</span>' +
@@ -1797,7 +1840,7 @@
       function renderTagManager() {
         var manager = $("tagManager");
         if (!manager) return;
-        manager.innerHTML = rows.map(function (row) {
+        manager.innerHTML = tagRows.map(function (row) {
           var tags = state.tagLibrary[row.id] || [];
           var list = tags.length
             ? tags.map(function (tag) {
@@ -1827,6 +1870,84 @@
         $("tagPage").classList.remove("is-open");
       }
 
+      function renderDynamicStopOptions() {
+        var tags = state.tagLibrary.dynamicStop || [];
+        return '<option value="">' + (tags.length ? "\u9009\u62e9\u52a8\u6001\u6b62\u635f" : "\u5148\u6dfb\u52a0\u52a8\u6001\u6b62\u635f") + '</option>' + tags.map(function (tag) {
+          return '<option value="' + escapeHtml(tag) + '">' + escapeHtml(tag) + '</option>';
+        }).join("");
+      }
+
+      function renderDynamicStopTags() {
+        var record = activeRecord();
+        var select = $("dynamicStopSelect");
+        var list = $("dynamicStopList");
+        if (!select || !list) return;
+        if (!state.tagLibrary.dynamicStop) state.tagLibrary.dynamicStop = [];
+        if (!Array.isArray(record.dynamicStopTags)) record.dynamicStopTags = [];
+        select.innerHTML = renderDynamicStopOptions();
+        select.value = "";
+        list.innerHTML = record.dynamicStopTags.map(function (tag, index) {
+          return '<span class="note-tag">' + escapeHtml(tag) +
+            '<button type="button" data-index="' + index + '" aria-label="\u5220\u9664\u52a8\u6001\u6b62\u635f">&times;</button></span>';
+        }).join("");
+      }
+
+      function addDynamicStopTag(value) {
+        var tag = value.trim();
+        if (!tag) return;
+        var record = activeRecord();
+        if (!state.tagLibrary.dynamicStop) state.tagLibrary.dynamicStop = [];
+        if (state.tagLibrary.dynamicStop.indexOf(tag) === -1) {
+          state.tagLibrary.dynamicStop.push(tag);
+        }
+        if (record.dynamicStopTags.indexOf(tag) === -1) {
+          record.dynamicStopTags.push(tag);
+        }
+        writeStorage(true);
+        renderDynamicStopTags();
+        renderTagManager();
+      }
+
+      function bindDynamicStopTags() {
+        var select = $("dynamicStopSelect");
+        var openAdd = $("dynamicStopOpenAdd");
+        var newTagWrap = $("dynamicStopNewTag");
+        var input = $("dynamicStopInput");
+        var save = $("dynamicStopSaveTag");
+        var list = $("dynamicStopList");
+        if (!select || !openAdd || !newTagWrap || !input || !save || !list) return;
+
+        select.addEventListener("change", function () {
+          if (select.value) addDynamicStopTag(select.value);
+        });
+
+        openAdd.addEventListener("click", function () {
+          newTagWrap.classList.toggle("is-open");
+          if (newTagWrap.classList.contains("is-open")) input.focus();
+        });
+
+        save.addEventListener("click", function () {
+          addDynamicStopTag(input.value);
+          input.value = "";
+          newTagWrap.classList.remove("is-open");
+        });
+
+        input.addEventListener("keydown", function (event) {
+          if (event.key !== "Enter") return;
+          addDynamicStopTag(input.value);
+          input.value = "";
+          newTagWrap.classList.remove("is-open");
+        });
+
+        list.addEventListener("click", function (event) {
+          if (!event.target.matches("button")) return;
+          var record = activeRecord();
+          record.dynamicStopTags.splice(parseInt(event.target.dataset.index, 10), 1);
+          writeStorage(true);
+          renderDynamicStopTags();
+        });
+      }
+
       function addManagedTag(rowId, value) {
         var tag = value.trim();
         if (!tag) return;
@@ -1836,6 +1957,7 @@
         }
         writeStorage(true);
         refreshSelects();
+        renderDynamicStopTags();
         renderTagManager();
       }
 
@@ -1844,18 +1966,27 @@
         state.tagLibrary[rowId] = (state.tagLibrary[rowId] || []).filter(function (item) {
           return item !== tag;
         });
-        state.records.forEach(function (record) {
-          cols.forEach(function (col) {
-            var key = getCellKey(rowId, col.id);
-            if (record.cells && record.cells[key] && Array.isArray(record.cells[key].tags)) {
-              record.cells[key].tags = record.cells[key].tags.filter(function (item) {
-                return item !== tag;
-              });
-            }
+        if (rowId === "dynamicStop") {
+          state.records.forEach(function (record) {
+            record.dynamicStopTags = (record.dynamicStopTags || []).filter(function (item) {
+              return item !== tag;
+            });
           });
-        });
+        } else {
+          state.records.forEach(function (record) {
+            cols.forEach(function (col) {
+              var key = getCellKey(rowId, col.id);
+              if (record.cells && record.cells[key] && Array.isArray(record.cells[key].tags)) {
+                record.cells[key].tags = record.cells[key].tags.filter(function (item) {
+                  return item !== tag;
+                });
+              }
+            });
+          });
+        }
         writeStorage(true);
         renderMatrix();
+        renderDynamicStopTags();
         renderTagManager();
         showToast("标签已删除");
       }
@@ -1864,6 +1995,7 @@
         writeStorage(true);
         state.currentId = id;
         hydrateFields();
+        renderDynamicStopTags();
         renderMatrix();
         recalc();
         renderRecords();
@@ -2054,6 +2186,7 @@
         lines.push("逻辑: " + getLogicLabel(activeRecord().selectedLogic || "breakout"));
         lines.push("入场单价: " + $("entryPrice").value + " 元");
         lines.push("止损单价: " + $("stopPrice").value + " 元");
+        lines.push("\u52a8\u6001\u6b62\u635f: " + (activeRecord().dynamicStopTags || []).map(function (tag) { return "#" + tag; }).join(" "));
         lines.push("目标单价: " + $("targetPrice").value + " 元");
         lines.push("交易数量: " + $("quantity").value);
         lines.push("入场总金额: " + $("entryAmount").value + " 元");
@@ -2095,8 +2228,10 @@
         var record = activeRecord();
         record.fields = createDefaultFields();
         record.cells = {};
+        record.dynamicStopTags = [];
         localStorage.setItem(storageKey, JSON.stringify(state));
         hydrateFields();
+        renderDynamicStopTags();
         renderMatrix();
         recalc();
         renderRecords();
@@ -2108,6 +2243,7 @@
         state.records.unshift(record);
         state.currentId = record.id;
         hydrateFields();
+        renderDynamicStopTags();
         renderMatrix();
         recalc();
         writeStorage(true);
@@ -2127,6 +2263,7 @@
           state.currentId = state.records[0].id;
         }
         hydrateFields();
+        renderDynamicStopTags();
         renderMatrix();
         recalc();
         writeStorage(true);
@@ -2273,8 +2410,10 @@
         readStorage();
         hydrateSidebarMode();
         hydrateFields();
+        renderDynamicStopTags();
         renderMatrix();
         bindEvents();
+        bindDynamicStopTags();
         recalc();
         renderRecords();
         renderTagManager();
