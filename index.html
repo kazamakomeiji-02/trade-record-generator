@@ -855,13 +855,11 @@
       }
 
       .sidebar {
-        position: sticky;
-        top: max(8px, env(safe-area-inset-top));
-        z-index: 18;
+        position: static;
         display: block;
         width: 100%;
         height: auto;
-        max-height: 30vh;
+        max-height: none;
         margin-bottom: 10px;
       }
 
@@ -914,17 +912,20 @@
       }
 
       .toolbar {
-        top: calc(max(8px, env(safe-area-inset-top)) + 30vh + 10px);
-        overflow-x: auto;
-        scrollbar-width: none;
-      }
-
-      .toolbar::-webkit-scrollbar {
-        display: none;
+        top: 0;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 6px;
+        padding: 6px 0 8px;
       }
 
       .toolbar button {
-        flex: 0 0 auto;
+        min-width: 0;
+        min-height: 38px;
+        padding: 0 6px;
+        font-size: 14px;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       .meta-grid,
