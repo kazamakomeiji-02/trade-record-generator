@@ -47,7 +47,7 @@
     }
 
     body {
-      padding: calc(max(12px, env(safe-area-inset-top)) + 62px) 10px max(24px, env(safe-area-inset-bottom));
+      padding: max(12px, env(safe-area-inset-top)) 10px max(24px, env(safe-area-inset-bottom));
       font-size: 15px;
     }
 
@@ -277,12 +277,9 @@
     }
 
     .toolbar {
-      position: fixed;
-      top: max(0px, env(safe-area-inset-top));
-      left: 50%;
-      z-index: 100;
+      position: static;
       width: min(calc(100% - 20px), 1180px);
-      transform: translateX(-50%);
+      margin: 0 auto 12px;
       display: flex;
       gap: 8px;
       padding: 8px 0 12px;
@@ -850,7 +847,6 @@
       body {
         padding-left: 8px;
         padding-right: 8px;
-        padding-top: calc(max(8px, env(safe-area-inset-top)) + 104px);
       }
 
       .layout {
@@ -916,11 +912,8 @@
       }
 
       .toolbar {
-        top: max(0px, env(safe-area-inset-top));
-        left: 8px;
-        right: 8px;
         width: auto;
-        transform: none;
+        margin: 0 0 10px;
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 6px;
