@@ -476,6 +476,13 @@
       font-weight: 800;
     }
 
+    .field-card .label small {
+      margin-left: 6px;
+      color: #b8c0cb;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
     .field-card > span:not(.label):not(.sub) {
       grid-column: 3;
       grid-row: 1 / span 2;
@@ -1361,7 +1368,7 @@
         </div>
         <div class="meta-field">
           <label for="buyTime">买入时间:</label>
-          <input id="buyTime" data-save="buyTime" type="datetime-local">
+          <input id="buyTime" data-save="buyTime" type="date">
         </div>
         <div class="meta-field full-row">
           <label for="timeStopDays">时间止损:</label>
@@ -1374,7 +1381,6 @@
           <label class="field-card" data-icon="入">
             <span class="label">入场单价</span>
             <input id="entryPrice" data-save="entryPrice" type="number" inputmode="decimal" step="0.001" value="10">
-            <span>元</span>
           </label>
           <div class="chip-row" aria-label="止损快捷比例">
             <button class="chip" type="button" data-loss="0.05">15% / -5%</button>
@@ -1382,10 +1388,8 @@
             <button class="chip" type="button" data-loss="0.003">0.8% / -0.3%</button>
           </div>
           <label class="field-card" data-icon="止">
-            <span class="label">止损单价</span>
+            <span class="label">止损单价 <small id="lossMeta">-1.0000 （-10%）</small></span>
             <input id="stopPrice" data-save="stopPrice" type="number" inputmode="decimal" step="0.001" value="9">
-            <span>元</span>
-            <span class="sub" id="lossMeta">-1.0000 （-10%）</span>
           </label>
           <div class="chip-row" aria-label="盈亏比快捷选择">
             <button class="chip" type="button" data-ratio="3">3 : 1</button>
@@ -1398,10 +1402,8 @@
 
         <section class="dark-panel" aria-label="目标与金额">
           <label class="field-card" data-icon="目">
-            <span class="label">目标单价</span>
+            <span class="label">目标单价 <small id="profitMeta">2.5000 （+25%）</small></span>
             <input id="targetPrice" data-save="targetPrice" type="number" inputmode="decimal" step="0.001" value="12.5">
-            <span>元</span>
-            <span class="sub" id="profitMeta">2.5000 （+25%）</span>
           </label>
           <div class="field-card combo-card" data-icon="额">
             <label class="field-mini">
@@ -1411,7 +1413,6 @@
             <label class="field-mini">
               <span class="label">入场总金额</span>
               <input id="entryAmount" data-save="entryAmount" type="number" inputmode="decimal" step="0.01" value="1000">
-              <span>元</span>
             </label>
           </div>
         </section>
@@ -1551,7 +1552,7 @@
       function createDefaultFields() {
         return {
           symbol: "",
-          buyTime: nowInputValue(),
+          buyTime: nowInputValue().slice(0, 10),
           timeStopDays: "7",
           entryPrice: "10",
           stopPrice: "9",
@@ -1658,14 +1659,14 @@
         var fields = activeRecord().fields;
         document.querySelectorAll("[data-save]").forEach(function (input) {
           if (fields[input.id] !== undefined) {
-            input.value = fields[input.id];
+            input.value = input.id === "buyTime" ? String(fields[input.id]).slice(0, 10) : fields[input.id];
           } else if (createDefaultFields()[input.id] !== undefined) {
             input.value = createDefaultFields()[input.id];
           }
         });
 
         if (!$("buyTime").value) {
-          $("buyTime").value = nowInputValue();
+          $("buyTime").value = nowInputValue().slice(0, 10);
         }
       }
 
@@ -2047,7 +2048,7 @@
       function copyText() {
         var lines = [];
         lines.push("标的名称: " + $("symbol").value);
-        lines.push("买入时间: " + $("buyTime").value.replace("T", " "));
+        lines.push("买入时间: " + $("buyTime").value);
         lines.push("时间止损: " + $("timeStopDays").value + " 天");
         lines.push("已持有: " + holdingDaysFrom($("buyTime").value));
         lines.push("逻辑: " + getLogicLabel(activeRecord().selectedLogic || "breakout"));
