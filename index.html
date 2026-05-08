@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#2f6fe4">
+  <meta name="theme-color" content="#07101c">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="交易记录生成器">
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./icon.svg" type="image/svg+xml">
@@ -1210,19 +1210,513 @@
         min-height: 190px;
       }
     }
+    /* Dark dashboard refresh based on the latest reference UI. */
+    :root {
+      color-scheme: dark;
+      --page: #07101c;
+      --ink: #edf4ff;
+      --muted: #8d9bb1;
+      --line: #26384f;
+      --panel: #0b1625;
+      --field: #101d2f;
+      --field-soft: #111f33;
+      --accent: #1f6fff;
+      --accent-soft: rgba(31, 111, 255, 0.16);
+      --side: rgba(8, 18, 31, 0.86);
+      --paper: #0b1422;
+      --shadow: 0 20px 44px rgba(0, 0, 0, 0.34);
+    }
+
+    html,
+    body {
+      background:
+        radial-gradient(circle at 50% -10%, rgba(31, 111, 255, 0.12), transparent 32%),
+        linear-gradient(180deg, #06101c, #08111d 42%, #040a12);
+      color: var(--ink);
+    }
+
+    body {
+      padding: max(12px, env(safe-area-inset-top)) 12px max(14px, env(safe-area-inset-bottom));
+    }
+
+    .layout {
+      grid-template-columns: 128px minmax(0, 1fr);
+      gap: 18px;
+      width: min(100%, 980px);
+    }
+
+    .app {
+      width: 100%;
+    }
+
+    .sidebar,
+    .sheet,
+    .subpage-inner {
+      border: 1px solid #23354b;
+      border-radius: 14px;
+      background: linear-gradient(180deg, rgba(13, 25, 41, 0.96), rgba(8, 17, 29, 0.96));
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), var(--shadow);
+    }
+
+    .sidebar {
+      padding: 16px 10px;
+    }
+
+    .side-title {
+      color: #f3f7ff;
+      margin-bottom: 18px;
+    }
+
+    .side-toggle,
+    .toolbar button,
+    .tag-control button,
+    .new-tag button,
+    .logic-choice,
+    .chip,
+    .stop-mode-btn {
+      border: 1px solid #243955;
+      background: linear-gradient(180deg, #111f32, #0c1726);
+      color: #edf4ff;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    }
+
+    .toolbar {
+      position: static;
+      width: 100%;
+      margin: 0 0 14px;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px 14px;
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+      backdrop-filter: none;
+    }
+
+    .toolbar button {
+      min-height: 44px;
+      border-radius: 7px;
+      font-size: 16px;
+      white-space: nowrap;
+    }
+
+    .toolbar #saveBtn {
+      border-color: #1f6fff;
+      background: linear-gradient(180deg, #2480ff, #145de4);
+    }
+
+    .toolbar .secondary {
+      background: linear-gradient(180deg, #111f32, #0c1726);
+      color: #edf4ff;
+      border-color: #243955;
+    }
+
+    .record-pill.is-breakout,
+    .record-pill.is-breakout.is-active {
+      border-color: #e02d66;
+      background: linear-gradient(180deg, #d91555, #a50642);
+      box-shadow: 0 18px 34px rgba(224, 45, 102, 0.22);
+    }
+
+    .record-pill.is-pullback,
+    .record-pill.is-pullback.is-active {
+      border-color: #1f6fff;
+      background: linear-gradient(180deg, #1f6fff, #1645ae);
+      box-shadow: 0 18px 34px rgba(31, 111, 255, 0.2);
+    }
+
+    .record-meta,
+    .record-line span {
+      color: rgba(255, 255, 255, 0.72);
+    }
+
+    .record-detail {
+      grid-template-columns: 1fr;
+    }
+
+    .sheet {
+      padding: 16px 18px;
+      overflow: hidden;
+    }
+
+    .meta-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      margin-bottom: 18px;
+      padding: 14px 18px;
+      border: 1px solid #243955;
+      border-radius: 8px;
+      background: linear-gradient(180deg, #0d1a2b, #0a1422);
+    }
+
+    .meta-field,
+    .meta-field.full-row {
+      grid-template-columns: auto minmax(0, 1fr);
+      min-height: 44px;
+      border-right: 0;
+      border-top: 0;
+      border-bottom: 1px solid #22354d;
+    }
+
+    .meta-field:last-child {
+      border-bottom: 0;
+    }
+
+    .meta-field label {
+      padding-left: 0;
+      color: #f2f6ff;
+      font-size: 18px;
+    }
+
+    .meta-field input,
+    .meta-field select {
+      height: 34px;
+      border-radius: 7px;
+      background: rgba(255, 255, 255, 0.035);
+      color: #dfe8f6;
+      padding: 0 10px;
+      font-size: 17px;
+    }
+
+    .calculator {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      padding: 0;
+    }
+
+    .dark-panel {
+      min-height: 0;
+      padding: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .dark-panel[aria-label="入场与止损"],
+    .dark-panel[aria-label="目标与金额"] {
+      display: contents;
+    }
+
+    .field-card {
+      min-height: 106px;
+      margin: 0;
+      padding: 18px 22px;
+      grid-template-columns: minmax(0, 1fr) auto;
+      border: 1px solid #263b56;
+      border-radius: 8px;
+      background: linear-gradient(180deg, #0d1a2b, #0a1422);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);
+    }
+
+    .field-card::before {
+      display: none;
+    }
+
+    .field-card .label {
+      grid-column: 1 / -1;
+      font-size: 18px;
+      color: #edf4ff;
+    }
+
+    .field-card input {
+      grid-column: 1;
+      grid-row: 2;
+      max-width: 220px;
+      color: #f4f7ff;
+      font-size: 42px;
+      text-align: center;
+    }
+
+    .field-card > span:not(.label):not(.sub) {
+      grid-column: 2;
+      grid-row: 2;
+      align-self: center;
+      padding: 6px 10px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.045);
+    }
+
+    .field-card .sub {
+      grid-column: 1 / -1;
+      grid-row: 1;
+      padding-left: 92px;
+      text-align: left;
+      font-size: 15px;
+    }
+
+    .stop-mode {
+      display: flex;
+      gap: 10px;
+    }
+
+    .stop-mode-btn {
+      min-width: 118px;
+      min-height: 42px;
+      border-radius: 6px;
+      font-weight: 800;
+    }
+
+    .stop-mode-btn.is-active,
+    .logic-choice.is-active,
+    .chip:focus {
+      border-color: #1f6fff;
+      background: linear-gradient(180deg, rgba(31, 111, 255, 0.28), rgba(31, 111, 255, 0.1));
+      color: #7fb0ff;
+    }
+
+    .chip-row {
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      gap: 8px;
+    }
+
+    .chip {
+      min-height: 38px;
+      min-width: 70px;
+      border-radius: 4px;
+      font-size: 15px;
+    }
+
+    .dark-panel.summary {
+      display: grid;
+      grid-template-columns: 1.55fr 1fr 1fr;
+      min-height: 210px;
+      margin-top: 8px;
+      border: 1px solid #263b56;
+      border-radius: 8px;
+      background: linear-gradient(180deg, #0d1a2b, #081322);
+      overflow: hidden;
+    }
+
+    .summary-row {
+      grid-template-columns: 30px 1fr;
+      padding: 18px;
+      border-color: #20334a;
+    }
+
+    .summary-row:first-child {
+      grid-row: span 2;
+      align-content: center;
+      border-right: 1px solid #20334a;
+      border-bottom: 0;
+    }
+
+    .summary-row:first-child strong {
+      grid-column: 1 / -1;
+      margin-top: 18px;
+      font-size: 54px;
+      text-align: left;
+    }
+
+    .summary-row::before {
+      width: 24px;
+      height: 24px;
+      border-radius: 5px;
+    }
+
+    .summary-row span:first-child,
+    .summary-row strong {
+      color: #edf4ff;
+    }
+
+    .summary-row strong {
+      font-size: 24px;
+      text-align: left;
+    }
+
+    .summary-row small {
+      grid-column: 2;
+      color: #31d78b;
+      text-align: left;
+      font-size: 16px;
+    }
+
+    #lossPercent {
+      color: #ff3d69;
+    }
+
+    .matrix {
+      display: block;
+      margin-top: 16px;
+      padding: 14px;
+      border: 1px solid #263b56;
+      border-radius: 8px;
+      background: linear-gradient(180deg, #0d1a2b, #081322);
+    }
+
+    .matrix::before {
+      content: "逻辑";
+      display: block;
+      margin-bottom: 12px;
+      font-size: 24px;
+      font-weight: 900;
+      color: #edf4ff;
+    }
+
+    .matrix thead,
+    .matrix tbody,
+    .matrix tr,
+    .matrix th,
+    .matrix td {
+      display: block;
+      width: 100%;
+      border: 0;
+    }
+
+    .matrix thead tr {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .logic-head {
+      display: none !important;
+    }
+
+    .matrix thead th {
+      height: auto;
+      padding: 0;
+    }
+
+    .logic-choice {
+      min-height: 40px;
+      border-radius: 6px;
+    }
+
+    .matrix tbody tr {
+      display: grid;
+      grid-template-columns: 150px minmax(0, 1fr);
+      align-items: center;
+      border: 1px solid #20334a;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      overflow: hidden;
+    }
+
+    .row-title {
+      width: auto;
+      padding: 18px 20px;
+      text-align: left;
+      font-size: 20px;
+      background: transparent;
+    }
+
+    .row-title span {
+      display: block;
+      white-space: normal;
+    }
+
+    .row-title span::before {
+      display: none;
+    }
+
+    .cell-box {
+      min-height: 76px;
+      padding: 12px;
+    }
+
+    .tag-control {
+      grid-template-columns: minmax(0, 1fr) 56px 54px;
+      margin: 0;
+    }
+
+    .tag-control::after {
+      content: "⋮";
+      display: grid;
+      place-items: center;
+      border: 1px dashed #263b56;
+      border-radius: 6px;
+      color: #697891;
+      font-size: 28px;
+    }
+
+    .tag-control select,
+    .new-tag input {
+      height: 42px;
+      border-color: #263b56;
+      background: #0b1726;
+      color: #dfe8f6;
+    }
+
+    .tag-list {
+      margin: 8px 0 0;
+    }
+
+    @media (max-width: 680px) {
+      body {
+        padding-left: 82px;
+        padding-right: 8px;
+      }
+
+      body:not(.sidebar-compact) {
+        padding-left: 154px;
+      }
+
+      .layout {
+        display: block;
+        width: 100%;
+      }
+
+      .sidebar {
+        width: 140px;
+      }
+
+      .sidebar.is-compact {
+        width: 64px;
+      }
+
+      .toolbar {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .toolbar button {
+        min-height: 44px;
+        font-size: 14px;
+      }
+
+      .sheet {
+        padding: 12px;
+      }
+
+      .meta-grid {
+        padding: 12px;
+      }
+
+      .field-card input {
+        font-size: 38px;
+      }
+
+      .dark-panel.summary {
+        grid-template-columns: 1fr;
+      }
+
+      .summary-row:first-child {
+        grid-row: auto;
+        border-right: 0;
+        border-bottom: 1px solid #20334a;
+      }
+
+      .summary-row:first-child strong {
+        font-size: 44px;
+      }
+
+      .matrix tbody tr {
+        grid-template-columns: 1fr;
+      }
+
+      .row-title {
+        padding: 14px 16px 4px;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="sidebar-swipe-zone" id="sidebarSwipeZone" aria-hidden="true"></div>
-  <nav class="toolbar" aria-label="页面操作">
-    <button id="newBtn" type="button" class="secondary">新建</button>
-    <button id="saveBtn" type="button">保存</button>
-    <button id="tagManageBtn" type="button" class="secondary">标签管理</button>
-    <button id="copyBtn" type="button" class="secondary">复制文本</button>
-    <button id="resetBtn" type="button" class="secondary">清空当前</button>
-    <button id="printBtn" type="button" class="secondary">打印/PDF</button>
-  </nav>
-
   <div class="side-backdrop" id="sideBackdrop"></div>
   <div class="layout" id="layout">
     <aside class="sidebar" id="sidebar" aria-label="已保存记录">
@@ -1234,6 +1728,15 @@
     </aside>
 
     <main class="app">
+      <nav class="toolbar" aria-label="页面操作">
+        <button id="newBtn" type="button" class="secondary">新建</button>
+        <button id="saveBtn" type="button">保存</button>
+        <button id="tagManageBtn" type="button" class="secondary">标签管理</button>
+        <button id="copyBtn" type="button" class="secondary">复制文本</button>
+        <button id="resetBtn" type="button" class="secondary">清空当前</button>
+        <button id="printBtn" type="button" class="secondary">打印/PDF</button>
+      </nav>
+
       <section class="sheet" id="recordSheet">
       <div class="meta-grid">
         <div class="meta-field">
@@ -1242,11 +1745,11 @@
         </div>
         <div class="meta-field">
           <label for="buyTime">买入时间:</label>
-          <div class="time-combo">
-            <input id="buyTime" data-save="buyTime" type="datetime-local">
-            <span class="time-stop-label">时间止损</span>
-            <select id="timeStopDays" data-save="timeStopDays" aria-label="时间止损天数"></select>
-          </div>
+          <input id="buyTime" data-save="buyTime" type="datetime-local">
+        </div>
+        <div class="meta-field full-row">
+          <label for="timeStopDays">时间止损:</label>
+          <select id="timeStopDays" data-save="timeStopDays" aria-label="时间止损天数"></select>
         </div>
       </div>
 
@@ -1257,6 +1760,10 @@
             <input id="entryPrice" data-save="entryPrice" type="number" inputmode="decimal" step="0.001" value="10">
             <span>元</span>
           </label>
+          <div class="stop-mode" aria-label="止损模式">
+            <button class="stop-mode-btn is-active" type="button" data-stop-mode="static">静态止损</button>
+            <button class="stop-mode-btn" type="button" data-stop-mode="dynamic">动态止损</button>
+          </div>
           <div class="chip-row" aria-label="止损快捷比例">
             <button class="chip" type="button" data-loss="0.05">15% / -5%</button>
             <button class="chip" type="button" data-loss="0.03">10% / -3%</button>
@@ -1371,6 +1878,7 @@
         records: [],
         tagLibrary: createEmptyTagLibrary()
       };
+      var stopMode = "static";
 
       var els = {};
 
@@ -1664,6 +2172,20 @@
           button.classList.toggle("is-active", button.dataset.logicChoice === logic);
         });
         renderRecords();
+      }
+
+      function updateStopModeView() {
+        document.querySelectorAll("[data-stop-mode]").forEach(function (button) {
+          button.classList.toggle("is-active", button.dataset.stopMode === stopMode);
+        });
+      }
+
+      function setStopMode(mode) {
+        stopMode = mode === "dynamic" ? "dynamic" : "static";
+        updateStopModeView();
+        try {
+          localStorage.setItem("trade-record-stop-mode", stopMode);
+        } catch (error) {}
       }
 
       function setLogic(logicId) {
@@ -2097,6 +2619,17 @@
         document.querySelectorAll("[data-loss]").forEach(function (button) {
           button.addEventListener("click", function () {
             applyLoss(parseFloat(button.dataset.loss));
+          });
+        });
+
+        try {
+          var savedStopMode = localStorage.getItem("trade-record-stop-mode");
+          if (savedStopMode) stopMode = savedStopMode;
+        } catch (error) {}
+        updateStopModeView();
+        document.querySelectorAll("[data-stop-mode]").forEach(function (button) {
+          button.addEventListener("click", function () {
+            setStopMode(button.dataset.stopMode);
           });
         });
 
