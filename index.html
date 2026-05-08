@@ -355,6 +355,12 @@
       border-right: 0;
     }
 
+    .meta-field.full-row {
+      grid-column: 1 / -1;
+      border-top: 1px solid var(--line);
+      border-right: 0;
+    }
+
     .meta-field label {
       padding-left: 16px;
       font-weight: 800;
@@ -894,7 +900,7 @@
 
     @media (max-width: 680px) {
       body {
-        padding-left: 158px;
+        padding-left: 186px;
         padding-right: 8px;
       }
 
@@ -913,7 +919,7 @@
         left: 6px;
         z-index: 90;
         display: block;
-        width: 144px;
+        width: 172px;
         height: auto;
         max-height: calc(100vh - max(16px, env(safe-area-inset-top)) - env(safe-area-inset-bottom));
         margin-bottom: 0;
@@ -942,7 +948,7 @@
       }
 
       body:not(.sidebar-compact) .sidebar-swipe-zone {
-        width: 158px;
+        width: 186px;
       }
 
       .sidebar.is-compact {
@@ -1102,15 +1108,6 @@
         grid-template-columns: 1fr;
       }
 
-      .time-combo {
-        grid-template-columns: minmax(0, 1fr) auto minmax(68px, auto);
-        gap: 6px;
-      }
-
-      .time-stop-label {
-        font-size: 12px;
-      }
-
       .tag-manager {
         grid-template-columns: 1fr;
       }
@@ -1126,6 +1123,65 @@
 
       .dark-panel {
         min-height: auto;
+        padding: 8px;
+      }
+
+      .calculator {
+        gap: 8px;
+      }
+
+      .field-card {
+        min-height: 58px;
+        margin-bottom: 7px;
+        padding: 8px 10px;
+      }
+
+      .field-card::before {
+        width: 28px;
+        height: 28px;
+        font-size: 13px;
+      }
+
+      .field-card .label {
+        font-size: 13px;
+      }
+
+      .field-card input {
+        font-size: 24px;
+      }
+
+      .field-card .sub {
+        font-size: 10px;
+      }
+
+      .chip-row {
+        min-height: 26px;
+        margin-bottom: 7px;
+        padding: 4px;
+      }
+
+      .chip {
+        min-height: 20px;
+        padding: 1px 7px;
+        font-size: 11px;
+      }
+
+      .dark-panel.summary {
+        min-height: auto;
+      }
+
+      .summary-row {
+        padding: 7px 12px;
+      }
+
+      .summary-row::before {
+        width: 23px;
+        height: 23px;
+        font-size: 12px;
+      }
+
+      .summary-row strong {
+        font-size: 17px;
       }
 
       .matrix {
@@ -1179,7 +1235,15 @@
       }
 
       .cell-box {
-        min-height: 156px;
+        min-height: 96px;
+        padding: 8px;
+      }
+
+      .tag-control select,
+      .new-tag input,
+      .tag-control button,
+      .new-tag button {
+        height: 30px;
       }
 
       .cell-box::before {
@@ -1242,11 +1306,11 @@
         </div>
         <div class="meta-field">
           <label for="buyTime">买入时间:</label>
-          <div class="time-combo">
-            <input id="buyTime" data-save="buyTime" type="datetime-local">
-            <span class="time-stop-label">时间止损</span>
-            <select id="timeStopDays" data-save="timeStopDays" aria-label="时间止损天数"></select>
-          </div>
+          <input id="buyTime" data-save="buyTime" type="datetime-local">
+        </div>
+        <div class="meta-field full-row">
+          <label for="timeStopDays">时间止损:</label>
+          <select id="timeStopDays" data-save="timeStopDays" aria-label="时间止损天数"></select>
         </div>
       </div>
 
