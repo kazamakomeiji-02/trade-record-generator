@@ -1,4 +1,4 @@
-const CACHE_NAME = "trade-record-pwa-v7";
+const CACHE_NAME = "trade-record-pwa-v8";
 const ASSETS = [
   "./",
   "./index.html",

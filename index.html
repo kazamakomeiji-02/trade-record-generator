@@ -337,6 +337,12 @@
       border-right: 0;
     }
 
+    .meta-field.full-row {
+      grid-column: 1 / -1;
+      border-top: 1px solid var(--line);
+      border-right: 0;
+    }
+
     .meta-field label {
       padding-left: 16px;
       font-weight: 800;
@@ -1076,6 +1082,10 @@
           <label for="buyTime">买入时间:</label>
           <input id="buyTime" data-save="buyTime" type="datetime-local">
         </div>
+        <div class="meta-field full-row">
+          <label for="timeStopDays">时间止损:</label>
+          <select id="timeStopDays" data-save="timeStopDays" aria-label="时间止损天数"></select>
+        </div>
       </div>
 
       <div class="calculator">
@@ -1259,6 +1269,7 @@
         return {
           symbol: "",
           buyTime: nowInputValue(),
+          timeStopDays: "7",
           entryPrice: "10",
           stopPrice: "9",
           targetPrice: "12.5",
@@ -1348,7 +1359,19 @@
         if (!silent) showToast("已保存到本机");
       }
 
+      function populateTimeStopOptions() {
+        var timeStop = $("timeStopDays");
+        if (!timeStop || timeStop.options.length) return;
+        for (var day = 1; day <= 31; day += 1) {
+          var option = document.createElement("option");
+          option.value = String(day);
+          option.textContent = day + " 天";
+          timeStop.appendChild(option);
+        }
+      }
+
       function hydrateFields() {
+        populateTimeStopOptions();
         var fields = activeRecord().fields;
         document.querySelectorAll("[data-save]").forEach(function (input) {
           if (fields[input.id] !== undefined) {
@@ -1384,6 +1407,17 @@
         });
       }
 
+      function holdingDaysFrom(value) {
+        if (!value) return "-";
+        var start = new Date(value);
+        if (Number.isNaN(start.getTime())) return "-";
+        var startDate = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+        var now = new Date();
+        var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        var days = Math.floor((today - startDate) / 86400000);
+        return Math.max(0, days) + " 天";
+      }
+
       function getRecordSummary(record) {
         var fields = record.fields || {};
         var logicId = record.selectedLogic || "breakout";
@@ -1405,7 +1439,9 @@
           amount: formatRecordValue(amount, 2),
           ratio: ratio > 0 ? ratio.toFixed(2) + " : 1" : "-",
           logic: getLogicLabel(logicId),
-          logicId: logicId
+          logicId: logicId,
+          timeStopDays: (fields.timeStopDays || "7") + " 天",
+          holdingDays: holdingDaysFrom(fields.buyTime)
         };
       }
 
@@ -1434,6 +1470,8 @@
               '<span class="record-line"><span>数量</span><strong>' + escapeHtml(summary.quantity) + '</strong></span>' +
               '<span class="record-line"><span>金额</span><strong>' + escapeHtml(summary.amount) + '</strong></span>' +
               '<span class="record-line"><span>盈亏比</span><strong>' + escapeHtml(summary.ratio) + '</strong></span>' +
+              '<span class="record-line"><span>时间止损</span><strong>' + escapeHtml(summary.timeStopDays) + '</strong></span>' +
+              '<span class="record-line"><span>持有</span><strong>' + escapeHtml(summary.holdingDays) + '</strong></span>' +
             '</span>' +
           '</div>';
         }).join("");
@@ -1715,6 +1753,8 @@
         var lines = [];
         lines.push("标的名称: " + $("symbol").value);
         lines.push("买入时间: " + $("buyTime").value.replace("T", " "));
+        lines.push("时间止损: " + $("timeStopDays").value + " 天");
+        lines.push("已持有: " + holdingDaysFrom($("buyTime").value));
         lines.push("逻辑: " + getLogicLabel(activeRecord().selectedLogic || "breakout"));
         lines.push("入场单价: " + $("entryPrice").value + " 元");
         lines.push("止损单价: " + $("stopPrice").value + " 元");
