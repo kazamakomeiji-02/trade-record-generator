@@ -97,10 +97,24 @@
     .side-title {
       display: flex;
       align-items: center;
+      justify-content: space-between;
       gap: 8px;
       margin-bottom: 12px;
       font-weight: 900;
       color: var(--ink);
+    }
+
+    .side-toggle {
+      flex: 0 0 auto;
+      min-width: 34px;
+      height: 30px;
+      padding: 0 8px;
+      border-radius: 8px;
+      border: 1px solid #d6e0ef;
+      background: #fff;
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 900;
     }
 
     .record-list {
@@ -207,6 +221,10 @@
       color: var(--muted);
       font-size: 12px;
       font-weight: 800;
+    }
+
+    .record-compact {
+      display: none;
     }
 
     .record-pill.is-active .record-meta,
@@ -859,8 +877,12 @@
 
     @media (max-width: 680px) {
       body {
-        padding-left: calc(min(42vw, 170px) + 10px);
+        padding-left: 158px;
         padding-right: 8px;
+      }
+
+      body.sidebar-compact {
+        padding-left: 78px;
       }
 
       .layout {
@@ -874,11 +896,39 @@
         left: 6px;
         z-index: 90;
         display: block;
-        width: min(42vw, 170px);
+        width: 144px;
         height: auto;
         max-height: calc(100vh - max(16px, env(safe-area-inset-top)) - env(safe-area-inset-bottom));
         margin-bottom: 0;
         overflow-y: auto;
+      }
+
+      .sidebar.is-compact {
+        width: 64px;
+        padding: 8px 6px;
+      }
+
+      .sidebar.is-compact .side-title {
+        display: grid;
+        justify-items: center;
+        gap: 6px;
+        margin-bottom: 8px;
+        font-size: 13px;
+      }
+
+      .sidebar.is-compact .side-title span {
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: clip;
+        white-space: nowrap;
+      }
+
+      .sidebar.is-compact .side-toggle {
+        width: 100%;
+        min-width: 0;
+        height: 28px;
+        padding: 0;
+        font-size: 12px;
       }
 
       .record-list {
@@ -927,6 +977,56 @@
         height: 32px;
         border-radius: 6px;
         font-size: 13px;
+      }
+
+      .sidebar.is-compact .record-pill {
+        min-height: 70px;
+        padding: 6px 4px;
+        justify-items: center;
+      }
+
+      .sidebar.is-compact .record-title,
+      .sidebar.is-compact .record-meta,
+      .sidebar.is-compact .record-detail {
+        display: none;
+      }
+
+      .sidebar.is-compact .record-compact {
+        display: grid;
+        justify-items: center;
+        gap: 3px;
+        width: 100%;
+        text-align: center;
+        font-size: 10px;
+        font-weight: 900;
+        line-height: 1.1;
+      }
+
+      .sidebar.is-compact .record-compact-name {
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .sidebar.is-compact .record-compact-logic {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+      }
+
+      .sidebar.is-compact .record-compact-logic.is-breakout {
+        background: #ef476f;
+      }
+
+      .sidebar.is-compact .record-compact-logic.is-pullback {
+        background: #2f6fe4;
+      }
+
+      .sidebar.is-compact .record-delete {
+        width: 20px;
+        height: 20px;
+        font-size: 12px;
       }
 
       .toolbar {
@@ -1076,6 +1176,7 @@
     <aside class="sidebar" id="sidebar" aria-label="已保存记录">
       <div class="side-title">
         <span>保存记录</span>
+        <button id="sidebarToggle" class="side-toggle" type="button">收起</button>
       </div>
       <div class="record-list" id="recordList"></div>
     </aside>
@@ -1454,6 +1555,12 @@
         };
       }
 
+      function compactTitle(title) {
+        var text = String(title || "未命名").trim();
+        if (text.length <= 4) return text;
+        return text.slice(0, 4);
+      }
+
       function renderRecords() {
         var list = $("recordList");
         if (!list) return;
@@ -1481,6 +1588,12 @@
               '<span class="record-line"><span>盈亏比</span><strong>' + escapeHtml(summary.ratio) + '</strong></span>' +
               '<span class="record-line"><span>时间止损</span><strong>' + escapeHtml(summary.timeStopDays) + '</strong></span>' +
               '<span class="record-line"><span>持有</span><strong>' + escapeHtml(summary.holdingDays) + '</strong></span>' +
+            '</span>' +
+            '<span class="record-compact">' +
+              '<span class="record-compact-name">' + escapeHtml(compactTitle(summary.title)) + '</span>' +
+              '<span class="record-compact-logic ' + logicClass + '"></span>' +
+              '<span>' + escapeHtml(summary.ratio) + '</span>' +
+              '<span>' + escapeHtml(summary.holdingDays) + '</span>' +
             '</span>' +
           '</div>';
         }).join("");
@@ -1862,6 +1975,25 @@
         if (button) loadRecord(button.dataset.recordId);
       }
 
+      function setSidebarCompact(isCompact) {
+        document.body.classList.toggle("sidebar-compact", isCompact);
+        $("sidebar").classList.toggle("is-compact", isCompact);
+        $("sidebarToggle").textContent = isCompact ? "展开" : "收起";
+        try {
+          localStorage.setItem("trade-record-sidebar-compact", isCompact ? "1" : "0");
+        } catch (error) {}
+      }
+
+      function hydrateSidebarMode() {
+        var shouldCompact = window.matchMedia && window.matchMedia("(max-width: 680px)").matches;
+        try {
+          var saved = localStorage.getItem("trade-record-sidebar-compact");
+          if (saved === "1") shouldCompact = true;
+          if (saved === "0") shouldCompact = false;
+        } catch (error) {}
+        setSidebarCompact(shouldCompact);
+      }
+
       function bindEvents() {
         document.querySelectorAll("[data-save]").forEach(function (input) {
           input.addEventListener("input", function () {
@@ -1893,6 +2025,9 @@
         $("copyBtn").addEventListener("click", copyText);
         $("resetBtn").addEventListener("click", resetAll);
         $("printBtn").addEventListener("click", function () { window.print(); });
+        $("sidebarToggle").addEventListener("click", function () {
+          setSidebarCompact(!$("sidebar").classList.contains("is-compact"));
+        });
         document.querySelectorAll("[data-logic-choice]").forEach(function (button) {
           button.addEventListener("click", function () {
             setLogic(button.dataset.logicChoice);
@@ -1930,6 +2065,7 @@
       function init() {
         els.toast = $("toast");
         readStorage();
+        hydrateSidebarMode();
         hydrateFields();
         renderMatrix();
         bindEvents();
