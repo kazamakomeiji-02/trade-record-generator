@@ -338,7 +338,7 @@
 
     .meta-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1.35fr;
       border-bottom: 1px solid var(--line);
       background: rgba(255, 255, 255, 0.78);
     }
@@ -352,12 +352,6 @@
     }
 
     .meta-field:last-child {
-      border-right: 0;
-    }
-
-    .meta-field.full-row {
-      grid-column: 1 / -1;
-      border-top: 1px solid var(--line);
       border-right: 0;
     }
 
@@ -377,6 +371,29 @@
       font-weight: 700;
       color: var(--ink);
       outline: 0;
+    }
+
+    .time-combo {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto auto;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      min-width: 0;
+      padding-right: 10px;
+    }
+
+    .time-combo input,
+    .time-combo select {
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .time-stop-label {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+      white-space: nowrap;
     }
 
     .calculator {
@@ -409,7 +426,7 @@
 
     .field-card {
       display: grid;
-      grid-template-columns: 42px 1fr auto;
+      grid-template-columns: 42px minmax(0, 1fr) auto;
       align-items: center;
       min-height: 76px;
       margin-bottom: 10px;
@@ -434,8 +451,8 @@
     }
 
     .field-card input {
-      grid-column: 3;
-      grid-row: 1 / span 2;
+      grid-column: 2;
+      grid-row: 2;
       min-width: 0;
       width: 100%;
       border: 0;
@@ -443,7 +460,7 @@
       background: transparent;
       color: #f8fafc;
       font-size: 28px;
-      text-align: right;
+      text-align: left;
       font-weight: 800;
     }
 
@@ -456,8 +473,8 @@
     }
 
     .field-card > span:not(.label):not(.sub) {
-      grid-column: 2;
-      grid-row: 2;
+      grid-column: 3;
+      grid-row: 1 / span 2;
       color: #e6eefb;
       font-weight: 800;
     }
@@ -903,6 +920,31 @@
         overflow-y: auto;
       }
 
+      .sidebar::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 76px;
+        z-index: -1;
+      }
+
+      .sidebar-swipe-zone {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 89;
+        width: 78px;
+        background: transparent;
+        touch-action: pan-y;
+      }
+
+      body:not(.sidebar-compact) .sidebar-swipe-zone {
+        width: 158px;
+      }
+
       .sidebar.is-compact {
         width: 64px;
         padding: 8px 6px;
@@ -1060,6 +1102,15 @@
         grid-template-columns: 1fr;
       }
 
+      .time-combo {
+        grid-template-columns: minmax(0, 1fr) auto minmax(68px, auto);
+        gap: 6px;
+      }
+
+      .time-stop-label {
+        font-size: 12px;
+      }
+
       .tag-manager {
         grid-template-columns: 1fr;
       }
@@ -1162,6 +1213,7 @@
   </style>
 </head>
 <body>
+  <div class="sidebar-swipe-zone" id="sidebarSwipeZone" aria-hidden="true"></div>
   <nav class="toolbar" aria-label="页面操作">
     <button id="newBtn" type="button" class="secondary">新建</button>
     <button id="saveBtn" type="button">保存</button>
@@ -1190,11 +1242,11 @@
         </div>
         <div class="meta-field">
           <label for="buyTime">买入时间:</label>
-          <input id="buyTime" data-save="buyTime" type="datetime-local">
-        </div>
-        <div class="meta-field full-row">
-          <label for="timeStopDays">时间止损:</label>
-          <select id="timeStopDays" data-save="timeStopDays" aria-label="时间止损天数"></select>
+          <div class="time-combo">
+            <input id="buyTime" data-save="buyTime" type="datetime-local">
+            <span class="time-stop-label">时间止损</span>
+            <select id="timeStopDays" data-save="timeStopDays" aria-label="时间止损天数"></select>
+          </div>
         </div>
       </div>
 
@@ -1996,25 +2048,32 @@
 
       function bindSidebarSwipe() {
         var sidebar = $("sidebar");
+        var swipeZone = $("sidebarSwipeZone");
         var startX = 0;
         var startY = 0;
         var tracking = false;
 
-        sidebar.addEventListener("touchstart", function (event) {
+        function onStart(event) {
           if (!event.touches || event.touches.length !== 1) return;
           startX = event.touches[0].clientX;
           startY = event.touches[0].clientY;
           tracking = true;
-        }, { passive: true });
+        }
 
-        sidebar.addEventListener("touchend", function (event) {
+        function onEnd(event) {
           if (!tracking || !event.changedTouches || event.changedTouches.length !== 1) return;
           tracking = false;
           var dx = event.changedTouches[0].clientX - startX;
           var dy = event.changedTouches[0].clientY - startY;
           if (Math.abs(dx) < 36 || Math.abs(dx) < Math.abs(dy) * 1.25) return;
           setSidebarCompact(dx < 0);
-        }, { passive: true });
+        }
+
+        [sidebar, swipeZone].forEach(function (target) {
+          if (!target) return;
+          target.addEventListener("touchstart", onStart, { passive: true });
+          target.addEventListener("touchend", onEnd, { passive: true });
+        });
       }
 
       function bindEvents() {
