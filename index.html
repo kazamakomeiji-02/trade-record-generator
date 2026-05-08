@@ -47,7 +47,7 @@
     }
 
     body {
-      padding: max(12px, env(safe-area-inset-top)) 10px max(24px, env(safe-area-inset-bottom));
+      padding: calc(max(12px, env(safe-area-inset-top)) + 62px) 10px max(24px, env(safe-area-inset-bottom));
       font-size: 15px;
     }
 
@@ -277,9 +277,12 @@
     }
 
     .toolbar {
-      position: sticky;
-      top: 0;
-      z-index: 28;
+      position: fixed;
+      top: max(0px, env(safe-area-inset-top));
+      left: 50%;
+      z-index: 100;
+      width: min(calc(100% - 20px), 1180px);
+      transform: translateX(-50%);
       display: flex;
       gap: 8px;
       padding: 8px 0 12px;
@@ -847,7 +850,7 @@
       body {
         padding-left: 8px;
         padding-right: 8px;
-        padding-top: calc(max(8px, env(safe-area-inset-top)) + 58px);
+        padding-top: calc(max(8px, env(safe-area-inset-top)) + 104px);
       }
 
       .layout {
@@ -913,11 +916,11 @@
       }
 
       .toolbar {
-        position: fixed;
         top: max(0px, env(safe-area-inset-top));
         left: 8px;
         right: 8px;
-        z-index: 100;
+        width: auto;
+        transform: none;
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 6px;
@@ -1041,6 +1044,15 @@
   </style>
 </head>
 <body>
+  <nav class="toolbar" aria-label="页面操作">
+    <button id="newBtn" type="button" class="secondary">新建</button>
+    <button id="saveBtn" type="button">保存</button>
+    <button id="tagManageBtn" type="button" class="secondary">标签管理</button>
+    <button id="copyBtn" type="button" class="secondary">复制文本</button>
+    <button id="resetBtn" type="button" class="secondary">清空当前</button>
+    <button id="printBtn" type="button" class="secondary">打印/PDF</button>
+  </nav>
+
   <div class="side-backdrop" id="sideBackdrop"></div>
   <div class="layout" id="layout">
     <aside class="sidebar" id="sidebar" aria-label="已保存记录">
@@ -1051,15 +1063,6 @@
     </aside>
 
     <main class="app">
-      <nav class="toolbar" aria-label="页面操作">
-        <button id="newBtn" type="button" class="secondary">新建</button>
-        <button id="saveBtn" type="button">保存</button>
-        <button id="tagManageBtn" type="button" class="secondary">标签管理</button>
-        <button id="copyBtn" type="button" class="secondary">复制文本</button>
-        <button id="resetBtn" type="button" class="secondary">清空当前</button>
-        <button id="printBtn" type="button" class="secondary">打印/PDF</button>
-      </nav>
-
       <section class="sheet" id="recordSheet">
       <div class="meta-grid">
         <div class="meta-field">
