@@ -1994,6 +1994,29 @@
         setSidebarCompact(shouldCompact);
       }
 
+      function bindSidebarSwipe() {
+        var sidebar = $("sidebar");
+        var startX = 0;
+        var startY = 0;
+        var tracking = false;
+
+        sidebar.addEventListener("touchstart", function (event) {
+          if (!event.touches || event.touches.length !== 1) return;
+          startX = event.touches[0].clientX;
+          startY = event.touches[0].clientY;
+          tracking = true;
+        }, { passive: true });
+
+        sidebar.addEventListener("touchend", function (event) {
+          if (!tracking || !event.changedTouches || event.changedTouches.length !== 1) return;
+          tracking = false;
+          var dx = event.changedTouches[0].clientX - startX;
+          var dy = event.changedTouches[0].clientY - startY;
+          if (Math.abs(dx) < 36 || Math.abs(dx) < Math.abs(dy) * 1.25) return;
+          setSidebarCompact(dx < 0);
+        }, { passive: true });
+      }
+
       function bindEvents() {
         document.querySelectorAll("[data-save]").forEach(function (input) {
           input.addEventListener("input", function () {
@@ -2028,6 +2051,7 @@
         $("sidebarToggle").addEventListener("click", function () {
           setSidebarCompact(!$("sidebar").classList.contains("is-compact"));
         });
+        bindSidebarSwipe();
         document.querySelectorAll("[data-logic-choice]").forEach(function (button) {
           button.addEventListener("click", function () {
             setLogic(button.dataset.logicChoice);
