@@ -132,6 +132,10 @@
       margin-bottom: 10px;
     }
 
+    body.calc-sidebar-mode .side-actions {
+      display: none;
+    }
+
     .side-actions button {
       min-height: 32px;
       border-radius: 8px;
@@ -345,6 +349,42 @@
       color: #fff;
     }
 
+    .trial-pill {
+      gap: 5px;
+      padding: 8px 42px 8px 9px;
+    }
+
+    .trial-pill .record-title {
+      padding-right: 0;
+      font-size: 18px;
+    }
+
+    .trial-metrics {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      color: #2c3f5f;
+      font-size: 15px;
+      font-weight: 900;
+      line-height: 1.2;
+    }
+
+    .trial-metrics span {
+      min-width: 0;
+      padding: 3px 5px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.72);
+      white-space: nowrap;
+    }
+
+    .trial-pill.is-active .trial-metrics {
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .trial-pill.is-active .trial-metrics span {
+      background: rgba(255, 255, 255, 0.16);
+    }
+
     .record-pill.is-archived {
       opacity: 0.82;
       filter: grayscale(0.2);
@@ -436,6 +476,11 @@
       border: 1px solid #d4d9e2;
     }
 
+    #calcBtn {
+      grid-row: span 2;
+      min-height: 88px;
+    }
+
     .sheet {
       background: var(--paper);
       border: 1px solid rgba(217, 225, 234, 0.8);
@@ -463,10 +508,25 @@
       border-right: 0;
     }
 
+    .risk-field:nth-child(2n) {
+      border-right: 0;
+    }
+
+    .risk-field:nth-child(-n + 2) {
+      border-bottom: 1px solid var(--line);
+    }
+
     .risk-field label {
       padding-left: 14px;
       font-weight: 900;
       white-space: nowrap;
+    }
+
+    .risk-field label small {
+      margin-left: 5px;
+      color: #7f8aa1;
+      font-size: 11px;
+      font-weight: 900;
     }
 
     .risk-field input {
@@ -488,9 +548,28 @@
       color: #d9234e;
     }
 
+    .risk-field.output input {
+      color: #245bc9;
+    }
+
+    .risk-output-line {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      min-width: 0;
+    }
+
+    .risk-output-line small {
+      padding-right: 10px;
+      color: #7f8aa1;
+      font-size: 11px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
     .meta-grid {
       display: grid;
-      grid-template-columns: 1fr 1.35fr;
+      grid-template-columns: 0.85fr 1fr;
       border-bottom: 1px solid var(--line);
       background: rgba(255, 255, 255, 0.78);
     }
@@ -505,6 +584,20 @@
 
     .meta-field:last-child {
       border-right: 0;
+    }
+
+    .meta-field.symbol-field {
+      grid-column: 1 / -1;
+      border-right: 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .meta-field.time-field {
+      border-right: 0;
+    }
+
+    .meta-field.code-field {
+      grid-template-columns: 1fr;
     }
 
     .meta-field.full-row {
@@ -545,6 +638,21 @@
       display: none;
       color: #9aa5b6;
       opacity: 0.72;
+    }
+
+    .meta-field.is-time-warning {
+      background: #fff3a6;
+    }
+
+    .meta-field.is-time-warning .time-stop-toggle {
+      background: #ffedf1;
+      color: #d9234e;
+      box-shadow: inset 0 0 0 1px #ffb8c8;
+    }
+
+    .meta-field.is-time-warning select {
+      color: #d9234e;
+      font-weight: 900;
     }
 
     .meta-field input,
@@ -676,6 +784,28 @@
     .field-card.combo-card {
       grid-template-columns: 1fr 1fr;
       gap: 10px;
+    }
+
+    .field-card.combo-card:has(#stopPrice) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .field-card.combo-card:has(#stopPrice) label:has(#dynamicStopPrice) {
+      display: none;
+    }
+
+    body.dynamic-stop-active .field-card.combo-card:has(#entryPrice) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    body.dynamic-stop-active .field-card.combo-card:has(#entryPrice) label:has(#entryPrice),
+    body.dynamic-stop-active .field-card.combo-card:has(#stopPrice) label:has(#stopPrice) {
+      display: none;
+    }
+
+    body.dynamic-stop-active .field-card.combo-card:has(#entryPrice) label:has(#currentPrice),
+    body.dynamic-stop-active .field-card.combo-card:has(#stopPrice) label:has(#dynamicStopPrice) {
+      display: grid;
     }
 
     .field-mini {
@@ -829,6 +959,10 @@
     .summary-row.is-risk-warning strong,
     .summary-row.is-risk-warning small {
       color: #d9234e;
+    }
+
+    .summary-row.is-hidden {
+      display: none;
     }
 
     .matrix {
@@ -1206,6 +1340,23 @@
       outline: 0;
     }
 
+    .calc-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .calc-actions button {
+      min-height: 40px;
+      border-radius: 8px;
+      font-weight: 900;
+    }
+
+    .calc-actions button:first-child {
+      background: linear-gradient(180deg, #4b86ff, #2f6fe4);
+      color: #fff;
+    }
+
     .toast {
       position: fixed;
       left: 50%;
@@ -1273,13 +1424,22 @@
         bottom: 0;
         left: 0;
         z-index: 89;
-        width: 78px;
+        width: 0;
         background: transparent;
+        pointer-events: none;
         touch-action: pan-y;
       }
 
+      body.sidebar-compact .sidebar-swipe-zone {
+        width: 0;
+      }
+
+      body.calc-sidebar-mode .sidebar-swipe-zone {
+        width: 0;
+      }
+
       body:not(.sidebar-compact) .sidebar-swipe-zone {
-        width: 100vw;
+        width: 0;
       }
 
       .sidebar.is-compact {
@@ -1443,7 +1603,7 @@
         width: auto;
         margin: 0 0 10px;
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(5, minmax(0, 1fr));
         gap: 5px;
         padding: 0;
         border: 0;
@@ -1456,12 +1616,16 @@
 
       .toolbar button {
         min-width: 0;
-        min-height: 34px;
-        padding: 0 4px;
-        font-size: 12px;
+        min-height: 30px;
+        padding: 0 3px;
+        font-size: 10px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: normal;
+      }
+
+      #calcBtn {
+        min-height: 65px;
       }
 
       .meta-grid,
@@ -1469,8 +1633,12 @@
         grid-template-columns: 1fr;
       }
 
+      .meta-grid {
+        grid-template-columns: 0.85fr 1fr;
+      }
+
       .risk-grid {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(2, 1fr);
       }
 
       .risk-field {
@@ -1487,14 +1655,27 @@
         border-bottom: 0;
       }
 
+      .risk-field:nth-last-child(2) {
+        border-bottom: 0;
+      }
+
       .risk-field label {
         padding-left: 8px;
-        font-size: 11px;
+        font-size: 10px;
       }
 
       .risk-field input {
-        padding: 0 8px 5px;
-        font-size: 14px;
+        padding: 0 6px 5px;
+        font-size: 13px;
+      }
+
+      .risk-output-line {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .risk-output-line small {
+        padding: 0 6px 5px;
+        font-size: 10px;
       }
 
       .tag-manager {
@@ -1523,6 +1704,10 @@
         min-height: 36px;
         border-right: 0;
         border-bottom: 1px solid var(--line);
+      }
+
+      .meta-field.code-field {
+        border-right: 1px solid var(--line);
       }
 
       .meta-field label {
@@ -1798,17 +1983,21 @@
   <nav class="toolbar" aria-label="页面操作">
     <button id="newBtn" type="button" class="secondary">新建</button>
     <button id="saveBtn" type="button">保存</button>
+    <button id="undoBtn" type="button" class="secondary">撤销</button>
+    <button id="redoBtn" type="button" class="secondary">重做</button>
+    <button id="calcBtn" type="button" class="secondary">试算</button>
     <button id="tagManageBtn" type="button" class="secondary">标签管理</button>
     <button id="copyBtn" type="button" class="secondary">复制文本</button>
-    <button id="resetBtn" type="button" class="secondary">清空当前</button>
+    <button id="importPriceBtn" type="button" class="secondary">导入价格</button>
     <button id="pasteBtn" type="button" class="secondary">粘贴文本</button>
+    <input id="priceImportFile" type="file" accept=".xls,.csv,.txt,text/plain,application/vnd.ms-excel" hidden>
   </nav>
 
   <div class="side-backdrop" id="sideBackdrop"></div>
   <div class="layout" id="layout">
     <aside class="sidebar" id="sidebar" aria-label="已保存记录">
       <div class="side-title">
-        <span>保存记录</span>
+        <span id="sideTitleLabel">保存记录</span>
         <button id="sidebarToggle" class="side-toggle" type="button">收起</button>
       </div>
       <div class="side-actions" id="recordBackupActions">
@@ -1831,14 +2020,27 @@
           <label for="globalLossLimit">全局最大亏损</label>
           <input id="globalLossLimit" data-risk-save="globalLossLimit" type="number" inputmode="decimal" step="0.01" placeholder="0">
         </div>
+        <div class="risk-field output" id="currentMaxLossField">
+          <label for="currentMaxLossTotal">当前最大亏损 <small id="currentMaxLossPercent">0%</small></label>
+          <div class="risk-output-line">
+            <input id="currentMaxLossTotal" type="text" value="0.00" readonly>
+          </div>
+        </div>
+        <div class="risk-field output" id="protectedProfitField">
+          <label for="protectedProfitTotal">保底盈利</label>
+          <input id="protectedProfitTotal" type="text" value="0.00" readonly>
+        </div>
       </div>
       <div class="meta-grid">
-        <div class="meta-field">
+        <div class="meta-field symbol-field">
           <label for="symbol">标的名称:</label>
           <input id="symbol" data-save="symbol" type="text" placeholder="例如 AAPL / BTC">
         </div>
-        <div class="meta-field">
-          <label for="buyTime">买入时间:</label>
+        <div class="meta-field code-field">
+          <input id="stockCode" data-save="stockCode" type="text" inputmode="numeric" placeholder="输入代码" aria-label="代码">
+        </div>
+        <div class="meta-field time-field">
+          <label for="buyTime">买入时间</label>
           <input id="buyTime" data-save="buyTime" type="date">
         </div>
         <div class="meta-field full-row" id="timeStopField">
@@ -1849,22 +2051,34 @@
 
       <div class="calculator">
         <section class="dark-panel" aria-label="入场与止损">
-          <label class="field-card" data-icon="入">
-            <span class="label">入场单价</span>
-            <input id="entryPrice" data-save="entryPrice" type="number" inputmode="decimal" step="0.001" value="10">
-          </label>
+          <div class="field-card combo-card" data-icon="入">
+            <label class="field-mini">
+              <span class="label">入场单价</span>
+              <input id="entryPrice" data-save="entryPrice" type="number" inputmode="decimal" step="0.001" value="10">
+            </label>
+            <label class="field-mini">
+              <span class="label">当前价格 <small id="currentMeta">0%</small></span>
+              <input id="currentPrice" data-save="currentPrice" type="number" inputmode="decimal" step="0.001" value="10">
+            </label>
+          </div>
           <div class="chip-row" aria-label="止损快捷比例">
             <button class="chip" type="button" data-loss="0.05">15% / -5%</button>
             <button class="chip" type="button" data-loss="0.03">10% / -3%</button>
             <button class="chip" type="button" data-loss="0.003">0.8% / -0.3%</button>
           </div>
-          <label class="field-card" data-icon="止">
-            <span class="label">止损单价 <small id="lossMeta">-1.0000 （-10%）</small></span>
-            <input id="stopPrice" data-save="stopPrice" type="number" inputmode="decimal" step="0.001" value="9">
-          </label>
+          <div class="field-card combo-card" data-icon="止">
+            <label class="field-mini">
+              <span class="label">止损单价 <small id="lossMeta">-1.0000 （-10%）</small></span>
+              <input id="stopPrice" data-save="stopPrice" type="number" inputmode="decimal" step="0.001" value="9">
+            </label>
+            <label class="field-mini dynamic-stop-field">
+              <span class="label">动态止损价 <small id="dynamicStopMeta">0.0000 （0%）</small></span>
+              <input id="dynamicStopPrice" data-save="dynamicStopPrice" type="number" inputmode="decimal" step="0.001" value="10">
+            </label>
+          </div>
           <div class="dynamic-stop" id="dynamicStopControl" aria-label="&#21160;&#24577;&#27490;&#25439;">
             <div class="dynamic-stop-head">
-              <button id="dynamicStopToggle" class="dynamic-stop-label" type="button" aria-pressed="true">&#21160;&#24577;&#27490;&#25439;</button>
+              <button id="dynamicStopToggle" class="dynamic-stop-label" type="button" aria-pressed="false">&#21160;&#24577;&#27490;&#25439;</button>
             </div>
             <div class="dynamic-stop-body" id="dynamicStopBody">
               <div class="tag-control">
@@ -1889,7 +2103,7 @@
 
         <section class="dark-panel" aria-label="目标与金额">
           <label class="field-card" data-icon="目">
-            <span class="label">目标单价 <small id="profitMeta">2.5000 （+25%）</small></span>
+            <span class="label">目标单价 <small id="profitMeta">2.5000 （+25%）</small><small id="remainingMeta">剩余 +25%</small></span>
             <input id="targetPrice" data-save="targetPrice" type="number" inputmode="decimal" step="0.001" value="12.5">
           </label>
           <div class="field-card combo-card" data-icon="额">
@@ -1918,6 +2132,11 @@
             <span>预计亏损</span>
             <strong id="lossAmount">-100.00 元</strong>
             <small id="lossPercent">-10%</small>
+          </div>
+          <div class="summary-row is-hidden" id="protectedSummaryRow" data-icon="保">
+            <span>保底盈利</span>
+            <strong id="protectedAmount">0.00 元</strong>
+            <small id="protectedPercent">0%</small>
           </div>
           <div class="summary-row" data-icon="目">
             <span>目标总金额</span>
@@ -2000,6 +2219,37 @@
     </div>
   </section>
 
+  <section class="subpage" id="calcPage" aria-label="盈亏比试算">
+    <div class="subpage-inner">
+      <header class="subpage-head">
+        <h2>盈亏比试算</h2>
+        <button id="closeCalcPageBtn" type="button" aria-label="关闭盈亏比试算">×</button>
+      </header>
+      <div class="archive-form">
+        <label><span>试算名称</span><input id="calcName" type="text" placeholder="例如 突破前试算"></label>
+        <label><span>入场价</span><input id="calcEntry" type="number" inputmode="decimal" step="0.001" value="10"></label>
+        <label><span>止损价</span><input id="calcStop" type="number" inputmode="decimal" step="0.001" value="9"></label>
+        <label><span>目标价</span><input id="calcTarget" type="number" inputmode="decimal" step="0.001" value="12.5"></label>
+        <div class="calc-actions">
+          <button id="saveCalcTrialBtn" type="button">保存试算</button>
+          <button id="newCalcTrialBtn" type="button" class="secondary">新试算</button>
+        </div>
+        <div class="summary-row" data-icon="比">
+          <span>盈亏比</span>
+          <strong id="calcRatio">2.50 : 1</strong>
+        </div>
+        <div class="summary-row" data-icon="盈">
+          <span>盈利空间</span>
+          <strong id="calcProfitRate">+25%</strong>
+        </div>
+        <div class="summary-row" data-icon="亏">
+          <span>亏损空间</span>
+          <strong id="calcLossRate">-10%</strong>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script>
@@ -2024,6 +2274,8 @@
       var state = {
         currentId: null,
         records: [],
+        currentTrialId: null,
+        trialRecords: [],
         tagLibrary: createEmptyTagLibrary(),
         showArchived: false,
         riskSettings: createDefaultRiskSettings()
@@ -2031,6 +2283,9 @@
 
       var els = {};
       var pendingArchiveId = null;
+      var undoStack = [];
+      var redoStack = [];
+      var isRestoringHistory = false;
 
       function $(id) {
         return document.getElementById(id);
@@ -2104,12 +2359,15 @@
       function createDefaultFields() {
         return {
           symbol: "",
+          stockCode: "",
           buyTime: nowInputValue().slice(0, 10),
           timeStopEnabled: "1",
           timeStopDays: "7",
-          dynamicStopEnabled: "1",
+          dynamicStopEnabled: "0",
           entryPrice: "10",
+          currentPrice: "10",
           stopPrice: "9",
+          dynamicStopPrice: "10",
           targetPrice: "12.5",
           quantity: "100",
           entryAmount: "1000"
@@ -2130,6 +2388,19 @@
         };
       }
 
+      function createTrialRecord(values) {
+        var id = "trial-" + Date.now() + "-" + Math.random().toString(16).slice(2);
+        var data = values || {};
+        return {
+          id: id,
+          name: String(data.name || ""),
+          entry: String(data.entry || "10"),
+          stop: String(data.stop || "9"),
+          target: String(data.target || "12.5"),
+          updatedAt: new Date().toISOString()
+        };
+      }
+
       function activeRecord() {
         var record = state.records.find(function (item) {
           return item.id === state.currentId;
@@ -2140,6 +2411,7 @@
           state.currentId = record.id;
         }
         if (!record.fields) record.fields = createDefaultFields();
+        record.fields = Object.assign(createDefaultFields(), record.fields);
         if (!record.cells) record.cells = {};
         if (!Array.isArray(record.dynamicStopTags)) record.dynamicStopTags = [];
         record.archived = record.archived === true;
@@ -2167,12 +2439,25 @@
         return normalized;
       }
 
+      function normalizeTrialRecord(record, index) {
+        var normalized = createTrialRecord();
+        normalized.id = record && record.id ? String(record.id) : "trial-imported-" + Date.now() + "-" + index;
+        normalized.name = String(record && record.name || "");
+        normalized.entry = String(record && record.entry || "10");
+        normalized.stop = String(record && record.stop || "9");
+        normalized.target = String(record && record.target || "12.5");
+        normalized.updatedAt = record && record.updatedAt ? String(record.updatedAt) : new Date().toISOString();
+        return normalized;
+      }
+
       function readStorage() {
         try {
           var saved = JSON.parse(localStorage.getItem(storageKey) || "null");
           if (saved && Array.isArray(saved.records)) {
             state.currentId = saved.currentId || null;
             state.records = saved.records.length ? saved.records : [createRecord()];
+            state.currentTrialId = saved.currentTrialId || null;
+            state.trialRecords = Array.isArray(saved.trialRecords) ? saved.trialRecords.map(normalizeTrialRecord) : [];
             state.tagLibrary = normalizeTagLibrary(saved.tagLibrary);
             state.showArchived = saved.showArchived === true;
             state.riskSettings = normalizeRiskSettings(saved.riskSettings);
@@ -2181,6 +2466,8 @@
             if (legacy) {
               state.records = [createRecord(legacy.fields || createDefaultFields(), legacy.cells || {})];
               state.currentId = state.records[0].id;
+              state.currentTrialId = null;
+              state.trialRecords = [];
               state.tagLibrary = createEmptyTagLibrary();
               state.showArchived = false;
               state.riskSettings = createDefaultRiskSettings();
@@ -2190,13 +2477,62 @@
           state = {
             currentId: null,
             records: [],
+            currentTrialId: null,
+            trialRecords: [],
             tagLibrary: createEmptyTagLibrary(),
             showArchived: false,
             riskSettings: createDefaultRiskSettings()
           };
         }
         state.riskSettings = normalizeRiskSettings(state.riskSettings);
+        if (!Array.isArray(state.trialRecords)) state.trialRecords = [];
+        if (state.currentTrialId && !state.trialRecords.some(function (record) { return record.id === state.currentTrialId; })) {
+          state.currentTrialId = null;
+        }
         activeRecord();
+      }
+
+      function makeSnapshot() {
+        writeStorage(true);
+        return JSON.stringify({
+          state: state,
+          currentId: state.currentId
+        });
+      }
+
+      function pushUndoSnapshot() {
+        if (isRestoringHistory) return;
+        undoStack.push(makeSnapshot());
+        if (undoStack.length > 60) undoStack.shift();
+        redoStack = [];
+      }
+
+      function restoreSnapshot(snapshot) {
+        if (!snapshot) return;
+        isRestoringHistory = true;
+        var parsed = JSON.parse(snapshot);
+        state = parsed.state;
+        localStorage.setItem(storageKey, JSON.stringify(state));
+        hydrateFields();
+        renderDynamicStopTags();
+        renderMatrix();
+        recalc();
+        renderRecords();
+        renderTagManager();
+        updateLogicView();
+        isRestoringHistory = false;
+      }
+
+      function undoChange() {
+        if (!undoStack.length) return;
+        redoStack.push(makeSnapshot());
+        restoreSnapshot(undoStack.pop());
+      }
+
+      function redoChange() {
+        if (!redoStack.length) return;
+        undoStack.push(makeSnapshot());
+        restoreSnapshot(redoStack.pop());
       }
 
       function writeStorage(silent) {
@@ -2250,12 +2586,17 @@
           throw new Error("Invalid backup");
         }
         var importedRecords = source.records.map(normalizeImportedRecord);
+        var importedTrials = Array.isArray(source.trialRecords) ? source.trialRecords.map(normalizeTrialRecord) : [];
         if (!importedRecords.length) importedRecords = [createRecord()];
         return {
           currentId: source.currentId && importedRecords.some(function (record) {
             return record.id === source.currentId;
           }) ? source.currentId : importedRecords[0].id,
           records: importedRecords,
+          currentTrialId: source.currentTrialId && importedTrials.some(function (record) {
+            return record.id === source.currentTrialId;
+          }) ? source.currentTrialId : null,
+          trialRecords: importedTrials,
           tagLibrary: normalizeTagLibrary(source.tagLibrary),
           showArchived: source.showArchived === true,
           riskSettings: normalizeRiskSettings(source.riskSettings)
@@ -2281,6 +2622,8 @@
           state: {
             currentId: state.currentId,
             records: state.records,
+            currentTrialId: state.currentTrialId,
+            trialRecords: state.trialRecords,
             tagLibrary: state.tagLibrary,
             showArchived: state.showArchived,
             riskSettings: state.riskSettings
@@ -2319,6 +2662,148 @@
         reader.readAsText(file);
       }
 
+      function cleanTableCell(value) {
+        return String(value || "")
+          .replace(/^\ufeff/, "")
+          .replace(/^="?/, "")
+          .replace(/"?$/, "")
+          .trim();
+      }
+
+      function normalizeStockCode(value) {
+        var text = cleanTableCell(value);
+        var groups = text.match(/\d+/g);
+        var digits = groups ? (groups.find(function (group) { return group.length >= 6; }) || groups[0]) : "";
+        if (!digits) return text.toUpperCase();
+        return digits.length < 6 ? digits.padStart(6, "0") : digits.slice(-6);
+      }
+
+      function splitDelimitedLine(line, delimiter) {
+        if (delimiter !== ",") return line.split(delimiter).map(cleanTableCell);
+        var cells = [];
+        var current = "";
+        var quoted = false;
+        for (var i = 0; i < line.length; i += 1) {
+          var ch = line.charAt(i);
+          if (ch === '"') {
+            if (quoted && line.charAt(i + 1) === '"') {
+              current += '"';
+              i += 1;
+            } else {
+              quoted = !quoted;
+            }
+          } else if (ch === "," && !quoted) {
+            cells.push(cleanTableCell(current));
+            current = "";
+          } else {
+            current += ch;
+          }
+        }
+        cells.push(cleanTableCell(current));
+        return cells;
+      }
+
+      function findHeaderIndex(headers, names) {
+        var normalizedNames = names.map(function (name) {
+          return name.replace(/\s/g, "");
+        });
+        for (var i = 0; i < headers.length; i += 1) {
+          var header = cleanTableCell(headers[i]).replace(/\s/g, "");
+          if (normalizedNames.indexOf(header) !== -1) return i;
+        }
+        for (var j = 0; j < headers.length; j += 1) {
+          var looseHeader = cleanTableCell(headers[j]).replace(/\s/g, "");
+          if (normalizedNames.some(function (name) { return looseHeader.indexOf(name) !== -1; })) return j;
+        }
+        return -1;
+      }
+
+      function parsePriceTable(text) {
+        var lines = String(text || "").replace(/\r/g, "\n").split("\n").filter(function (line) {
+          return line.trim();
+        });
+        if (!lines.length) throw new Error("empty");
+        var headerLine = lines[0];
+        var delimiters = ["\t", ",", ";"];
+        var delimiter = delimiters.reduce(function (best, item) {
+          return headerLine.split(item).length > headerLine.split(best).length ? item : best;
+        }, "\t");
+        var headers = splitDelimitedLine(headerLine, delimiter);
+        var codeIndex = findHeaderIndex(headers, ["证券代码", "股票代码", "代码"]);
+        var priceIndex = findHeaderIndex(headers, ["市价", "当前价", "最新价"]);
+        var nameIndex = findHeaderIndex(headers, ["证券名称", "股票名称", "名称"]);
+        if (codeIndex === -1 || priceIndex === -1) throw new Error("columns");
+        return lines.slice(1).map(function (line) {
+          var cells = splitDelimitedLine(line, delimiter);
+          return {
+            code: normalizeStockCode(cells[codeIndex]),
+            name: nameIndex === -1 ? "" : cleanTableCell(cells[nameIndex]),
+            price: cleanTableCell(cells[priceIndex])
+          };
+        }).filter(function (row) {
+          return row.code && row.price && Number.isFinite(parseFloat(row.price.replace(/,/g, "")));
+        });
+      }
+
+      function decodePriceTableBuffer(buffer) {
+        var bytes = new Uint8Array(buffer);
+        var utfText = "";
+        try {
+          var gbText = new TextDecoder("gb18030").decode(bytes);
+          if (gbText.indexOf("证券代码") !== -1 || gbText.indexOf("股票代码") !== -1 || gbText.indexOf("市价") !== -1) return gbText;
+        } catch (error) {
+          // Fall through to UTF-8 below.
+        }
+        try {
+          utfText = new TextDecoder("utf-8").decode(bytes);
+        } catch (error2) {
+          utfText = String.fromCharCode.apply(null, Array.prototype.slice.call(bytes, 0, 8000));
+        }
+        return utfText;
+      }
+
+      function importPriceFile(file) {
+        if (!file) return;
+        writeStorage(true);
+        var reader = new FileReader();
+        reader.onload = function () {
+          try {
+            var rows = parsePriceTable(decodePriceTableBuffer(reader.result));
+            var priceMap = {};
+            rows.forEach(function (row) {
+              priceMap[row.code] = row;
+            });
+            var updated = 0;
+            pushUndoSnapshot();
+            state.records.forEach(function (record) {
+              if (record.archived === true) return;
+              if (!record.fields) record.fields = createDefaultFields();
+              record.fields = Object.assign(createDefaultFields(), record.fields);
+              var code = normalizeStockCode(record.fields.stockCode);
+              if (!code || !priceMap[code]) return;
+              record.fields.currentPrice = String(parseFloat(priceMap[code].price.replace(/,/g, "")));
+              if (!String(record.fields.symbol || "").trim() && priceMap[code].name) {
+                record.fields.symbol = priceMap[code].name;
+              }
+              record.updatedAt = new Date().toISOString();
+              updated += 1;
+            });
+            if (!updated) {
+              showToast("没有匹配到已填写代码的记录");
+              return;
+            }
+            hydrateFields();
+            recalc("currentPrice");
+            localStorage.setItem(storageKey, JSON.stringify(state));
+            renderRecords();
+            showToast("已更新 " + updated + " 条价格");
+          } catch (error) {
+            showToast("导入失败：没有找到证券代码/市价列");
+          }
+        };
+        reader.readAsArrayBuffer(file);
+      }
+
       function populateTimeStopOptions() {
         var timeStop = $("timeStopDays");
         if (!timeStop || timeStop.options.length) return;
@@ -2350,7 +2835,9 @@
         var toggle = $("dynamicStopToggle");
         if (!control || !toggle) return;
         control.classList.toggle("is-disabled", !enabled);
+        document.body.classList.toggle("dynamic-stop-active", enabled);
         toggle.setAttribute("aria-pressed", enabled ? "true" : "false");
+        recalc();
         if (!silent) {
           activeRecord().fields.dynamicStopEnabled = enabled ? "1" : "0";
           writeStorage(true);
@@ -2393,11 +2880,23 @@
       }
 
       function recordExpectedLoss(record) {
+        var fields = record.fields || {};
+        if (fields.dynamicStopEnabled !== "0") return 0;
         var entry = parseRecordNumber(record, "entryPrice");
         var stop = parseRecordNumber(record, "stopPrice");
         var quantity = parseRecordNumber(record, "quantity");
         var loss = (stop - entry) * quantity;
         return loss < 0 ? Math.abs(loss) : 0;
+      }
+
+      function recordProtectedProfit(record) {
+        var fields = record.fields || {};
+        if (fields.dynamicStopEnabled === "0") return 0;
+        var entry = parseRecordNumber(record, "entryPrice");
+        var dynamicStop = parseRecordNumber(record, "dynamicStopPrice");
+        var quantity = parseRecordNumber(record, "quantity");
+        var profit = (dynamicStop - entry) * quantity;
+        return profit > 0 ? profit : 0;
       }
 
       function formatRecordValue(value, digits) {
@@ -2408,15 +2907,81 @@
         });
       }
 
-      function holdingDaysFrom(value) {
-        if (!value) return "-";
+      var aShareClosedDays = (function () {
+        var closed = {};
+
+        function dateFromYmd(ymd) {
+          var parts = ymd.split("-").map(function (part) { return parseInt(part, 10); });
+          return new Date(parts[0], parts[1] - 1, parts[2]);
+        }
+
+        function toYmd(date) {
+          var year = date.getFullYear();
+          var month = String(date.getMonth() + 1).padStart(2, "0");
+          var day = String(date.getDate()).padStart(2, "0");
+          return year + "-" + month + "-" + day;
+        }
+
+        function addClosedRange(startYmd, endYmd) {
+          var cursor = dateFromYmd(startYmd);
+          var end = dateFromYmd(endYmd);
+          while (cursor <= end) {
+            closed[toYmd(cursor)] = true;
+            cursor.setDate(cursor.getDate() + 1);
+          }
+        }
+
+        addClosedRange("2025-01-01", "2025-01-01");
+        addClosedRange("2025-01-28", "2025-02-04");
+        addClosedRange("2025-04-04", "2025-04-06");
+        addClosedRange("2025-05-01", "2025-05-05");
+        addClosedRange("2025-05-31", "2025-06-02");
+        addClosedRange("2025-10-01", "2025-10-08");
+        addClosedRange("2026-01-01", "2026-01-03");
+        addClosedRange("2026-02-15", "2026-02-23");
+        addClosedRange("2026-04-04", "2026-04-06");
+        addClosedRange("2026-05-01", "2026-05-05");
+        addClosedRange("2026-06-19", "2026-06-21");
+        addClosedRange("2026-09-25", "2026-09-27");
+        addClosedRange("2026-10-01", "2026-10-07");
+
+        return closed;
+      })();
+
+      function ymdFromDate(date) {
+        var year = date.getFullYear();
+        var month = String(date.getMonth() + 1).padStart(2, "0");
+        var day = String(date.getDate()).padStart(2, "0");
+        return year + "-" + month + "-" + day;
+      }
+
+      function isAShareTradingDay(date) {
+        var day = date.getDay();
+        if (day === 0 || day === 6) return false;
+        return !aShareClosedDays[ymdFromDate(date)];
+      }
+
+      function holdingTradingDays(value) {
+        if (!value) return null;
         var start = new Date(value);
-        if (Number.isNaN(start.getTime())) return "-";
+        if (Number.isNaN(start.getTime())) return null;
         var startDate = new Date(start.getFullYear(), start.getMonth(), start.getDate());
         var now = new Date();
         var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        var days = Math.floor((today - startDate) / 86400000);
-        return Math.max(0, days) + " 天";
+        var cursor = new Date(startDate);
+        var days = 0;
+        cursor.setDate(cursor.getDate() + 1);
+        while (cursor <= today) {
+          if (isAShareTradingDay(cursor)) days += 1;
+          cursor.setDate(cursor.getDate() + 1);
+        }
+        return Math.max(0, days);
+      }
+
+      function holdingDaysFrom(value) {
+        var days = holdingTradingDays(value);
+        if (days === null) return "-";
+        return days + " 交易日";
       }
 
       function getRecordSummary(record) {
@@ -2460,8 +3025,13 @@
       }
 
       function renderRecords() {
+        if (document.body.classList.contains("calc-sidebar-mode")) {
+          renderTrialRecords();
+          return;
+        }
         var list = $("recordList");
         if (!list) return;
+        if ($("sideTitleLabel")) $("sideTitleLabel").textContent = "保存记录";
         var visibleRecords = state.records.filter(function (record) {
           return state.showArchived ? record.archived === true : record.archived !== true;
         });
@@ -2518,6 +3088,54 @@
           '</div>';
         }).join("");
       }
+
+      function getTrialSummary(record) {
+        var entry = parseFloat(record.entry) || 0;
+        var stop = parseFloat(record.stop) || 0;
+        var target = parseFloat(record.target) || 0;
+        var risk = Math.abs(entry - stop);
+        var reward = target - entry;
+        var ratio = risk > 0 ? Math.abs(reward / risk) : 0;
+        return {
+          title: record.name || "未命名试算",
+          time: record.updatedAt ? record.updatedAt.slice(5, 16).replace("T", " ") : "",
+          entry: formatRecordValue(entry, 4),
+          stop: formatRecordValue(stop, 4),
+          target: formatRecordValue(target, 4),
+          ratio: ratio.toFixed(2) + " : 1",
+          profitRate: signedPercent(entry > 0 ? (target - entry) / entry : 0),
+          lossRate: signedPercent(entry > 0 ? (stop - entry) / entry : 0)
+        };
+      }
+
+      function renderTrialRecords() {
+        var list = $("recordList");
+        if (!list) return;
+        if ($("sideTitleLabel")) $("sideTitleLabel").textContent = "试算记录";
+        if (!state.trialRecords || !state.trialRecords.length) {
+          list.innerHTML = '<div class="empty-records">还没有保存试算</div>';
+          return;
+        }
+        list.innerHTML = state.trialRecords.map(function (record) {
+          var active = record.id === state.currentTrialId ? " is-active" : "";
+          var summary = getTrialSummary(record);
+          return '<div class="record-pill trial-pill is-breakout' + active + '" data-trial-id="' + record.id + '" role="button" tabindex="0">' +
+            '<span class="record-actions">' +
+              '<button type="button" class="record-delete" data-delete-trial="' + record.id + '" aria-label="删除试算">&times;</button>' +
+            '</span>' +
+            '<span class="record-title">' +
+              '<span class="record-name">' + escapeHtml(summary.title) + '</span>' +
+              '<span class="logic-badge is-breakout">试算</span>' +
+            '</span>' +
+            '<span class="trial-metrics">' +
+              '<span>比 ' + escapeHtml(summary.ratio) + '</span>' +
+              '<span>入 ' + escapeHtml(summary.entry) + '</span>' +
+              '<span>止 ' + escapeHtml(summary.stop) + '</span>' +
+              '<span>目 ' + escapeHtml(summary.target) + '</span>' +
+            '</span>' +
+          '</div>';
+        }).join("");
+      }
       function getLogicLabel(logicId) {
         var logic = cols.find(function (col) { return col.id === logicId; });
         return logic ? logic.label : "形态突破";
@@ -2563,7 +3181,7 @@
         }).join("");
       }
 
-      function updateRiskComparison(currentLoss) {
+      function updateRiskComparison(currentLoss, currentProtected) {
         var singleLimit = parseFloat(state.riskSettings && state.riskSettings.singleLossLimit);
         var globalLimit = parseFloat(state.riskSettings && state.riskSettings.globalLossLimit);
         var currentExpectedLoss = Math.max(0, Math.abs(currentLoss || 0));
@@ -2573,9 +3191,18 @@
           if (record.archived === true) return total;
           return total + (record.id === currentId ? currentExpectedLoss : recordExpectedLoss(record));
         }, 0);
-        var globalExceeded = Number.isFinite(globalLimit) && globalLimit > 0 && totalExpectedLoss > globalLimit;
+        var protectedTotal = state.records.reduce(function (total, record) {
+          if (record.archived === true) return total;
+          return total + (record.id === currentId ? Math.max(0, currentProtected || 0) : recordProtectedProfit(record));
+        }, 0);
+        var currentMaxLoss = Math.max(0, totalExpectedLoss - protectedTotal);
+        var currentMaxLossPercent = Number.isFinite(globalLimit) && globalLimit > 0 ? currentMaxLoss / globalLimit : 0;
+        var globalExceeded = Number.isFinite(globalLimit) && globalLimit > 0 && currentMaxLoss > globalLimit;
         $("lossSummaryRow").classList.toggle("is-risk-warning", singleExceeded);
         $("globalLossLimitField").classList.toggle("is-warning", globalExceeded);
+        $("currentMaxLossTotal").value = money(currentMaxLoss);
+        $("currentMaxLossPercent").textContent = signedPercent(currentMaxLossPercent).replace("+", "");
+        $("protectedProfitTotal").value = money(protectedTotal);
       }
 
       function openTagPage() {
@@ -2727,6 +3354,7 @@
             return '' +
               '<td class="' + col.id + '-col">' +
                 '<div class="cell-box" data-col="' + col.label + '" data-row="' + row.id + '" data-cell="' + key + '">' +
+                  '<div class="tag-list" data-role="tagList"></div>' +
                   '<div class="tag-control">' +
                     '<select data-role="select" aria-label="' + row.label.replace("\\n", "") + col.label + '标签">' +
                       renderOptions(row.id) +
@@ -2737,7 +3365,6 @@
                     '<input data-role="newTag" type="text" placeholder="输入新标签">' +
                     '<button type="button" data-role="saveTag" aria-label="保存新标签">✓</button>' +
                   '</div>' +
-                  '<div class="tag-list" data-role="tagList"></div>' +
                 '</div>' +
               '</td>';
           }).join("");
@@ -2841,19 +3468,24 @@
       }
 
       function recalc(source) {
-        var entry = numberValue("entryPrice");
-        var stop = numberValue("stopPrice");
+        var baseEntry = numberValue("entryPrice");
+        var current = numberValue("currentPrice");
+        var baseStop = numberValue("stopPrice");
+        var dynamicStop = numberValue("dynamicStopPrice");
+        var dynamicMode = $("dynamicStopToggle").getAttribute("aria-pressed") === "true";
+        var entry = dynamicMode ? current : baseEntry;
+        var stop = dynamicMode ? dynamicStop : baseStop;
         var target = numberValue("targetPrice");
         var quantity = numberValue("quantity");
         var amount = numberValue("entryAmount");
 
-        if (source === "quantity" && entry > 0) {
-          amount = entry * quantity;
+        if (source === "quantity" && baseEntry > 0) {
+          amount = baseEntry * quantity;
           $("entryAmount").value = amount.toFixed(2);
         }
 
-        if (source === "entryAmount" && entry > 0) {
-          quantity = amount / entry;
+        if (source === "entryAmount" && baseEntry > 0) {
+          quantity = amount / baseEntry;
           $("quantity").value = Number.isInteger(quantity) ? String(quantity) : quantity.toFixed(4);
         }
 
@@ -2863,48 +3495,71 @@
         var profitRate = entry > 0 ? (target - entry) / entry : 0;
         var lossRate = entry > 0 ? (stop - entry) / entry : 0;
         var profitAmount = (target - entry) * quantity;
-        var lossAmount = (stop - entry) * quantity;
+        var lossAmount = (baseStop - baseEntry) * quantity;
+        var dynamicProtectedAmount = (dynamicStop - baseEntry) * quantity;
+        var dynamicProtectedRate = baseEntry > 0 ? (dynamicStop - baseEntry) / baseEntry : 0;
+        var currentRate = baseEntry > 0 ? (current - baseEntry) / baseEntry : 0;
+        var remainingRate = baseEntry > 0 ? (target - current) / baseEntry : 0;
 
-        $("lossMeta").textContent = signedFixed(stop - entry) + " （" + signedPercent(lossRate) + "）";
+        $("lossMeta").textContent = signedFixed(baseStop - baseEntry) + " （" + signedPercent(baseEntry > 0 ? (baseStop - baseEntry) / baseEntry : 0) + "）";
+        $("currentMeta").textContent = signedPercent(currentRate);
+        $("dynamicStopMeta").textContent = signedFixed(dynamicStop - current) + " （" + signedPercent(current > 0 ? (dynamicStop - current) / current : 0) + "）";
         $("profitMeta").textContent = signedFixed(target - entry) + " （" + signedPercent(profitRate) + "）";
+        $("remainingMeta").textContent = "剩余 " + signedPercent(remainingRate);
         $("ratioText").textContent = ratio.toFixed(2) + " : 1";
         $("profitAmount").textContent = money(profitAmount);
         $("profitPercent").textContent = signedPercent(profitRate);
         $("lossAmount").textContent = money(lossAmount);
-        $("lossPercent").textContent = signedPercent(lossRate);
+        $("lossPercent").textContent = signedPercent(baseEntry > 0 ? (baseStop - baseEntry) / baseEntry : 0);
+        $("protectedAmount").textContent = money(dynamicProtectedAmount);
+        $("protectedPercent").textContent = signedPercent(dynamicProtectedRate);
         $("targetAmount").textContent = money(target * quantity);
-        $("stopAmount").textContent = money(stop * quantity);
-        updateRiskComparison(lossAmount);
+        $("stopAmount").textContent = money((dynamicMode ? dynamicStop : baseStop) * quantity);
+        $("lossSummaryRow").classList.toggle("is-hidden", dynamicMode);
+        $("protectedSummaryRow").classList.toggle("is-hidden", !dynamicMode);
+        var holdingDays = holdingTradingDays($("buyTime").value);
+        var timeStopLimit = parseInt($("timeStopDays").value, 10);
+        var timeStopEnabled = $("timeStopToggle").getAttribute("aria-pressed") === "true";
+        $("timeStopField").classList.toggle("is-time-warning", timeStopEnabled && holdingDays !== null && Number.isFinite(timeStopLimit) && holdingDays > timeStopLimit);
+        updateRiskComparison(dynamicMode ? 0 : lossAmount, dynamicMode ? dynamicProtectedAmount : 0);
       }
 
       function applyRatio(ratio) {
-        var entry = numberValue("entryPrice");
-        var stop = numberValue("stopPrice");
+        var dynamicMode = $("dynamicStopToggle").getAttribute("aria-pressed") === "true";
+        var entry = dynamicMode ? numberValue("currentPrice") : numberValue("entryPrice");
+        var stop = dynamicMode ? numberValue("dynamicStopPrice") : numberValue("stopPrice");
         var risk = Math.abs(entry - stop);
         if (entry <= 0 || risk <= 0) return;
+        pushUndoSnapshot();
         $("targetPrice").value = (entry + risk * ratio).toFixed(3);
         recalc("targetPrice");
         writeStorage(true);
       }
 
       function applyLoss(rate) {
-        var entry = numberValue("entryPrice");
+        var dynamicMode = $("dynamicStopToggle").getAttribute("aria-pressed") === "true";
+        var entry = dynamicMode ? numberValue("currentPrice") : numberValue("entryPrice");
         if (entry <= 0) return;
-        $("stopPrice").value = (entry * (1 - rate)).toFixed(3);
-        recalc("stopPrice");
+        var stopFieldId = dynamicMode ? "dynamicStopPrice" : "stopPrice";
+        pushUndoSnapshot();
+        $(stopFieldId).value = (entry * (1 - rate)).toFixed(3);
+        recalc(stopFieldId);
         writeStorage(true);
       }
 
       function copyText() {
         var lines = [];
         lines.push("标的名称: " + $("symbol").value);
+        lines.push("代码: " + $("stockCode").value);
         lines.push("买入时间: " + $("buyTime").value);
         lines.push("时间止损: " + ($("timeStopToggle").getAttribute("aria-pressed") === "true" ? $("timeStopDays").value + " 天" : "\u672a\u542f\u7528"));
         lines.push("已持有: " + holdingDaysFrom($("buyTime").value));
         lines.push("逻辑: " + getLogicLabel(activeRecord().selectedLogic || "breakout"));
         lines.push("入场单价: " + $("entryPrice").value + " 元");
+        lines.push("当前价格: " + $("currentPrice").value + " 元");
         lines.push("止损单价: " + $("stopPrice").value + " 元");
         lines.push("\u52a8\u6001\u6b62\u635f: " + ($("dynamicStopToggle").getAttribute("aria-pressed") === "true" ? (activeRecord().dynamicStopTags || []).map(function (tag) { return "#" + tag; }).join(" ") : "\u672a\u542f\u7528"));
+        lines.push("动态止损价: " + $("dynamicStopPrice").value + " 元");
         lines.push("目标单价: " + $("targetPrice").value + " 元");
         lines.push("交易数量: " + $("quantity").value);
         lines.push("入场总金额: " + $("entryAmount").value + " 元");
@@ -2948,13 +3603,18 @@
       function pasteLabels() {
         var labels = [
           "\u6807\u7684\u540d\u79f0",
+          "\u4ee3\u7801",
+          "\u8bc1\u5238\u4ee3\u7801",
+          "\u80a1\u7968\u4ee3\u7801",
           "\u4e70\u5165\u65f6\u95f4",
           "\u65f6\u95f4\u6b62\u635f",
           "\u5df2\u6301\u6709",
           "\u903b\u8f91",
           "\u5165\u573a\u5355\u4ef7",
+          "\u5f53\u524d\u4ef7\u683c",
           "\u6b62\u635f\u5355\u4ef7",
           "\u52a8\u6001\u6b62\u635f",
+          "\u52a8\u6001\u6b62\u635f\u4ef7",
           "\u76ee\u6807\u5355\u4ef7",
           "\u4ea4\u6613\u6570\u91cf",
           "\u5165\u573a\u603b\u91d1\u989d"
@@ -3004,9 +3664,14 @@
         var record = activeRecord();
         var fieldLabels = {};
         fieldLabels["\u6807\u7684\u540d\u79f0"] = "symbol";
+        fieldLabels["\u4ee3\u7801"] = "stockCode";
+        fieldLabels["\u8bc1\u5238\u4ee3\u7801"] = "stockCode";
+        fieldLabels["\u80a1\u7968\u4ee3\u7801"] = "stockCode";
         fieldLabels["\u4e70\u5165\u65f6\u95f4"] = "buyTime";
         fieldLabels["\u5165\u573a\u5355\u4ef7"] = "entryPrice";
+        fieldLabels["\u5f53\u524d\u4ef7\u683c"] = "currentPrice";
         fieldLabels["\u6b62\u635f\u5355\u4ef7"] = "stopPrice";
+        fieldLabels["\u52a8\u6001\u6b62\u635f\u4ef7"] = "dynamicStopPrice";
         fieldLabels["\u76ee\u6807\u5355\u4ef7"] = "targetPrice";
         fieldLabels["\u4ea4\u6613\u6570\u91cf"] = "quantity";
         fieldLabels["\u5165\u573a\u603b\u91d1\u989d"] = "entryAmount";
@@ -3112,6 +3777,85 @@
         closePastePage();
       }
 
+      function recalcTrialCalculator() {
+        var entry = parseFloat($("calcEntry").value) || 0;
+        var stop = parseFloat($("calcStop").value) || 0;
+        var target = parseFloat($("calcTarget").value) || 0;
+        var risk = Math.abs(entry - stop);
+        var reward = target - entry;
+        var ratio = risk > 0 ? Math.abs(reward / risk) : 0;
+        $("calcRatio").textContent = ratio.toFixed(2) + " : 1";
+        $("calcProfitRate").textContent = signedPercent(entry > 0 ? (target - entry) / entry : 0);
+        $("calcLossRate").textContent = signedPercent(entry > 0 ? (stop - entry) / entry : 0);
+      }
+
+      function fillCalcFromMain() {
+        $("calcName").value = $("symbol").value ? $("symbol").value + " 试算" : "";
+        $("calcEntry").value = $("currentPrice").value || $("entryPrice").value || "10";
+        $("calcStop").value = $("dynamicStopToggle").getAttribute("aria-pressed") === "true" ? $("dynamicStopPrice").value : $("stopPrice").value;
+        $("calcTarget").value = $("targetPrice").value || "12.5";
+        state.currentTrialId = null;
+        recalcTrialCalculator();
+      }
+
+      function saveTrialRecord() {
+        var values = {
+          name: $("calcName").value.trim() || "未命名试算",
+          entry: $("calcEntry").value || "0",
+          stop: $("calcStop").value || "0",
+          target: $("calcTarget").value || "0"
+        };
+        var record = state.trialRecords.find(function (item) { return item.id === state.currentTrialId; });
+        if (!record) {
+          record = createTrialRecord(values);
+          state.trialRecords.unshift(record);
+          state.currentTrialId = record.id;
+        } else {
+          record.name = values.name;
+          record.entry = values.entry;
+          record.stop = values.stop;
+          record.target = values.target;
+          record.updatedAt = new Date().toISOString();
+        }
+        localStorage.setItem(storageKey, JSON.stringify(state));
+        renderTrialRecords();
+        showToast("已保存试算");
+      }
+
+      function loadTrialRecord(trialId) {
+        var record = state.trialRecords.find(function (item) { return item.id === trialId; });
+        if (!record) return;
+        state.currentTrialId = record.id;
+        $("calcName").value = record.name || "";
+        $("calcEntry").value = record.entry || "10";
+        $("calcStop").value = record.stop || "9";
+        $("calcTarget").value = record.target || "12.5";
+        recalcTrialCalculator();
+        renderTrialRecords();
+        localStorage.setItem(storageKey, JSON.stringify(state));
+      }
+
+      function deleteTrialRecord(trialId) {
+        state.trialRecords = state.trialRecords.filter(function (record) { return record.id !== trialId; });
+        if (state.currentTrialId === trialId) state.currentTrialId = null;
+        localStorage.setItem(storageKey, JSON.stringify(state));
+        renderTrialRecords();
+        showToast("已删除试算");
+      }
+
+      function openCalcPage() {
+        fillCalcFromMain();
+        document.body.classList.add("calc-sidebar-mode");
+        $("calcPage").classList.add("is-open");
+        renderTrialRecords();
+      }
+
+      function closeCalcPage() {
+        $("calcPage").classList.remove("is-open");
+        document.body.classList.remove("calc-sidebar-mode");
+        renderRecords();
+      }
+
       function fallbackCopy(text) {
         var temp = document.createElement("textarea");
         temp.value = text;
@@ -3126,6 +3870,7 @@
 
       function resetAll() {
         if (!window.confirm("确认清空当前记录？标签库会保留。")) return;
+        pushUndoSnapshot();
         var record = activeRecord();
         record.fields = createDefaultFields();
         record.cells = {};
@@ -3141,6 +3886,7 @@
       }
 
       function newRecord() {
+        pushUndoSnapshot();
         writeStorage(true);
         var record = createRecord();
         state.records.unshift(record);
@@ -3156,6 +3902,7 @@
       function deleteRecord(recordId) {
         var targetId = recordId || state.currentId;
         if (!window.confirm("确认删除这条保存记录？")) return;
+        pushUndoSnapshot();
         state.records = state.records.filter(function (record) {
           return record.id !== targetId;
         });
@@ -3174,6 +3921,7 @@
       }
 
       function sortRecord(recordId, action) {
+        pushUndoSnapshot();
         var visibleRecords = state.records.filter(function (record) {
           return state.showArchived ? record.archived === true : record.archived !== true;
         });
@@ -3208,6 +3956,7 @@
           openArchivePage(recordId);
           return;
         }
+        pushUndoSnapshot();
         record.archived = !record.archived;
         if (record.archived && state.currentId === recordId && !state.showArchived) {
           var next = state.records.find(function (item) {
@@ -3254,6 +4003,7 @@
           showToast("\u8bf7\u586b\u5199\u5356\u51fa\u4ef7\u683c");
           return;
         }
+        pushUndoSnapshot();
         record.archiveInfo = {
           result: $("archiveResult").value === "loss" ? "loss" : "win",
           sellPrice: sellPrice,
@@ -3279,6 +4029,19 @@
       }
 
       function handleRecordListAction(event) {
+        if (document.body.classList.contains("calc-sidebar-mode")) {
+          var trialDeleteButton = event.target.closest("[data-delete-trial]");
+          if (trialDeleteButton) {
+            event.preventDefault();
+            event.stopPropagation();
+            deleteTrialRecord(trialDeleteButton.dataset.deleteTrial);
+            return;
+          }
+          if (event.type !== "click") return;
+          var trialButton = event.target.closest("[data-trial-id]");
+          if (trialButton) loadTrialRecord(trialButton.dataset.trialId);
+          return;
+        }
         var sortButton = event.target.closest("[data-sort-record]");
         if (sortButton) {
           event.preventDefault();
@@ -3332,12 +4095,14 @@
         var swipeZone = $("sidebarSwipeZone");
         var startX = 0;
         var startY = 0;
+        var startTarget = null;
         var tracking = false;
 
         function onStart(event) {
           if (!event.touches || event.touches.length !== 1) return;
           startX = event.touches[0].clientX;
           startY = event.touches[0].clientY;
+          startTarget = event.target;
           tracking = true;
         }
 
@@ -3347,10 +4112,25 @@
           var dx = event.changedTouches[0].clientX - startX;
           var dy = event.changedTouches[0].clientY - startY;
           if (Math.abs(dx) < 36 || Math.abs(dx) < Math.abs(dy) * 1.25) return;
+          if ($("calcPage").classList.contains("is-open")) {
+            if (dx > 0) closeCalcPage();
+            return;
+          }
+          var isCompact = $("sidebar").classList.contains("is-compact");
+          var fromSidebar = startTarget && startTarget.closest && startTarget.closest("#sidebar");
+          var fromLeftEdge = startX <= 84;
+          var fromLeftHalf = startX <= window.innerWidth * 0.5;
+          if (isCompact) {
+            if (!fromLeftHalf) return;
+            if (dx < 0) openCalcPage();
+            if (dx > 0) setSidebarCompact(false);
+            return;
+          }
+          if (!fromSidebar && !fromLeftEdge) return;
           setSidebarCompact(dx < 0);
         }
 
-        [sidebar, swipeZone].forEach(function (target) {
+        [document].forEach(function (target) {
           if (!target) return;
           target.addEventListener("touchstart", onStart, { passive: true });
           target.addEventListener("touchend", onEnd, { passive: true });
@@ -3359,6 +4139,9 @@
 
       function bindEvents() {
         document.querySelectorAll("[data-save]").forEach(function (input) {
+          input.addEventListener("focus", function () {
+            pushUndoSnapshot();
+          });
           input.addEventListener("input", function () {
             recalc(input.id);
             writeStorage(true);
@@ -3370,6 +4153,9 @@
         });
 
         document.querySelectorAll("[data-risk-save]").forEach(function (input) {
+          input.addEventListener("focus", function () {
+            pushUndoSnapshot();
+          });
           input.addEventListener("input", function () {
             if (!state.riskSettings) state.riskSettings = createDefaultRiskSettings();
             state.riskSettings[input.id] = input.value;
@@ -3387,9 +4173,11 @@
         });
 
         $("timeStopToggle").addEventListener("click", function () {
+          pushUndoSnapshot();
           setTimeStopEnabled($("timeStopToggle").getAttribute("aria-pressed") !== "true", false);
         });
         $("dynamicStopToggle").addEventListener("click", function () {
+          pushUndoSnapshot();
           setDynamicStopEnabled($("dynamicStopToggle").getAttribute("aria-pressed") !== "true", false);
         });
 
@@ -3407,10 +4195,15 @@
 
         $("saveBtn").addEventListener("click", function () { writeStorage(false); });
         $("newBtn").addEventListener("click", newRecord);
+        $("undoBtn").addEventListener("click", undoChange);
+        $("redoBtn").addEventListener("click", redoChange);
+        $("calcBtn").addEventListener("click", openCalcPage);
         $("tagManageBtn").addEventListener("click", openTagPage);
         $("closeTagPageBtn").addEventListener("click", closeTagPage);
         $("copyBtn").addEventListener("click", copyText);
-        $("resetBtn").addEventListener("click", resetAll);
+        $("importPriceBtn").addEventListener("click", function () {
+          $("priceImportFile").click();
+        });
         $("pasteBtn").addEventListener("click", pasteText);
         $("closePastePageBtn").addEventListener("click", closePastePage);
         $("cancelPasteBtn").addEventListener("click", closePastePage);
@@ -3418,6 +4211,15 @@
         $("closeArchivePageBtn").addEventListener("click", closeArchivePage);
         $("cancelArchiveBtn").addEventListener("click", closeArchivePage);
         $("applyArchiveBtn").addEventListener("click", applyArchivePage);
+        $("closeCalcPageBtn").addEventListener("click", closeCalcPage);
+        $("saveCalcTrialBtn").addEventListener("click", saveTrialRecord);
+        $("newCalcTrialBtn").addEventListener("click", function () {
+          fillCalcFromMain();
+          renderTrialRecords();
+        });
+        ["calcEntry", "calcStop", "calcTarget"].forEach(function (id) {
+          $(id).addEventListener("input", recalcTrialCalculator);
+        });
         $("exportRecordsBtn").addEventListener("click", exportRecords);
         $("importRecordsBtn").addEventListener("click", function () {
           $("importRecordsFile").click();
@@ -3427,6 +4229,10 @@
         });
         $("importRecordsFile").addEventListener("change", function (event) {
           importRecordsFile(event.target.files && event.target.files[0]);
+          event.target.value = "";
+        });
+        $("priceImportFile").addEventListener("change", function (event) {
+          importPriceFile(event.target.files && event.target.files[0]);
           event.target.value = "";
         });
         $("sidebarToggle").addEventListener("click", function () {
@@ -3443,6 +4249,14 @@
         $("recordList").addEventListener("pointerup", handleRecordListAction);
         $("recordList").addEventListener("keydown", function (event) {
           if (event.key !== "Enter" && event.key !== " ") return;
+          if (document.body.classList.contains("calc-sidebar-mode")) {
+            var trialCard = event.target.closest("[data-trial-id]");
+            if (trialCard && !event.target.closest("[data-delete-trial]")) {
+              event.preventDefault();
+              loadTrialRecord(trialCard.dataset.trialId);
+            }
+            return;
+          }
           var card = event.target.closest("[data-record-id]");
           if (card && !event.target.closest("[data-delete-record]")) {
             event.preventDefault();
