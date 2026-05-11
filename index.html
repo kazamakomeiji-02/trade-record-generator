@@ -125,6 +125,35 @@
       font-weight: 900;
     }
 
+    .side-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .side-actions button {
+      min-height: 32px;
+      border-radius: 8px;
+      border: 1px solid #d6e0ef;
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--ink);
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .side-actions button:first-child {
+      background: linear-gradient(180deg, #4b86ff, #2f6fe4);
+      border-color: #2f6fe4;
+      color: #fff;
+    }
+
+    .side-actions button.is-active {
+      background: #fff4df;
+      border-color: #ffd89b;
+      color: #9a5c00;
+    }
+
     .record-list {
       display: flex;
       flex-direction: column;
@@ -245,6 +274,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 6px 10px;
+      padding-right: 34px;
       color: #2c3f5f;
       font-size: 18px;
       line-height: 1.25;
@@ -271,11 +301,17 @@
       font-weight: 900;
     }
 
-    .record-delete {
+    .record-actions {
       position: absolute;
       top: 4px;
       right: 4px;
       z-index: 4;
+      display: flex;
+      gap: 6px;
+    }
+
+    .record-delete,
+    .record-archive {
       display: grid;
       place-items: center;
       width: 34px;
@@ -290,10 +326,74 @@
       touch-action: manipulation;
     }
 
+    .record-archive {
+      background: #eef6ff;
+      color: #245bc9;
+      border-color: #cfe0ff;
+      font-size: 18px;
+    }
+
     .record-pill.is-active .record-delete {
       background: rgba(255, 255, 255, 0.18);
       border-color: rgba(255, 255, 255, 0.24);
       color: #fff;
+    }
+
+    .record-pill.is-active .record-archive {
+      background: rgba(255, 255, 255, 0.18);
+      border-color: rgba(255, 255, 255, 0.24);
+      color: #fff;
+    }
+
+    .record-pill.is-archived {
+      opacity: 0.82;
+      filter: grayscale(0.2);
+    }
+
+    .record-sort {
+      position: absolute;
+      right: 4px;
+      bottom: 4px;
+      z-index: 4;
+      display: grid;
+      gap: 8px;
+    }
+
+    .record-sort button {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 7px;
+      background: #f1f5fb;
+      color: #56657d;
+      border: 1px solid #d6e0ef;
+      font-size: 20px;
+      font-weight: 900;
+      line-height: 1;
+      touch-action: manipulation;
+    }
+
+    .record-pill.is-active .record-sort button {
+      background: rgba(255, 255, 255, 0.18);
+      border-color: rgba(255, 255, 255, 0.24);
+      color: #fff;
+    }
+
+    .record-sort button.is-highlight {
+      background: linear-gradient(180deg, #4b86ff, #2f6fe4);
+      border-color: #2f6fe4;
+      color: #fff;
+    }
+
+    .record-pill.is-active .record-sort button.is-highlight {
+      background: rgba(255, 255, 255, 0.34);
+      border-color: rgba(255, 255, 255, 0.42);
+      color: #fff;
+    }
+
+    .record-sort button[hidden] {
+      display: none;
     }
 
     .empty-records {
@@ -344,6 +444,50 @@
       box-shadow: var(--shadow);
     }
 
+    .risk-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .risk-field {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      align-items: center;
+      min-height: 46px;
+      border-right: 1px solid var(--line);
+    }
+
+    .risk-field:last-child {
+      border-right: 0;
+    }
+
+    .risk-field label {
+      padding-left: 14px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .risk-field input {
+      width: 100%;
+      min-width: 0;
+      border: 0;
+      background: transparent;
+      padding: 8px 10px;
+      color: var(--ink);
+      font-weight: 900;
+      outline: 0;
+    }
+
+    .risk-field.is-warning {
+      background: #fff3a6;
+    }
+
+    .risk-field.is-warning input {
+      color: #d9234e;
+    }
+
     .meta-grid {
       display: grid;
       grid-template-columns: 1fr 1.35fr;
@@ -373,6 +517,34 @@
       padding-left: 16px;
       font-weight: 800;
       white-space: nowrap;
+    }
+
+    .time-stop-toggle {
+      min-height: 34px;
+      margin-left: 10px;
+      padding: 0 10px;
+      border-radius: 8px;
+      background: var(--accent-soft);
+      color: #245bc9;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .time-stop-toggle[aria-pressed="false"] {
+      background: #eef2f7;
+      color: var(--muted);
+      box-shadow: inset 0 0 0 1px #d7deea;
+    }
+
+    .meta-field.is-disabled {
+      background: #f0f3f7;
+      color: #8b97a8;
+    }
+
+    .meta-field.is-disabled select {
+      display: none;
+      color: #9aa5b6;
+      opacity: 0.72;
     }
 
     .meta-field input,
@@ -563,16 +735,39 @@
       display: grid;
       gap: 8px;
       margin-bottom: 10px;
-      padding: 10px;
+      padding: 12px;
       border-radius: 8px;
       background: var(--field);
       box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
     }
 
+    .dynamic-stop-head {
+      display: block;
+    }
+
     .dynamic-stop-label {
-      color: #e6eefb;
+      min-height: 30px;
+      padding: 0 10px;
+      border-radius: 8px;
+      background: var(--accent-soft);
+      color: #245bc9;
       font-size: 15px;
       font-weight: 800;
+    }
+
+    .dynamic-stop-label[aria-pressed="false"] {
+      background: rgba(255, 255, 255, 0.1);
+      color: #b8c0cb;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+    }
+
+    .dynamic-stop.is-disabled {
+      background: rgba(255, 255, 255, 0.05);
+      color: #9aa5b6;
+    }
+
+    .dynamic-stop.is-disabled .dynamic-stop-body {
+      display: none;
     }
 
     .dynamic-stop .tag-control,
@@ -624,6 +819,16 @@
       color: var(--muted);
       font-size: 11px;
       text-align: right;
+    }
+
+    .summary-row.is-risk-warning {
+      background: #fff3a6;
+    }
+
+    .summary-row.is-risk-warning span,
+    .summary-row.is-risk-warning strong,
+    .summary-row.is-risk-warning small {
+      color: #d9234e;
     }
 
     .matrix {
@@ -691,24 +896,14 @@
     }
 
     .row-title span {
-      display: inline-grid;
-      grid-template-columns: 28px auto;
+      display: inline-block;
       align-items: center;
-      gap: 8px;
       text-align: left;
-      white-space: pre-line;
+      white-space: nowrap;
     }
 
     .row-title span::before {
-      content: attr(data-icon);
-      display: grid;
-      place-items: center;
-      width: 28px;
-      height: 28px;
-      border-radius: 7px;
-      background: var(--accent-soft);
-      color: #2f6fe4;
-      font-weight: 900;
+      display: none;
     }
 
     .cell-box {
@@ -933,6 +1128,84 @@
       line-height: 1.5;
     }
 
+    .paste-panel {
+      display: grid;
+      gap: 12px;
+      padding: 14px;
+    }
+
+    .paste-panel textarea {
+      width: 100%;
+      min-height: 46vh;
+      border: 1px solid #dce4ef;
+      border-radius: 10px;
+      padding: 12px;
+      color: var(--ink);
+      font: inherit;
+      line-height: 1.45;
+      outline: 0;
+      resize: vertical;
+    }
+
+    .paste-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .paste-actions button {
+      min-height: 40px;
+      border-radius: 8px;
+      font-weight: 900;
+    }
+
+    .record-line.is-risk-warning {
+      padding: 4px;
+      border-radius: 6px;
+      background: #fff3a6;
+    }
+
+    .record-line.is-risk-warning span,
+    .record-line.is-risk-warning strong {
+      color: #d9234e !important;
+    }
+
+    .paste-actions button:first-child {
+      background: #eef3fb;
+      color: var(--ink);
+      border: 1px solid #dce4ef;
+    }
+
+    .paste-actions button:last-child {
+      background: linear-gradient(180deg, #4b86ff, #2f6fe4);
+      color: #fff;
+    }
+
+    .archive-form {
+      display: grid;
+      gap: 12px;
+      padding: 14px;
+    }
+
+    .archive-form label {
+      display: grid;
+      gap: 6px;
+      color: var(--ink);
+      font-weight: 800;
+    }
+
+    .archive-form select,
+    .archive-form input {
+      width: 100%;
+      min-height: 40px;
+      border: 1px solid #dce4ef;
+      border-radius: 8px;
+      padding: 0 10px;
+      color: var(--ink);
+      font: inherit;
+      outline: 0;
+    }
+
     .toast {
       position: fixed;
       left: 50%;
@@ -1038,6 +1311,10 @@
         font-size: 12px;
       }
 
+      .sidebar.is-compact .side-actions {
+        display: none;
+      }
+
       .record-list {
         gap: 6px;
       }
@@ -1065,6 +1342,7 @@
       .record-detail {
         grid-template-columns: repeat(2, 1fr);
         gap: 3px 6px;
+        padding-right: 28px;
         font-size: 15px;
         line-height: 1.12;
       }
@@ -1077,13 +1355,35 @@
         font-size: 15px;
       }
 
-      .record-delete {
+      .record-actions {
         top: 2px;
         right: 2px;
+        gap: 4px;
+      }
+
+      .record-delete,
+      .record-archive {
         width: 32px;
         height: 32px;
         border-radius: 6px;
         font-size: 19.5px;
+      }
+
+      .record-archive {
+        font-size: 16px;
+      }
+
+      .record-sort {
+        right: 2px;
+        bottom: 2px;
+        gap: 6px;
+      }
+
+      .record-sort button {
+        width: 32px;
+        height: 32px;
+        border-radius: 6px;
+        font-size: 18px;
       }
 
       .sidebar.is-compact .record-pill {
@@ -1130,10 +1430,12 @@
         background: #2f6fe4;
       }
 
-      .sidebar.is-compact .record-delete {
-        width: 20px;
-        height: 20px;
-        font-size: 12px;
+      .sidebar.is-compact .record-actions {
+        display: none;
+      }
+
+      .sidebar.is-compact .record-sort {
+        display: none;
       }
 
       .toolbar {
@@ -1167,6 +1469,34 @@
         grid-template-columns: 1fr;
       }
 
+      .risk-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .risk-field {
+        min-height: 34px;
+        grid-template-columns: 1fr;
+        gap: 2px;
+        align-content: center;
+        border-right: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .risk-field:last-child {
+        border-right: 0;
+        border-bottom: 0;
+      }
+
+      .risk-field label {
+        padding-left: 8px;
+        font-size: 11px;
+      }
+
+      .risk-field input {
+        padding: 0 8px 5px;
+        font-size: 14px;
+      }
+
       .tag-manager {
         grid-template-columns: 1fr;
       }
@@ -1190,18 +1520,26 @@
       }
 
       .meta-field {
-        min-height: 42px;
+        min-height: 36px;
         border-right: 0;
         border-bottom: 1px solid var(--line);
       }
 
       .meta-field label {
-        padding-left: 10px;
+        padding-left: 8px;
+        font-size: 13px;
+      }
+
+      .time-stop-toggle {
+        min-height: 28px;
+        margin-left: 6px;
+        padding: 0 8px;
+        font-size: 13px;
       }
 
       .meta-field input,
       .meta-field select {
-        padding: 6px 8px;
+        padding: 4px 7px;
       }
 
       .meta-field:last-child {
@@ -1210,17 +1548,19 @@
 
       .dark-panel {
         min-height: auto;
-        padding: 6px;
+        padding: 5px;
+        border-radius: 8px;
       }
 
       .calculator {
-        gap: 6px;
+        gap: 5px;
+        padding-top: 6px;
       }
 
       .field-card {
-        min-height: 50px;
-        margin-bottom: 5px;
-        padding: 7px 9px;
+        min-height: 42px;
+        margin-bottom: 4px;
+        padding: 5px 7px;
       }
 
       .field-card::before {
@@ -1228,34 +1568,47 @@
       }
 
       .field-card .label {
-        font-size: 13px;
+        font-size: 12px;
       }
 
       .field-card input {
-        font-size: 22px;
+        font-size: 19px;
       }
 
       .field-card .sub {
-        font-size: 10px;
+        font-size: 9px;
       }
 
       .chip-row {
-        min-height: 24px;
-        margin-bottom: 5px;
-        padding: 3px;
+        min-height: 21px;
+        margin-bottom: 4px;
+        padding: 2px;
+        gap: 4px;
       }
 
       .chip {
-        min-height: 19px;
-        padding: 1px 7px;
-        font-size: 10px;
+        min-height: 17px;
+        padding: 1px 6px;
+        font-size: 9px;
+      }
+
+      .dynamic-stop {
+        gap: 5px;
+        margin-bottom: 4px;
+        padding: 5px 7px;
+      }
+
+      .dynamic-stop-label {
+        min-height: 26px;
+        padding: 0 8px;
+        font-size: 12px;
       }
 
       .field-card.combo-card {
-        min-height: 32px;
-        padding-top: 5px;
-        padding-bottom: 5px;
-        gap: 8px;
+        min-height: 30px;
+        padding-top: 4px;
+        padding-bottom: 4px;
+        gap: 6px;
       }
 
       .field-card.combo-card .label {
@@ -1263,7 +1616,7 @@
       }
 
       .field-mini input {
-        font-size: 16px;
+        font-size: 15px;
       }
 
       .field-mini span:not(.label) {
@@ -1275,17 +1628,19 @@
       }
 
       .summary-row {
-        padding: 6px 10px;
+        grid-template-columns: 32px 1fr auto auto;
+        gap: 7px;
+        padding: 5px 8px;
       }
 
       .summary-row::before {
-        width: 23px;
-        height: 23px;
-        font-size: 12px;
+        width: 21px;
+        height: 21px;
+        font-size: 11px;
       }
 
       .summary-row strong {
-        font-size: 16px;
+        font-size: 15px;
       }
 
       .matrix {
@@ -1294,24 +1649,42 @@
       }
 
       .matrix thead,
-      .matrix thead tr,
-      .matrix thead th {
+      .matrix thead tr {
         display: block;
         width: 100%;
       }
 
       .matrix thead tr {
+        display: grid;
+        grid-template-columns: 54px minmax(0, 1fr) minmax(0, 1fr);
         border-top: 1px solid var(--line);
       }
 
       .logic-head {
-        display: block;
+        display: grid;
+        align-items: center;
         text-align: left !important;
-        border-bottom: 1px solid var(--line);
+        border-bottom: 0;
+        width: auto;
+        padding: 6px 7px !important;
+        font-size: 14px !important;
       }
 
-      .matrix thead th:not(.logic-head) {
-        border-right: 0;
+      .matrix thead th {
+        display: block;
+        width: auto;
+        height: 34px;
+        padding: 4px !important;
+      }
+
+      .matrix thead th:not(:last-child) {
+        border-right: 1px solid var(--line);
+      }
+
+      .logic-choice {
+        height: 26px;
+        border-radius: 7px;
+        font-size: 12px;
       }
 
       .matrix tbody,
@@ -1322,16 +1695,33 @@
         width: 100%;
       }
 
+      .matrix thead tr {
+        display: grid;
+      }
+
+      .matrix thead th {
+        display: block;
+        width: auto;
+      }
+
       .matrix tr {
         border-top: 1px solid var(--line);
       }
 
       .row-title {
-        padding: 9px 10px;
+        padding: 6px 8px;
         text-align: left;
         background: #f0f3f8;
         white-space: normal;
-        font-size: 17px;
+        font-size: 15px;
+      }
+
+      .row-title span {
+        display: inline-block;
+      }
+
+      .row-title span::before {
+        display: none;
       }
 
       .matrix td {
@@ -1339,15 +1729,38 @@
       }
 
       .cell-box {
-        min-height: 76px;
-        padding: 7px;
+        min-height: 58px;
+        padding: 5px;
       }
 
       .tag-control select,
       .new-tag input,
       .tag-control button,
       .new-tag button {
-        height: 30px;
+        height: 27px;
+      }
+
+      .tag-control,
+      .new-tag {
+        gap: 4px;
+        margin-bottom: 5px;
+      }
+
+      .tag-control button,
+      .new-tag button {
+        width: 27px;
+        font-size: 17px;
+      }
+
+      .tag-list {
+        gap: 4px;
+        min-height: 24px;
+        margin-bottom: 4px;
+      }
+
+      .note-tag {
+        padding: 3px 6px;
+        font-size: 11px;
       }
 
       .cell-box::before {
@@ -1388,7 +1801,7 @@
     <button id="tagManageBtn" type="button" class="secondary">标签管理</button>
     <button id="copyBtn" type="button" class="secondary">复制文本</button>
     <button id="resetBtn" type="button" class="secondary">清空当前</button>
-    <button id="printBtn" type="button" class="secondary">打印/PDF</button>
+    <button id="pasteBtn" type="button" class="secondary">粘贴文本</button>
   </nav>
 
   <div class="side-backdrop" id="sideBackdrop"></div>
@@ -1398,11 +1811,27 @@
         <span>保存记录</span>
         <button id="sidebarToggle" class="side-toggle" type="button">收起</button>
       </div>
+      <div class="side-actions" id="recordBackupActions">
+        <button id="exportRecordsBtn" type="button">导出</button>
+        <button id="importRecordsBtn" type="button">导入</button>
+        <button id="archiveViewBtn" type="button" aria-pressed="false">归档</button>
+        <input id="importRecordsFile" type="file" accept="application/json,.json" hidden>
+      </div>
       <div class="record-list" id="recordList"></div>
     </aside>
 
     <main class="app">
       <section class="sheet" id="recordSheet">
+      <div class="risk-grid" aria-label="风险对比">
+        <div class="risk-field" id="singleLossLimitField">
+          <label for="singleLossLimit">单笔最大亏损</label>
+          <input id="singleLossLimit" data-risk-save="singleLossLimit" type="number" inputmode="decimal" step="0.01" placeholder="0">
+        </div>
+        <div class="risk-field" id="globalLossLimitField">
+          <label for="globalLossLimit">全局最大亏损</label>
+          <input id="globalLossLimit" data-risk-save="globalLossLimit" type="number" inputmode="decimal" step="0.01" placeholder="0">
+        </div>
+      </div>
       <div class="meta-grid">
         <div class="meta-field">
           <label for="symbol">标的名称:</label>
@@ -1412,8 +1841,8 @@
           <label for="buyTime">买入时间:</label>
           <input id="buyTime" data-save="buyTime" type="date">
         </div>
-        <div class="meta-field full-row">
-          <label for="timeStopDays">时间止损:</label>
+        <div class="meta-field full-row" id="timeStopField">
+          <button id="timeStopToggle" class="time-stop-toggle" type="button" aria-pressed="true">时间止损</button>
           <select id="timeStopDays" data-save="timeStopDays" aria-label="时间止损天数"></select>
         </div>
       </div>
@@ -1434,16 +1863,20 @@
             <input id="stopPrice" data-save="stopPrice" type="number" inputmode="decimal" step="0.001" value="9">
           </label>
           <div class="dynamic-stop" id="dynamicStopControl" aria-label="&#21160;&#24577;&#27490;&#25439;">
-            <span class="dynamic-stop-label">&#21160;&#24577;&#27490;&#25439;</span>
-            <div class="tag-control">
-              <select id="dynamicStopSelect" aria-label="&#21160;&#24577;&#27490;&#25439;&#36873;&#39033;"></select>
-              <button type="button" id="dynamicStopOpenAdd" aria-label="&#28155;&#21152;&#21160;&#24577;&#27490;&#25439;">+</button>
+            <div class="dynamic-stop-head">
+              <button id="dynamicStopToggle" class="dynamic-stop-label" type="button" aria-pressed="true">&#21160;&#24577;&#27490;&#25439;</button>
             </div>
-            <div class="new-tag" id="dynamicStopNewTag">
-              <input id="dynamicStopInput" type="text" placeholder="&#36755;&#20837;&#21160;&#24577;&#27490;&#25439;">
-              <button type="button" id="dynamicStopSaveTag" aria-label="&#20445;&#23384;&#21160;&#24577;&#27490;&#25439;">&#10003;</button>
+            <div class="dynamic-stop-body" id="dynamicStopBody">
+              <div class="tag-control">
+                <select id="dynamicStopSelect" aria-label="&#21160;&#24577;&#27490;&#25439;&#36873;&#39033;"></select>
+                <button type="button" id="dynamicStopOpenAdd" aria-label="&#28155;&#21152;&#21160;&#24577;&#27490;&#25439;">+</button>
+              </div>
+              <div class="new-tag" id="dynamicStopNewTag">
+                <input id="dynamicStopInput" type="text" placeholder="&#36755;&#20837;&#21160;&#24577;&#27490;&#25439;">
+                <button type="button" id="dynamicStopSaveTag" aria-label="&#20445;&#23384;&#21160;&#24577;&#27490;&#25439;">&#10003;</button>
+              </div>
+              <div class="tag-list" id="dynamicStopList"></div>
             </div>
-            <div class="tag-list" id="dynamicStopList"></div>
           </div>
           <div class="chip-row" aria-label="盈亏比快捷选择">
             <button class="chip" type="button" data-ratio="3">3 : 1</button>
@@ -1481,7 +1914,7 @@
             <strong id="profitAmount">250.00 元</strong>
             <small id="profitPercent">+25%</small>
           </div>
-          <div class="summary-row" data-icon="亏">
+          <div class="summary-row" id="lossSummaryRow" data-icon="亏">
             <span>预计亏损</span>
             <strong id="lossAmount">-100.00 元</strong>
             <small id="lossPercent">-10%</small>
@@ -1525,6 +1958,48 @@
     </div>
   </section>
 
+  <section class="subpage" id="pastePage" aria-label="粘贴文本">
+    <div class="subpage-inner">
+      <header class="subpage-head">
+        <h2>粘贴文本</h2>
+        <button id="closePastePageBtn" type="button" aria-label="关闭粘贴文本">×</button>
+      </header>
+      <div class="paste-panel">
+        <textarea id="pasteTextArea" placeholder="在这里粘贴复制文本"></textarea>
+        <div class="paste-actions">
+          <button id="cancelPasteBtn" type="button">取消</button>
+          <button id="applyPasteBtn" type="button">填充</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="subpage" id="archivePage" aria-label="归档记录">
+    <div class="subpage-inner">
+      <header class="subpage-head">
+        <h2>归档记录</h2>
+        <button id="closeArchivePageBtn" type="button" aria-label="关闭归档记录">×</button>
+      </header>
+      <div class="archive-form">
+        <label>
+          <span>结果</span>
+          <select id="archiveResult">
+            <option value="win">赢</option>
+            <option value="loss">输</option>
+          </select>
+        </label>
+        <label>
+          <span>卖出价格</span>
+          <input id="archiveSellPrice" type="number" inputmode="decimal" step="0.001" placeholder="输入卖出价格">
+        </label>
+        <div class="paste-actions">
+          <button id="cancelArchiveBtn" type="button">取消</button>
+          <button id="applyArchiveBtn" type="button">归档</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script>
@@ -1534,9 +2009,9 @@
       var storageKey = "trade-record-generator-v2";
       var legacyStorageKey = "trade-record-generator-v1";
       var rows = [
-        { id: "momentum", label: "动能\n依据", icon: "动" },
-        { id: "support", label: "支撑\n形态", icon: "支" },
-        { id: "pressure", label: "压力\n形态", icon: "压" }
+        { id: "momentum", label: "\u52a8\u80fd\u4f9d\u636e" },
+        { id: "support", label: "\u652f\u6491\u5f62\u6001" },
+        { id: "pressure", label: "\u538b\u529b\u5f62\u6001" }
       ];
       var cols = [
         { id: "breakout", label: "形态突破" },
@@ -1549,10 +2024,13 @@
       var state = {
         currentId: null,
         records: [],
-        tagLibrary: createEmptyTagLibrary()
+        tagLibrary: createEmptyTagLibrary(),
+        showArchived: false,
+        riskSettings: createDefaultRiskSettings()
       };
 
       var els = {};
+      var pendingArchiveId = null;
 
       function $(id) {
         return document.getElementById(id);
@@ -1561,6 +2039,13 @@
       function numberValue(id) {
         var value = parseFloat($(id).value);
         return Number.isFinite(value) ? value : 0;
+      }
+
+      function createDefaultRiskSettings() {
+        return {
+          singleLossLimit: "",
+          globalLossLimit: ""
+        };
       }
 
       function money(value) {
@@ -1579,6 +2064,15 @@
       function signedFixed(value) {
         var sign = value > 0 ? "+" : "";
         return sign + value.toFixed(4);
+      }
+
+      function normalizeRiskSettings(settings) {
+        var defaults = createDefaultRiskSettings();
+        if (!settings || typeof settings !== "object") return defaults;
+        return {
+          singleLossLimit: settings.singleLossLimit !== undefined ? String(settings.singleLossLimit) : defaults.singleLossLimit,
+          globalLossLimit: settings.globalLossLimit !== undefined ? String(settings.globalLossLimit) : defaults.globalLossLimit
+        };
       }
 
       function showToast(message) {
@@ -1611,7 +2105,9 @@
         return {
           symbol: "",
           buyTime: nowInputValue().slice(0, 10),
+          timeStopEnabled: "1",
           timeStopDays: "7",
+          dynamicStopEnabled: "1",
           entryPrice: "10",
           stopPrice: "9",
           targetPrice: "12.5",
@@ -1627,6 +2123,8 @@
           fields: fields || createDefaultFields(),
           cells: cells || {},
           dynamicStopTags: [],
+          archived: false,
+          archiveInfo: null,
           selectedLogic: "breakout",
           updatedAt: new Date().toISOString()
         };
@@ -1644,6 +2142,8 @@
         if (!record.fields) record.fields = createDefaultFields();
         if (!record.cells) record.cells = {};
         if (!Array.isArray(record.dynamicStopTags)) record.dynamicStopTags = [];
+        record.archived = record.archived === true;
+        if (record.archiveInfo && typeof record.archiveInfo !== "object") record.archiveInfo = null;
         if (!record.selectedLogic) record.selectedLogic = "breakout";
         return record;
       }
@@ -1674,21 +2174,28 @@
             state.currentId = saved.currentId || null;
             state.records = saved.records.length ? saved.records : [createRecord()];
             state.tagLibrary = normalizeTagLibrary(saved.tagLibrary);
+            state.showArchived = saved.showArchived === true;
+            state.riskSettings = normalizeRiskSettings(saved.riskSettings);
           } else {
             var legacy = JSON.parse(localStorage.getItem(legacyStorageKey) || "null");
             if (legacy) {
               state.records = [createRecord(legacy.fields || createDefaultFields(), legacy.cells || {})];
               state.currentId = state.records[0].id;
               state.tagLibrary = createEmptyTagLibrary();
+              state.showArchived = false;
+              state.riskSettings = createDefaultRiskSettings();
             }
           }
         } catch (error) {
           state = {
             currentId: null,
             records: [],
-            tagLibrary: createEmptyTagLibrary()
+            tagLibrary: createEmptyTagLibrary(),
+            showArchived: false,
+            riskSettings: createDefaultRiskSettings()
           };
         }
+        state.riskSettings = normalizeRiskSettings(state.riskSettings);
         activeRecord();
       }
 
@@ -1697,10 +2204,119 @@
         document.querySelectorAll("[data-save]").forEach(function (input) {
           record.fields[input.id] = input.value;
         });
+        document.querySelectorAll("[data-risk-save]").forEach(function (input) {
+          state.riskSettings[input.id] = input.value;
+        });
+        record.fields.timeStopEnabled = $("timeStopToggle").getAttribute("aria-pressed") === "true" ? "1" : "0";
+        record.fields.dynamicStopEnabled = $("dynamicStopToggle").getAttribute("aria-pressed") === "true" ? "1" : "0";
         record.updatedAt = new Date().toISOString();
         localStorage.setItem(storageKey, JSON.stringify(state));
         renderRecords();
         if (!silent) showToast("已保存到本机");
+      }
+
+      function normalizeImportedRecord(record, index) {
+        var normalized = createRecord();
+        var fields = record && record.fields && typeof record.fields === "object" ? record.fields : {};
+        normalized.id = record && record.id ? String(record.id) : "imported-" + Date.now() + "-" + index;
+        normalized.fields = Object.assign(createDefaultFields(), fields);
+        normalized.cells = {};
+        normalized.dynamicStopTags = Array.isArray(record && record.dynamicStopTags)
+          ? record.dynamicStopTags.filter(Boolean).map(String)
+          : [];
+        normalized.archived = record && record.archived === true;
+        normalized.archiveInfo = record && record.archiveInfo && typeof record.archiveInfo === "object" ? {
+          result: record.archiveInfo.result === "loss" ? "loss" : "win",
+          sellPrice: String(record.archiveInfo.sellPrice || ""),
+          archivedAt: record.archiveInfo.archivedAt ? String(record.archiveInfo.archivedAt) : ""
+        } : null;
+        normalized.selectedLogic = record && record.selectedLogic === "pullback" ? "pullback" : "breakout";
+        normalized.updatedAt = record && record.updatedAt ? String(record.updatedAt) : new Date().toISOString();
+
+        if (record && record.cells && typeof record.cells === "object") {
+          Object.keys(record.cells).forEach(function (key) {
+            var cell = record.cells[key];
+            normalized.cells[key] = {
+              tags: cell && Array.isArray(cell.tags) ? cell.tags.filter(Boolean).map(String) : []
+            };
+          });
+        }
+        return normalized;
+      }
+
+      function normalizeBackupPayload(payload) {
+        var source = payload && payload.state ? payload.state : payload;
+        if (!source || !Array.isArray(source.records)) {
+          throw new Error("Invalid backup");
+        }
+        var importedRecords = source.records.map(normalizeImportedRecord);
+        if (!importedRecords.length) importedRecords = [createRecord()];
+        return {
+          currentId: source.currentId && importedRecords.some(function (record) {
+            return record.id === source.currentId;
+          }) ? source.currentId : importedRecords[0].id,
+          records: importedRecords,
+          tagLibrary: normalizeTagLibrary(source.tagLibrary),
+          showArchived: source.showArchived === true,
+          riskSettings: normalizeRiskSettings(source.riskSettings)
+        };
+      }
+
+      function refreshAfterBackupImport() {
+        hydrateFields();
+        renderDynamicStopTags();
+        renderMatrix();
+        recalc();
+        renderRecords();
+        renderTagManager();
+        updateLogicView();
+      }
+
+      function exportRecords() {
+        writeStorage(true);
+        var backup = {
+          app: "trade-record-pwa",
+          version: 3,
+          exportedAt: new Date().toISOString(),
+          state: {
+            currentId: state.currentId,
+            records: state.records,
+            tagLibrary: state.tagLibrary,
+            showArchived: state.showArchived,
+            riskSettings: state.riskSettings
+          }
+        };
+        var blob = new Blob([JSON.stringify(backup, null, 2)], { type: "application/json;charset=utf-8" });
+        var url = URL.createObjectURL(blob);
+        var link = document.createElement("a");
+        var date = new Date().toISOString().slice(0, 10);
+        link.href = url;
+        link.download = "trade-record-backup-" + date + ".json";
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        window.setTimeout(function () {
+          URL.revokeObjectURL(url);
+        }, 1000);
+        showToast("\u5df2\u5bfc\u51faJSON\u5907\u4efd");
+      }
+
+      function importRecordsFile(file) {
+        if (!file) return;
+        var reader = new FileReader();
+        reader.onload = function () {
+          try {
+            var nextState = normalizeBackupPayload(JSON.parse(String(reader.result || "")));
+            if (!window.confirm("\u5bfc\u5165\u4f1a\u66ff\u6362\u5f53\u524d\u5168\u90e8\u4fdd\u5b58\u8bb0\u5f55\uff0c\u786e\u8ba4\u7ee7\u7eed\uff1f")) return;
+            state = nextState;
+            localStorage.setItem(storageKey, JSON.stringify(state));
+            refreshAfterBackupImport();
+            showToast("\u5df2\u5bfc\u5165\u5907\u4efd");
+          } catch (error) {
+            showToast("\u5bfc\u5165\u5931\u8d25\uff1aJSON\u683c\u5f0f\u4e0d\u6b63\u786e");
+          }
+        };
+        reader.readAsText(file);
       }
 
       function populateTimeStopOptions() {
@@ -1714,9 +2330,40 @@
         }
       }
 
+      function setTimeStopEnabled(enabled, silent) {
+        var field = $("timeStopField");
+        var toggle = $("timeStopToggle");
+        var select = $("timeStopDays");
+        if (!field || !toggle || !select) return;
+        field.classList.toggle("is-disabled", !enabled);
+        toggle.setAttribute("aria-pressed", enabled ? "true" : "false");
+        select.disabled = !enabled;
+        if (!silent) {
+          activeRecord().fields.timeStopEnabled = enabled ? "1" : "0";
+          writeStorage(true);
+          renderRecords();
+        }
+      }
+
+      function setDynamicStopEnabled(enabled, silent) {
+        var control = $("dynamicStopControl");
+        var toggle = $("dynamicStopToggle");
+        if (!control || !toggle) return;
+        control.classList.toggle("is-disabled", !enabled);
+        toggle.setAttribute("aria-pressed", enabled ? "true" : "false");
+        if (!silent) {
+          activeRecord().fields.dynamicStopEnabled = enabled ? "1" : "0";
+          writeStorage(true);
+          renderRecords();
+        }
+      }
+
       function hydrateFields() {
         populateTimeStopOptions();
         var fields = activeRecord().fields;
+        document.querySelectorAll("[data-risk-save]").forEach(function (input) {
+          input.value = state.riskSettings && state.riskSettings[input.id] !== undefined ? state.riskSettings[input.id] : "";
+        });
         document.querySelectorAll("[data-save]").forEach(function (input) {
           if (fields[input.id] !== undefined) {
             input.value = input.id === "buyTime" ? String(fields[input.id]).slice(0, 10) : fields[input.id];
@@ -1728,6 +2375,8 @@
         if (!$("buyTime").value) {
           $("buyTime").value = nowInputValue().slice(0, 10);
         }
+        setTimeStopEnabled(fields.timeStopEnabled !== "0", true);
+        setDynamicStopEnabled(fields.dynamicStopEnabled !== "0", true);
       }
 
       function getRecordTitle(record) {
@@ -1741,6 +2390,14 @@
       function parseRecordNumber(record, id) {
         var value = parseFloat(record.fields && record.fields[id]);
         return Number.isFinite(value) ? value : 0;
+      }
+
+      function recordExpectedLoss(record) {
+        var entry = parseRecordNumber(record, "entryPrice");
+        var stop = parseRecordNumber(record, "stopPrice");
+        var quantity = parseRecordNumber(record, "quantity");
+        var loss = (stop - entry) * quantity;
+        return loss < 0 ? Math.abs(loss) : 0;
       }
 
       function formatRecordValue(value, digits) {
@@ -1773,6 +2430,8 @@
         var risk = Math.abs(entry - stop);
         var reward = Math.abs(target - entry);
         var ratio = risk > 0 ? reward / risk : 0;
+        var expectedLoss = recordExpectedLoss(record);
+        var singleLimit = parseFloat(state.riskSettings && state.riskSettings.singleLossLimit);
         return {
           title: (fields.symbol || "未命名记录").trim() || "未命名记录",
           time: fields.buyTime ? fields.buyTime.replace("T", " ") : "未设置时间",
@@ -1782,10 +2441,14 @@
           quantity: formatRecordValue(quantity, 4),
           amount: formatRecordValue(amount, 2),
           ratio: ratio > 0 ? ratio.toFixed(2) + " : 1" : "-",
+          expectedLoss: expectedLoss,
+          lossRiskExceeded: Number.isFinite(singleLimit) && singleLimit > 0 && expectedLoss > singleLimit,
           logic: getLogicLabel(logicId),
           logicId: logicId,
-          dynamicStop: (record.dynamicStopTags || []).join(" / ") || "-",
-          timeStopDays: (fields.timeStopDays || "7") + " 天",
+          dynamicStop: fields.dynamicStopEnabled === "0" ? "\u672a\u542f\u7528" : ((record.dynamicStopTags || []).join(" / ") || "-"),
+          archiveInfo: record.archiveInfo || null,
+          archiveText: record.archiveInfo ? ((record.archiveInfo.result === "loss" ? "\u8f93" : "\u8d62") + " / " + record.archiveInfo.sellPrice) : "-",
+          timeStopDays: fields.timeStopEnabled === "0" ? "\u672a\u542f\u7528" : (fields.timeStopDays || "7") + " 天",
           holdingDays: holdingDaysFrom(fields.buyTime)
         };
       }
@@ -1799,31 +2462,52 @@
       function renderRecords() {
         var list = $("recordList");
         if (!list) return;
-        if (!state.records.length) {
-          list.innerHTML = '<div class="empty-records">还没有保存记录</div>';
+        var visibleRecords = state.records.filter(function (record) {
+          return state.showArchived ? record.archived === true : record.archived !== true;
+        });
+        var archiveButton = $("archiveViewBtn");
+        if (archiveButton) {
+          archiveButton.classList.toggle("is-active", state.showArchived);
+          archiveButton.setAttribute("aria-pressed", state.showArchived ? "true" : "false");
+          archiveButton.textContent = state.showArchived ? "\u8fd4\u56de" : "\u5f52\u6863";
+        }
+        if (!visibleRecords.length) {
+          list.innerHTML = '<div class="empty-records">' + (state.showArchived ? "\u6682\u65e0\u5f52\u6863\u8bb0\u5f55" : "\u8fd8\u6ca1\u6709\u4fdd\u5b58\u8bb0\u5f55") + '</div>';
           return;
         }
-        list.innerHTML = state.records.map(function (record) {
+        list.innerHTML = visibleRecords.map(function (record, index) {
           var active = record.id === state.currentId ? " is-active" : "";
           var summary = getRecordSummary(record);
           var logicClass = summary.logicId === "pullback" ? "is-pullback" : "is-breakout";
-          return '<div class="record-pill ' + logicClass + active + '" data-record-id="' + record.id + '" role="button" tabindex="0">' +
-            '<button type="button" class="record-delete" data-delete-record="' + record.id + '" aria-label="删除记录">×</button>' +
+          var isFirst = index === 0;
+          var isLast = index === visibleRecords.length - 1;
+          var archivedClass = record.archived ? " is-archived" : "";
+          return '<div class="record-pill ' + logicClass + active + archivedClass + '" data-record-id="' + record.id + '" role="button" tabindex="0">' +
+            '<span class="record-sort" aria-label="\u8bb0\u5f55\u6392\u5e8f">' +
+              '<button type="button" class="' + (isFirst ? "is-highlight" : "") + '" data-sort-record="' + record.id + '" data-sort-action="top" aria-label="\u7f6e\u9876">\u21e7</button>' +
+              '<button type="button" data-sort-record="' + record.id + '" data-sort-action="up" aria-label="\u4e0a\u79fb"' + (isFirst ? " hidden" : "") + '>\u2191</button>' +
+              '<button type="button" data-sort-record="' + record.id + '" data-sort-action="down" aria-label="\u4e0b\u79fb"' + (isLast ? " hidden" : "") + '>\u2193</button>' +
+            '</span>' +
+            '<span class="record-actions">' +
+              '<button type="button" class="record-archive" data-archive-record="' + record.id + '" aria-label="' + (record.archived ? "\u8fd8\u539f\u8bb0\u5f55" : "\u5f52\u6863\u8bb0\u5f55") + '">' + (record.archived ? "\u8fd8" : "\u5f52") + '</button>' +
+              '<button type="button" class="record-delete" data-delete-record="' + record.id + '" aria-label="\u5220\u9664\u8bb0\u5f55">&times;</button>' +
+            '</span>' +
             '<span class="record-title">' +
               '<span class="record-name">' + escapeHtml(summary.title) + '</span>' +
               '<span class="logic-badge ' + logicClass + '">' + escapeHtml(summary.logic) + '</span>' +
             '</span>' +
             '<span class="record-meta">' + escapeHtml(summary.time) + '</span>' +
             '<span class="record-detail">' +
-              '<span class="record-line"><span>入场</span><strong>' + escapeHtml(summary.entry) + '</strong></span>' +
-              '<span class="record-line"><span>目标</span><strong>' + escapeHtml(summary.target) + '</strong></span>' +
-              '<span class="record-line"><span>止损</span><strong>' + escapeHtml(summary.stop) + '</strong></span>' +
-              '<span class="record-line"><span>数量</span><strong>' + escapeHtml(summary.quantity) + '</strong></span>' +
-              '<span class="record-line"><span>金额</span><strong>' + escapeHtml(summary.amount) + '</strong></span>' +
-              '<span class="record-line"><span>盈亏比</span><strong>' + escapeHtml(summary.ratio) + '</strong></span>' +
-              '<span class="record-line"><span>&#21160;&#24577;&#27490;&#25439;</span><strong>' + escapeHtml(summary.dynamicStop) + '</strong></span>' +
-              '<span class="record-line"><span>时间止损</span><strong>' + escapeHtml(summary.timeStopDays) + '</strong></span>' +
-              '<span class="record-line"><span>持有</span><strong>' + escapeHtml(summary.holdingDays) + '</strong></span>' +
+              '<span class="record-line"><span>\u5165\u573a</span><strong>' + escapeHtml(summary.entry) + '</strong></span>' +
+              '<span class="record-line"><span>\u76ee\u6807</span><strong>' + escapeHtml(summary.target) + '</strong></span>' +
+              '<span class="record-line' + (summary.lossRiskExceeded ? " is-risk-warning" : "") + '"><span>\u6b62\u635f</span><strong>' + escapeHtml(summary.stop) + '</strong></span>' +
+              '<span class="record-line"><span>\u6570\u91cf</span><strong>' + escapeHtml(summary.quantity) + '</strong></span>' +
+              '<span class="record-line"><span>\u91d1\u989d</span><strong>' + escapeHtml(summary.amount) + '</strong></span>' +
+              '<span class="record-line"><span>\u76c8\u4e8f\u6bd4</span><strong>' + escapeHtml(summary.ratio) + '</strong></span>' +
+              '<span class="record-line"><span>\u52a8\u6001\u6b62\u635f</span><strong>' + escapeHtml(summary.dynamicStop) + '</strong></span>' +
+              (record.archived ? '<span class="record-line"><span>\u5f52\u6863</span><strong>' + escapeHtml(summary.archiveText) + '</strong></span>' : '') +
+              '<span class="record-line"><span>\u65f6\u95f4\u6b62\u635f</span><strong>' + escapeHtml(summary.timeStopDays) + '</strong></span>' +
+              '<span class="record-line"><span>\u6301\u6709</span><strong>' + escapeHtml(summary.holdingDays) + '</strong></span>' +
             '</span>' +
             '<span class="record-compact">' +
               '<span class="record-compact-name">' + escapeHtml(compactTitle(summary.title)) + '</span>' +
@@ -1834,7 +2518,6 @@
           '</div>';
         }).join("");
       }
-
       function getLogicLabel(logicId) {
         var logic = cols.find(function (col) { return col.id === logicId; });
         return logic ? logic.label : "形态突破";
@@ -1878,6 +2561,21 @@
             '<div class="managed-tags">' + list + '</div>' +
           '</section>';
         }).join("");
+      }
+
+      function updateRiskComparison(currentLoss) {
+        var singleLimit = parseFloat(state.riskSettings && state.riskSettings.singleLossLimit);
+        var globalLimit = parseFloat(state.riskSettings && state.riskSettings.globalLossLimit);
+        var currentExpectedLoss = Math.max(0, Math.abs(currentLoss || 0));
+        var singleExceeded = Number.isFinite(singleLimit) && singleLimit > 0 && currentExpectedLoss > singleLimit;
+        var currentId = state.currentId;
+        var totalExpectedLoss = state.records.reduce(function (total, record) {
+          if (record.archived === true) return total;
+          return total + (record.id === currentId ? currentExpectedLoss : recordExpectedLoss(record));
+        }, 0);
+        var globalExceeded = Number.isFinite(globalLimit) && globalLimit > 0 && totalExpectedLoss > globalLimit;
+        $("lossSummaryRow").classList.toggle("is-risk-warning", singleExceeded);
+        $("globalLossLimitField").classList.toggle("is-warning", globalExceeded);
       }
 
       function openTagPage() {
@@ -2043,7 +2741,7 @@
                 '</div>' +
               '</td>';
           }).join("");
-          return '<tr><th class="row-title"><span data-icon="' + row.icon + '">' + row.label + '</span></th>' + cells + '</tr>';
+          return '<tr><th class="row-title"><span>' + row.label + '</span></th>' + cells + '</tr>';
         }).join("");
 
         $("matrixBody").innerHTML = html;
@@ -2176,6 +2874,7 @@
         $("lossPercent").textContent = signedPercent(lossRate);
         $("targetAmount").textContent = money(target * quantity);
         $("stopAmount").textContent = money(stop * quantity);
+        updateRiskComparison(lossAmount);
       }
 
       function applyRatio(ratio) {
@@ -2200,12 +2899,12 @@
         var lines = [];
         lines.push("标的名称: " + $("symbol").value);
         lines.push("买入时间: " + $("buyTime").value);
-        lines.push("时间止损: " + $("timeStopDays").value + " 天");
+        lines.push("时间止损: " + ($("timeStopToggle").getAttribute("aria-pressed") === "true" ? $("timeStopDays").value + " 天" : "\u672a\u542f\u7528"));
         lines.push("已持有: " + holdingDaysFrom($("buyTime").value));
         lines.push("逻辑: " + getLogicLabel(activeRecord().selectedLogic || "breakout"));
         lines.push("入场单价: " + $("entryPrice").value + " 元");
         lines.push("止损单价: " + $("stopPrice").value + " 元");
-        lines.push("\u52a8\u6001\u6b62\u635f: " + (activeRecord().dynamicStopTags || []).map(function (tag) { return "#" + tag; }).join(" "));
+        lines.push("\u52a8\u6001\u6b62\u635f: " + ($("dynamicStopToggle").getAttribute("aria-pressed") === "true" ? (activeRecord().dynamicStopTags || []).map(function (tag) { return "#" + tag; }).join(" ") : "\u672a\u542f\u7528"));
         lines.push("目标单价: " + $("targetPrice").value + " 元");
         lines.push("交易数量: " + $("quantity").value);
         lines.push("入场总金额: " + $("entryAmount").value + " 元");
@@ -2230,6 +2929,189 @@
         }
       }
 
+      function splitPastedLine(line) {
+        var colon = line.indexOf(":");
+        var fullColon = line.indexOf("\uff1a");
+        var index = colon;
+        if (index === -1 || (fullColon !== -1 && fullColon < index)) index = fullColon;
+        if (index === -1) return null;
+        return {
+          key: line.slice(0, index).trim(),
+          value: line.slice(index + 1).trim()
+        };
+      }
+
+      function escapeRegExp(text) {
+        return String(text).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      }
+
+      function pasteLabels() {
+        var labels = [
+          "\u6807\u7684\u540d\u79f0",
+          "\u4e70\u5165\u65f6\u95f4",
+          "\u65f6\u95f4\u6b62\u635f",
+          "\u5df2\u6301\u6709",
+          "\u903b\u8f91",
+          "\u5165\u573a\u5355\u4ef7",
+          "\u6b62\u635f\u5355\u4ef7",
+          "\u52a8\u6001\u6b62\u635f",
+          "\u76ee\u6807\u5355\u4ef7",
+          "\u4ea4\u6613\u6570\u91cf",
+          "\u5165\u573a\u603b\u91d1\u989d"
+        ];
+        rows.forEach(function (row) {
+          cols.forEach(function (col) {
+            labels.push(row.label.replace("\n", "") + " / " + col.label);
+          });
+        });
+        return labels.sort(function (a, b) {
+          return b.length - a.length;
+        });
+      }
+
+      function normalizePastedText(text) {
+        var normalized = String(text || "").replace(/\r/g, "\n");
+        pasteLabels().forEach(function (label) {
+          var pattern = new RegExp("\\s*(" + escapeRegExp(label) + "\\s*[:\uff1a])", "g");
+          normalized = normalized.replace(pattern, "\n$1");
+        });
+        return normalized.replace(/\n{2,}/g, "\n").trim();
+      }
+
+      function stripUnit(value) {
+        return String(value || "").replace(/[\s\u5143\u5929]/g, "").trim();
+      }
+
+      function parseHashTags(value) {
+        var tags = [];
+        String(value || "").split(/\s+/).forEach(function (part) {
+          var tag = part.replace(/^#/, "").trim();
+          if (tag && tags.indexOf(tag) === -1) tags.push(tag);
+        });
+        return tags;
+      }
+
+      function rememberTags(rowId, tags) {
+        if (!state.tagLibrary[rowId]) state.tagLibrary[rowId] = [];
+        tags.forEach(function (tag) {
+          if (state.tagLibrary[rowId].indexOf(tag) === -1) {
+            state.tagLibrary[rowId].push(tag);
+          }
+        });
+      }
+
+      function applyPastedText(text) {
+        var record = activeRecord();
+        var fieldLabels = {};
+        fieldLabels["\u6807\u7684\u540d\u79f0"] = "symbol";
+        fieldLabels["\u4e70\u5165\u65f6\u95f4"] = "buyTime";
+        fieldLabels["\u5165\u573a\u5355\u4ef7"] = "entryPrice";
+        fieldLabels["\u6b62\u635f\u5355\u4ef7"] = "stopPrice";
+        fieldLabels["\u76ee\u6807\u5355\u4ef7"] = "targetPrice";
+        fieldLabels["\u4ea4\u6613\u6570\u91cf"] = "quantity";
+        fieldLabels["\u5165\u573a\u603b\u91d1\u989d"] = "entryAmount";
+
+        normalizePastedText(text).split(/\r?\n/).forEach(function (rawLine) {
+          var parsed = splitPastedLine(rawLine);
+          if (!parsed) return;
+          var key = parsed.key;
+          var value = parsed.value;
+          var fieldId = fieldLabels[key];
+
+          if (fieldId) {
+            record.fields[fieldId] = fieldId === "buyTime" ? value.slice(0, 10) : stripUnit(value);
+            return;
+          }
+
+          if (key === "\u65f6\u95f4\u6b62\u635f") {
+            if (value.indexOf("\u672a\u542f\u7528") !== -1) {
+              record.fields.timeStopEnabled = "0";
+            } else {
+              record.fields.timeStopEnabled = "1";
+              record.fields.timeStopDays = stripUnit(value) || record.fields.timeStopDays || "7";
+            }
+            return;
+          }
+
+          if (key === "\u903b\u8f91") {
+            record.selectedLogic = value === getLogicLabel("pullback") || value.indexOf("\u56de\u8c03") !== -1 ? "pullback" : "breakout";
+            return;
+          }
+
+          if (key === "\u52a8\u6001\u6b62\u635f") {
+            if (value.indexOf("\u672a\u542f\u7528") !== -1) {
+              record.fields.dynamicStopEnabled = "0";
+              return;
+            }
+            record.fields.dynamicStopEnabled = "1";
+            record.dynamicStopTags = parseHashTags(value);
+            rememberTags("dynamicStop", record.dynamicStopTags);
+            return;
+          }
+
+          rows.forEach(function (row) {
+            cols.forEach(function (col) {
+              var title = row.label.replace("\n", "") + " / " + col.label;
+              if (key !== title) return;
+              var tags = parseHashTags(value);
+              ensureCell(getCellKey(row.id, col.id)).tags = tags;
+              rememberTags(row.id, tags);
+            });
+          });
+        });
+
+        hydrateFields();
+        renderDynamicStopTags();
+        renderMatrix();
+        recalc();
+        renderRecords();
+        renderTagManager();
+        updateLogicView();
+        writeStorage(true);
+        showToast("\u6587\u672c\u5df2\u7c98\u8d34");
+      }
+
+      function pasteText() {
+        function fallbackPastePage() {
+          openPastePage("");
+        }
+
+        if (navigator.clipboard && navigator.clipboard.readText) {
+          navigator.clipboard.readText().then(function (text) {
+            if (text && text.trim()) {
+              applyPastedText(text);
+            } else {
+              fallbackPastePage();
+            }
+          }, fallbackPastePage);
+        } else {
+          fallbackPastePage();
+        }
+      }
+
+      function openPastePage(text) {
+        var area = $("pasteTextArea");
+        area.value = text || "";
+        $("pastePage").classList.add("is-open");
+        window.setTimeout(function () {
+          area.focus();
+        }, 50);
+      }
+
+      function closePastePage() {
+        $("pastePage").classList.remove("is-open");
+      }
+
+      function applyPastePageText() {
+        var text = $("pasteTextArea").value;
+        if (!text.trim()) {
+          showToast("\u8bf7\u5148\u7c98\u8d34\u6587\u672c");
+          return;
+        }
+        applyPastedText(text);
+        closePastePage();
+      }
+
       function fallbackCopy(text) {
         var temp = document.createElement("textarea");
         temp.value = text;
@@ -2248,6 +3130,8 @@
         record.fields = createDefaultFields();
         record.cells = {};
         record.dynamicStopTags = [];
+        record.archived = false;
+        record.archiveInfo = null;
         localStorage.setItem(storageKey, JSON.stringify(state));
         hydrateFields();
         renderDynamicStopTags();
@@ -2289,7 +3173,126 @@
         showToast("已删除记录");
       }
 
+      function sortRecord(recordId, action) {
+        var visibleRecords = state.records.filter(function (record) {
+          return state.showArchived ? record.archived === true : record.archived !== true;
+        });
+        var visibleIndex = visibleRecords.findIndex(function (record) { return record.id === recordId; });
+        if (visibleIndex === -1) return;
+        var targetRecord = null;
+        if (action === "top") targetRecord = visibleRecords[0];
+        if (action === "up") targetRecord = visibleRecords[Math.max(0, visibleIndex - 1)];
+        if (action === "down") targetRecord = visibleRecords[Math.min(visibleRecords.length - 1, visibleIndex + 1)];
+        if (!targetRecord || targetRecord.id === recordId) return;
+        var sourceIndex = state.records.findIndex(function (record) { return record.id === recordId; });
+        var targetIndex = state.records.findIndex(function (record) { return record.id === targetRecord.id; });
+        var moved = state.records.splice(sourceIndex, 1)[0];
+        targetIndex = state.records.findIndex(function (record) { return record.id === targetRecord.id; });
+        if (action === "down") targetIndex += 1;
+        state.records.splice(targetIndex, 0, moved);
+        writeStorage(true);
+        renderRecords();
+        showToast("\u8bb0\u5f55\u987a\u5e8f\u5df2\u66f4\u65b0");
+      }
+
+      function setArchiveView(showArchived) {
+        state.showArchived = showArchived;
+        localStorage.setItem(storageKey, JSON.stringify(state));
+        renderRecords();
+      }
+
+      function archiveRecord(recordId) {
+        var record = state.records.find(function (item) { return item.id === recordId; });
+        if (!record) return;
+        if (!record.archived) {
+          openArchivePage(recordId);
+          return;
+        }
+        record.archived = !record.archived;
+        if (record.archived && state.currentId === recordId && !state.showArchived) {
+          var next = state.records.find(function (item) {
+            return item.archived !== true;
+          });
+          if (!next) {
+            next = createRecord();
+            state.records.unshift(next);
+          }
+          state.currentId = next.id;
+          hydrateFields();
+          renderDynamicStopTags();
+          renderMatrix();
+          recalc();
+        }
+        writeStorage(true);
+        renderRecords();
+        showToast(record.archived ? "\u5df2\u5f52\u6863" : "\u5df2\u8fd8\u539f");
+      }
+
+      function openArchivePage(recordId) {
+        pendingArchiveId = recordId;
+        $("archiveResult").value = "win";
+        $("archiveSellPrice").value = "";
+        $("archivePage").classList.add("is-open");
+        window.setTimeout(function () {
+          $("archiveSellPrice").focus();
+        }, 50);
+      }
+
+      function closeArchivePage() {
+        pendingArchiveId = null;
+        $("archivePage").classList.remove("is-open");
+      }
+
+      function applyArchivePage() {
+        var record = state.records.find(function (item) { return item.id === pendingArchiveId; });
+        var sellPrice = $("archiveSellPrice").value.trim();
+        if (!record) {
+          closeArchivePage();
+          return;
+        }
+        if (!sellPrice || !Number.isFinite(parseFloat(sellPrice))) {
+          showToast("\u8bf7\u586b\u5199\u5356\u51fa\u4ef7\u683c");
+          return;
+        }
+        record.archiveInfo = {
+          result: $("archiveResult").value === "loss" ? "loss" : "win",
+          sellPrice: sellPrice,
+          archivedAt: new Date().toISOString()
+        };
+        record.archived = true;
+        if (state.currentId === record.id && !state.showArchived) {
+          var next = state.records.find(function (item) { return item.archived !== true; });
+          if (!next) {
+            next = createRecord();
+            state.records.unshift(next);
+          }
+          state.currentId = next.id;
+          hydrateFields();
+          renderDynamicStopTags();
+          renderMatrix();
+          recalc();
+        }
+        writeStorage(true);
+        renderRecords();
+        closeArchivePage();
+        showToast("\u5df2\u5f52\u6863");
+      }
+
       function handleRecordListAction(event) {
+        var sortButton = event.target.closest("[data-sort-record]");
+        if (sortButton) {
+          event.preventDefault();
+          event.stopPropagation();
+          sortRecord(sortButton.dataset.sortRecord, sortButton.dataset.sortAction);
+          return;
+        }
+        var archiveButton = event.target.closest("[data-archive-record]");
+        if (archiveButton) {
+          event.preventDefault();
+          event.stopPropagation();
+          archiveRecord(archiveButton.dataset.archiveRecord);
+          return;
+        }
         var deleteButton = event.target.closest("[data-delete-record]");
         if (deleteButton) {
           event.preventDefault();
@@ -2366,6 +3369,30 @@
           });
         });
 
+        document.querySelectorAll("[data-risk-save]").forEach(function (input) {
+          input.addEventListener("input", function () {
+            if (!state.riskSettings) state.riskSettings = createDefaultRiskSettings();
+            state.riskSettings[input.id] = input.value;
+            recalc(input.id);
+            writeStorage(true);
+            renderRecords();
+          });
+          input.addEventListener("change", function () {
+            if (!state.riskSettings) state.riskSettings = createDefaultRiskSettings();
+            state.riskSettings[input.id] = input.value;
+            recalc(input.id);
+            writeStorage(true);
+            renderRecords();
+          });
+        });
+
+        $("timeStopToggle").addEventListener("click", function () {
+          setTimeStopEnabled($("timeStopToggle").getAttribute("aria-pressed") !== "true", false);
+        });
+        $("dynamicStopToggle").addEventListener("click", function () {
+          setDynamicStopEnabled($("dynamicStopToggle").getAttribute("aria-pressed") !== "true", false);
+        });
+
         document.querySelectorAll("[data-ratio]").forEach(function (button) {
           button.addEventListener("click", function () {
             applyRatio(parseFloat(button.dataset.ratio));
@@ -2384,7 +3411,24 @@
         $("closeTagPageBtn").addEventListener("click", closeTagPage);
         $("copyBtn").addEventListener("click", copyText);
         $("resetBtn").addEventListener("click", resetAll);
-        $("printBtn").addEventListener("click", function () { window.print(); });
+        $("pasteBtn").addEventListener("click", pasteText);
+        $("closePastePageBtn").addEventListener("click", closePastePage);
+        $("cancelPasteBtn").addEventListener("click", closePastePage);
+        $("applyPasteBtn").addEventListener("click", applyPastePageText);
+        $("closeArchivePageBtn").addEventListener("click", closeArchivePage);
+        $("cancelArchiveBtn").addEventListener("click", closeArchivePage);
+        $("applyArchiveBtn").addEventListener("click", applyArchivePage);
+        $("exportRecordsBtn").addEventListener("click", exportRecords);
+        $("importRecordsBtn").addEventListener("click", function () {
+          $("importRecordsFile").click();
+        });
+        $("archiveViewBtn").addEventListener("click", function () {
+          setArchiveView(!$("archiveViewBtn").classList.contains("is-active"));
+        });
+        $("importRecordsFile").addEventListener("change", function (event) {
+          importRecordsFile(event.target.files && event.target.files[0]);
+          event.target.value = "";
+        });
         $("sidebarToggle").addEventListener("click", function () {
           setSidebarCompact(!$("sidebar").classList.contains("is-compact"));
         });
