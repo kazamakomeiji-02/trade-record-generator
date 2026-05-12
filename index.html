@@ -1357,6 +1357,12 @@
       color: #fff;
     }
 
+    .calc-actions .convert-btn {
+      background: #e8f7ef;
+      color: #16824c;
+      border: 1px solid #bce7cf;
+    }
+
     .toast {
       position: fixed;
       left: 50%;
@@ -1554,7 +1560,8 @@
 
       .sidebar.is-compact .record-title,
       .sidebar.is-compact .record-meta,
-      .sidebar.is-compact .record-detail {
+      .sidebar.is-compact .record-detail,
+      .sidebar.is-compact .trial-metrics {
         display: none;
       }
 
@@ -2232,7 +2239,9 @@
         <label><span>目标价</span><input id="calcTarget" type="number" inputmode="decimal" step="0.001" value="12.5"></label>
         <div class="calc-actions">
           <button id="saveCalcTrialBtn" type="button">保存试算</button>
+          <button id="convertCalcTrialBtn" class="convert-btn" type="button">转为正式</button>
           <button id="newCalcTrialBtn" type="button" class="secondary">新试算</button>
+          <button id="clearCalcTrialBtn" type="button" class="secondary">清空</button>
         </div>
         <div class="summary-row" data-icon="比">
           <span>盈亏比</span>
@@ -3133,6 +3142,12 @@
               '<span>止 ' + escapeHtml(summary.stop) + '</span>' +
               '<span>目 ' + escapeHtml(summary.target) + '</span>' +
             '</span>' +
+            '<span class="record-compact">' +
+              '<span class="record-compact-name">' + escapeHtml(compactTitle(summary.title)) + '</span>' +
+              '<span class="record-compact-logic is-breakout"></span>' +
+              '<span>' + escapeHtml(summary.ratio) + '</span>' +
+              '<span>试算</span>' +
+            '</span>' +
           '</div>';
         }).join("");
       }
@@ -3843,6 +3858,50 @@
         showToast("已删除试算");
       }
 
+      function clearTrialInputs() {
+        state.currentTrialId = null;
+        $("calcName").value = "";
+        $("calcEntry").value = "";
+        $("calcStop").value = "";
+        $("calcTarget").value = "";
+        recalcTrialCalculator();
+        renderTrialRecords();
+        $("calcEntry").focus();
+      }
+
+      function convertTrialToRecord() {
+        var entry = $("calcEntry").value || "0";
+        var stop = $("calcStop").value || "0";
+        var target = $("calcTarget").value || "0";
+        var fields = createDefaultFields();
+        var quantity = parseFloat(fields.quantity) || 0;
+        var entryNumber = parseFloat(entry) || 0;
+        fields.symbol = $("calcName").value.trim().replace(/\s*试算$/, "") || "试算记录";
+        fields.entryPrice = entry;
+        fields.currentPrice = entry;
+        fields.stopPrice = stop;
+        fields.dynamicStopPrice = stop;
+        fields.targetPrice = target;
+        fields.dynamicStopEnabled = "0";
+        fields.timeStopEnabled = "1";
+        fields.entryAmount = (entryNumber * quantity).toFixed(2);
+        pushUndoSnapshot();
+        var record = createRecord(fields, {});
+        record.selectedLogic = "breakout";
+        state.records.unshift(record);
+        state.currentId = record.id;
+        $("calcPage").classList.remove("is-open");
+        document.body.classList.remove("calc-sidebar-mode");
+        hydrateFields();
+        renderDynamicStopTags();
+        renderMatrix();
+        updateLogicView();
+        recalc();
+        writeStorage(true);
+        renderRecords();
+        showToast("已转为正式记录");
+      }
+
       function openCalcPage() {
         fillCalcFromMain();
         document.body.classList.add("calc-sidebar-mode");
@@ -4213,10 +4272,12 @@
         $("applyArchiveBtn").addEventListener("click", applyArchivePage);
         $("closeCalcPageBtn").addEventListener("click", closeCalcPage);
         $("saveCalcTrialBtn").addEventListener("click", saveTrialRecord);
+        $("convertCalcTrialBtn").addEventListener("click", convertTrialToRecord);
         $("newCalcTrialBtn").addEventListener("click", function () {
           fillCalcFromMain();
           renderTrialRecords();
         });
+        $("clearCalcTrialBtn").addEventListener("click", clearTrialInputs);
         ["calcEntry", "calcStop", "calcTarget"].forEach(function (id) {
           $(id).addEventListener("input", recalcTrialCalculator);
         });
