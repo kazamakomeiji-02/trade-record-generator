@@ -211,6 +211,29 @@
       box-shadow: 0 8px 18px rgba(47, 111, 228, 0.28);
     }
 
+    .record-pill.is-risk-marked,
+    .record-pill.is-risk-marked.is-active {
+      border-color: #ffd452;
+      background: linear-gradient(180deg, #fff8cf, #ffe77a);
+      color: #1b2a43;
+      box-shadow: 0 8px 18px rgba(230, 173, 0, 0.2);
+    }
+
+    .record-pill.is-risk-marked .record-meta,
+    .record-pill.is-risk-marked .record-line span,
+    .record-pill.is-risk-marked .record-detail,
+    .record-pill.is-risk-marked.is-active .record-meta,
+    .record-pill.is-risk-marked.is-active .record-line span,
+    .record-pill.is-risk-marked.is-active .record-detail {
+      color: #5f5124;
+    }
+
+    .record-pill.is-risk-marked .logic-badge,
+    .record-pill.is-risk-marked.is-active .logic-badge {
+      background: rgba(255, 255, 255, 0.72);
+      color: #9a5c00;
+    }
+
     .record-title {
       display: flex;
       align-items: center;
@@ -258,6 +281,11 @@
       color: #d8e7ff;
     }
 
+    .record-pill.is-risk-marked.is-active .logic-badge {
+      background: rgba(255, 255, 255, 0.72);
+      color: #9a5c00;
+    }
+
     .record-meta {
       color: var(--muted);
       font-size: 18px;
@@ -272,6 +300,12 @@
     .record-pill.is-active .record-line span,
     .record-pill.is-active .record-detail {
       color: rgba(255, 255, 255, 0.82);
+    }
+
+    .record-pill.is-risk-marked.is-active .record-meta,
+    .record-pill.is-risk-marked.is-active .record-line span,
+    .record-pill.is-risk-marked.is-active .record-detail {
+      color: #5f5124;
     }
 
     .record-detail {
@@ -588,8 +622,53 @@
 
     .meta-field.symbol-field {
       grid-column: 1 / -1;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      row-gap: 8px;
       border-right: 0;
       border-bottom: 1px solid var(--line);
+    }
+
+    .meta-field.symbol-field.is-risk-marked {
+      background: #fff3a6;
+    }
+
+    .symbol-label {
+      padding-left: 16px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .risk-mark-toggle {
+      min-height: 34px;
+      margin-right: 10px;
+      padding: 0 10px;
+      border-radius: 8px;
+      background: var(--accent-soft);
+      color: #245bc9;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .risk-mark-toggle[aria-pressed="true"] {
+      background: #ffedf1;
+      color: #d9234e;
+      box-shadow: inset 0 0 0 1px #ffb8c8;
+    }
+
+    .risk-note-wrap {
+      display: none;
+      grid-column: 1 / -1;
+      padding: 0 10px 8px 16px;
+    }
+
+    .meta-field.symbol-field.is-risk-marked .risk-note-wrap {
+      display: block;
+    }
+
+    .risk-note-wrap input {
+      border: 1px solid #f5d979;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.74);
     }
 
     .meta-field.time-field {
@@ -1321,6 +1400,25 @@
       padding: 14px;
     }
 
+    .calc-name-row,
+    .calc-support-row {
+      display: grid;
+      gap: 8px;
+      align-items: end;
+    }
+
+    #calcPage .archive-form {
+      gap: 8px;
+    }
+
+    .calc-name-row {
+      grid-template-columns: minmax(0, 1fr) minmax(92px, 0.42fr);
+    }
+
+    .calc-support-row {
+      grid-template-columns: 1fr 1fr;
+    }
+
     .archive-form label {
       display: grid;
       gap: 6px;
@@ -1342,14 +1440,17 @@
 
     .calc-actions {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 6px;
     }
 
     .calc-actions button {
-      min-height: 40px;
+      min-height: 32px;
+      padding: 0 4px;
       border-radius: 8px;
+      font-size: 12px;
       font-weight: 900;
+      white-space: nowrap;
     }
 
     .calc-actions button:first-child {
@@ -1591,6 +1692,10 @@
 
       .sidebar.is-compact .record-compact-logic.is-breakout {
         background: #ef476f;
+      }
+
+      .sidebar.is-compact .record-compact-logic.is-range-ok {
+        background: #2f6fe4;
       }
 
       .sidebar.is-compact .record-compact-logic.is-pullback {
@@ -2040,8 +2145,12 @@
       </div>
       <div class="meta-grid">
         <div class="meta-field symbol-field">
-          <label for="symbol">标的名称:</label>
+          <span class="symbol-label">标的名称:</span>
           <input id="symbol" data-save="symbol" type="text" placeholder="例如 AAPL / BTC">
+          <button id="riskMarkToggle" class="risk-mark-toggle" type="button" aria-pressed="false">风险</button>
+          <div class="risk-note-wrap" id="riskNoteWrap">
+            <input id="riskNote" data-save="riskNote" type="text" placeholder="输入当前风险">
+          </div>
         </div>
         <div class="meta-field code-field">
           <input id="stockCode" data-save="stockCode" type="text" inputmode="numeric" placeholder="输入代码" aria-label="代码">
@@ -2233,27 +2342,43 @@
         <button id="closeCalcPageBtn" type="button" aria-label="关闭盈亏比试算">×</button>
       </header>
       <div class="archive-form">
-        <label><span>试算名称</span><input id="calcName" type="text" placeholder="例如 突破前试算"></label>
-        <label><span>入场价</span><input id="calcEntry" type="number" inputmode="decimal" step="0.001" value="10"></label>
-        <label><span>止损价</span><input id="calcStop" type="number" inputmode="decimal" step="0.001" value="9"></label>
-        <label><span>目标价</span><input id="calcTarget" type="number" inputmode="decimal" step="0.001" value="12.5"></label>
         <div class="calc-actions">
           <button id="saveCalcTrialBtn" type="button">保存试算</button>
           <button id="convertCalcTrialBtn" class="convert-btn" type="button">转为正式</button>
           <button id="newCalcTrialBtn" type="button" class="secondary">新试算</button>
           <button id="clearCalcTrialBtn" type="button" class="secondary">清空</button>
+          <button id="importCalcTrialsBtn" type="button" class="secondary">批量导入</button>
+          <input id="calcTrialImportFile" type="file" accept=".xls,.csv,.txt,text/plain,application/vnd.ms-excel" hidden>
+        </div>
+        <div class="calc-name-row">
+          <label><span>试算名称</span><input id="calcName" type="text" placeholder="例如 突破前试算"></label>
+          <input id="calcCode" type="text" inputmode="numeric" placeholder="输入代码" aria-label="代码">
+        </div>
+        <label><span>入场价</span><input id="calcEntry" type="number" inputmode="decimal" step="0.001" value="10"></label>
+        <div class="calc-support-row">
+          <label><span>第一支撑</span><input id="calcSupport1" type="number" inputmode="decimal" step="0.001" value="9"></label>
+          <label><span>第二支撑</span><input id="calcSupport2" type="number" inputmode="decimal" step="0.001" value="9"></label>
+        </div>
+        <label><span>压力位</span><input id="calcPressure" type="number" inputmode="decimal" step="0.001" value="12.5"></label>
+        <div class="summary-row is-hidden" id="calcEntryRangeRow" data-icon="范">
+          <span>入场范围</span>
+          <strong id="calcEntryRange">-</strong>
         </div>
         <div class="summary-row" data-icon="比">
-          <span>盈亏比</span>
-          <strong id="calcRatio">2.50 : 1</strong>
+          <span>第一盈亏比</span>
+          <strong id="calcRatioFirst">2.50 : 1</strong>
+        </div>
+        <div class="summary-row" data-icon="比">
+          <span>第二盈亏比</span>
+          <strong id="calcRatioSecond">2.50 : 1</strong>
         </div>
         <div class="summary-row" data-icon="盈">
           <span>盈利空间</span>
           <strong id="calcProfitRate">+25%</strong>
         </div>
         <div class="summary-row" data-icon="亏">
-          <span>亏损空间</span>
-          <strong id="calcLossRate">-10%</strong>
+          <span>支撑空间</span>
+          <strong id="calcSupportRate">-10% / -10%</strong>
         </div>
       </div>
     </div>
@@ -2368,6 +2493,8 @@
       function createDefaultFields() {
         return {
           symbol: "",
+          riskMarkEnabled: "0",
+          riskNote: "",
           stockCode: "",
           buyTime: nowInputValue().slice(0, 10),
           timeStopEnabled: "1",
@@ -2403,9 +2530,11 @@
         return {
           id: id,
           name: String(data.name || ""),
+          code: String(data.code || ""),
           entry: String(data.entry || "10"),
-          stop: String(data.stop || "9"),
-          target: String(data.target || "12.5"),
+          firstSupport: String(data.firstSupport || data.stop || "9"),
+          secondSupport: String(data.secondSupport || data.firstSupport || data.stop || "9"),
+          pressure: String(data.pressure || data.target || "12.5"),
           updatedAt: new Date().toISOString()
         };
       }
@@ -2452,9 +2581,11 @@
         var normalized = createTrialRecord();
         normalized.id = record && record.id ? String(record.id) : "trial-imported-" + Date.now() + "-" + index;
         normalized.name = String(record && record.name || "");
+        normalized.code = String(record && record.code || "");
         normalized.entry = String(record && record.entry || "10");
-        normalized.stop = String(record && record.stop || "9");
-        normalized.target = String(record && record.target || "12.5");
+        normalized.firstSupport = String(record && (record.firstSupport || record.stop) || "9");
+        normalized.secondSupport = String(record && (record.secondSupport || record.firstSupport || record.stop) || "9");
+        normalized.pressure = String(record && (record.pressure || record.target) || "12.5");
         normalized.updatedAt = record && record.updatedAt ? String(record.updatedAt) : new Date().toISOString();
         return normalized;
       }
@@ -2554,6 +2685,7 @@
         });
         record.fields.timeStopEnabled = $("timeStopToggle").getAttribute("aria-pressed") === "true" ? "1" : "0";
         record.fields.dynamicStopEnabled = $("dynamicStopToggle").getAttribute("aria-pressed") === "true" ? "1" : "0";
+        record.fields.riskMarkEnabled = $("riskMarkToggle").getAttribute("aria-pressed") === "true" ? "1" : "0";
         record.updatedAt = new Date().toISOString();
         localStorage.setItem(storageKey, JSON.stringify(state));
         renderRecords();
@@ -2754,12 +2886,57 @@
         });
       }
 
+      function numberCell(value) {
+        return cleanTableCell(value).replace(/,/g, "");
+      }
+
+      function parseSupportPressureTable(text) {
+        var lines = String(text || "").replace(/\r/g, "\n").split("\n").filter(function (line) {
+          return line.trim();
+        });
+        if (!lines.length) throw new Error("empty");
+        var headerLine = lines[0];
+        var delimiters = ["\t", ",", ";"];
+        var delimiter = delimiters.reduce(function (best, item) {
+          return headerLine.split(item).length > headerLine.split(best).length ? item : best;
+        }, "\t");
+        var headers = splitDelimitedLine(headerLine, delimiter);
+        var codeIndex = findHeaderIndex(headers, ["代码", "证券代码", "股票代码"]);
+        var nameIndex = findHeaderIndex(headers, ["名称", "证券名称", "股票名称"]);
+        var entryIndex = findHeaderIndex(headers, ["现价", "当前价格", "当前价", "市价"]);
+        var pressureIndex = findHeaderIndex(headers, ["压力", "压力位"]);
+        var firstSupportIndex = findHeaderIndex(headers, ["第一支撑", "支撑1", "一支撑"]);
+        var secondSupportIndex = findHeaderIndex(headers, ["第二支撑", "支撑2", "二支撑"]);
+        if (codeIndex === -1 || nameIndex === -1 || entryIndex === -1 || pressureIndex === -1 || firstSupportIndex === -1 || secondSupportIndex === -1) {
+          throw new Error("columns");
+        }
+        return lines.slice(1).map(function (line, index) {
+          var cells = splitDelimitedLine(line, delimiter);
+          var name = cleanTableCell(cells[nameIndex]);
+          var code = cleanTableCell(cells[codeIndex]);
+          var entry = numberCell(cells[entryIndex]);
+          var pressure = numberCell(cells[pressureIndex]);
+          var firstSupport = numberCell(cells[firstSupportIndex]);
+          var secondSupport = numberCell(cells[secondSupportIndex]);
+          if (!code || !entry || !pressure || !firstSupport || !secondSupport) return null;
+          if (![entry, pressure, firstSupport, secondSupport].every(function (value) { return Number.isFinite(parseFloat(value)); })) return null;
+          return createTrialRecord({
+            name: (name || code || ("导入试算" + (index + 1))) + " 试算",
+            code: code,
+            entry: entry,
+            firstSupport: firstSupport,
+            secondSupport: secondSupport,
+            pressure: pressure
+          });
+        }).filter(Boolean);
+      }
+
       function decodePriceTableBuffer(buffer) {
         var bytes = new Uint8Array(buffer);
         var utfText = "";
         try {
           var gbText = new TextDecoder("gb18030").decode(bytes);
-          if (gbText.indexOf("证券代码") !== -1 || gbText.indexOf("股票代码") !== -1 || gbText.indexOf("市价") !== -1) return gbText;
+          if (gbText.indexOf("证券代码") !== -1 || gbText.indexOf("股票代码") !== -1 || gbText.indexOf("代码") !== -1 || gbText.indexOf("市价") !== -1 || gbText.indexOf("现价") !== -1 || gbText.indexOf("压力") !== -1 || gbText.indexOf("第一支撑") !== -1) return gbText;
         } catch (error) {
           // Fall through to UTF-8 below.
         }
@@ -2813,6 +2990,29 @@
         reader.readAsArrayBuffer(file);
       }
 
+      function importCalcTrialFile(file) {
+        if (!file) return;
+        var reader = new FileReader();
+        reader.onload = function () {
+          try {
+            var importedTrials = parseSupportPressureTable(decodePriceTableBuffer(reader.result));
+            if (!importedTrials.length) {
+              showToast("没有可导入的试算记录");
+              return;
+            }
+            state.trialRecords = importedTrials.concat(state.trialRecords || []);
+            state.currentTrialId = importedTrials[0].id;
+            localStorage.setItem(storageKey, JSON.stringify(state));
+            loadTrialRecord(state.currentTrialId);
+            renderTrialRecords();
+            showToast("已导入 " + importedTrials.length + " 条试算");
+          } catch (error) {
+            showToast("导入失败：没有找到代码/名称/现价/支撑/压力列");
+          }
+        };
+        reader.readAsArrayBuffer(file);
+      }
+
       function populateTimeStopOptions() {
         var timeStop = $("timeStopDays");
         if (!timeStop || timeStop.options.length) return;
@@ -2836,6 +3036,22 @@
           activeRecord().fields.timeStopEnabled = enabled ? "1" : "0";
           writeStorage(true);
           renderRecords();
+        }
+      }
+
+      function setRiskMarkEnabled(enabled, silent) {
+        var field = document.querySelector(".symbol-field");
+        var toggle = $("riskMarkToggle");
+        if (!field || !toggle) return;
+        field.classList.toggle("is-risk-marked", enabled);
+        toggle.setAttribute("aria-pressed", enabled ? "true" : "false");
+        if (!silent) {
+          activeRecord().fields.riskMarkEnabled = enabled ? "1" : "0";
+          writeStorage(true);
+          renderRecords();
+          if (enabled) {
+            window.setTimeout(function () { $("riskNote").focus(); }, 50);
+          }
         }
       }
 
@@ -2871,6 +3087,7 @@
         if (!$("buyTime").value) {
           $("buyTime").value = nowInputValue().slice(0, 10);
         }
+        setRiskMarkEnabled(fields.riskMarkEnabled === "1", true);
         setTimeStopEnabled(fields.timeStopEnabled !== "0", true);
         setDynamicStopEnabled(fields.dynamicStopEnabled !== "0", true);
       }
@@ -2993,6 +3210,11 @@
         return days + " 交易日";
       }
 
+      function ratioEntryLimit(support, pressure) {
+        if (support <= 0 || pressure <= 0 || pressure <= support) return null;
+        return (pressure + 2 * support) / 3;
+      }
+
       function getRecordSummary(record) {
         var fields = record.fields || {};
         var logicId = record.selectedLogic || "breakout";
@@ -3017,6 +3239,8 @@
           ratio: ratio > 0 ? ratio.toFixed(2) + " : 1" : "-",
           expectedLoss: expectedLoss,
           lossRiskExceeded: Number.isFinite(singleLimit) && singleLimit > 0 && expectedLoss > singleLimit,
+          riskMarked: fields.riskMarkEnabled === "1",
+          riskNote: fields.riskNote || "",
           logic: getLogicLabel(logicId),
           logicId: logicId,
           dynamicStop: fields.dynamicStopEnabled === "0" ? "\u672a\u542f\u7528" : ((record.dynamicStopTags || []).join(" / ") || "-"),
@@ -3061,7 +3285,8 @@
           var isFirst = index === 0;
           var isLast = index === visibleRecords.length - 1;
           var archivedClass = record.archived ? " is-archived" : "";
-          return '<div class="record-pill ' + logicClass + active + archivedClass + '" data-record-id="' + record.id + '" role="button" tabindex="0">' +
+          var riskMarkedClass = summary.riskMarked ? " is-risk-marked" : "";
+          return '<div class="record-pill ' + logicClass + active + archivedClass + riskMarkedClass + '" data-record-id="' + record.id + '" role="button" tabindex="0">' +
             '<span class="record-sort" aria-label="\u8bb0\u5f55\u6392\u5e8f">' +
               '<button type="button" class="' + (isFirst ? "is-highlight" : "") + '" data-sort-record="' + record.id + '" data-sort-action="top" aria-label="\u7f6e\u9876">\u21e7</button>' +
               '<button type="button" data-sort-record="' + record.id + '" data-sort-action="up" aria-label="\u4e0a\u79fb"' + (isFirst ? " hidden" : "") + '>\u2191</button>' +
@@ -3084,6 +3309,7 @@
               '<span class="record-line"><span>\u91d1\u989d</span><strong>' + escapeHtml(summary.amount) + '</strong></span>' +
               '<span class="record-line"><span>\u76c8\u4e8f\u6bd4</span><strong>' + escapeHtml(summary.ratio) + '</strong></span>' +
               '<span class="record-line"><span>\u52a8\u6001\u6b62\u635f</span><strong>' + escapeHtml(summary.dynamicStop) + '</strong></span>' +
+              (summary.riskMarked ? '<span class="record-line"><span>\u98ce\u9669</span><strong>' + escapeHtml(summary.riskNote || "\u5df2\u6807\u8bb0") + '</strong></span>' : '') +
               (record.archived ? '<span class="record-line"><span>\u5f52\u6863</span><strong>' + escapeHtml(summary.archiveText) + '</strong></span>' : '') +
               '<span class="record-line"><span>\u65f6\u95f4\u6b62\u635f</span><strong>' + escapeHtml(summary.timeStopDays) + '</strong></span>' +
               '<span class="record-line"><span>\u6301\u6709</span><strong>' + escapeHtml(summary.holdingDays) + '</strong></span>' +
@@ -3100,20 +3326,33 @@
 
       function getTrialSummary(record) {
         var entry = parseFloat(record.entry) || 0;
-        var stop = parseFloat(record.stop) || 0;
-        var target = parseFloat(record.target) || 0;
-        var risk = Math.abs(entry - stop);
-        var reward = target - entry;
-        var ratio = risk > 0 ? Math.abs(reward / risk) : 0;
+        var firstSupport = parseFloat(record.firstSupport || record.stop) || 0;
+        var secondSupport = parseFloat(record.secondSupport || record.firstSupport || record.stop) || 0;
+        var pressure = parseFloat(record.pressure || record.target) || 0;
+        var firstRisk = Math.abs(entry - firstSupport);
+        var secondRisk = Math.abs(entry - secondSupport);
+        var reward = pressure - entry;
+        var firstRatio = firstRisk > 0 ? Math.abs(reward / firstRisk) : 0;
+        var secondRatio = secondRisk > 0 ? Math.abs(reward / secondRisk) : 0;
+        var entryRangeFirst = ratioEntryLimit(firstSupport, pressure);
+        var entryRangeSecond = ratioEntryLimit(secondSupport, pressure);
+        var inEntryRangeFirst = entryRangeFirst !== null && entry < entryRangeFirst;
         return {
           title: record.name || "未命名试算",
+          code: record.code || "",
           time: record.updatedAt ? record.updatedAt.slice(5, 16).replace("T", " ") : "",
           entry: formatRecordValue(entry, 4),
-          stop: formatRecordValue(stop, 4),
-          target: formatRecordValue(target, 4),
-          ratio: ratio.toFixed(2) + " : 1",
-          profitRate: signedPercent(entry > 0 ? (target - entry) / entry : 0),
-          lossRate: signedPercent(entry > 0 ? (stop - entry) / entry : 0)
+          firstSupport: formatRecordValue(firstSupport, 4),
+          secondSupport: formatRecordValue(secondSupport, 4),
+          pressure: formatRecordValue(pressure, 4),
+          ratioFirst: firstRatio.toFixed(2) + " : 1",
+          ratioSecond: secondRatio.toFixed(2) + " : 1",
+          ratioCompact: "\u4e00 " + firstRatio.toFixed(2) + " / \u4e8c " + secondRatio.toFixed(2),
+          entryRangeFirst: entryRangeFirst === null ? "-" : formatRecordValue(entryRangeFirst, 4),
+          entryRangeSecond: entryRangeSecond === null ? "-" : formatRecordValue(entryRangeSecond, 4),
+          inEntryRangeFirst: inEntryRangeFirst,
+          profitRate: signedPercent(entry > 0 ? (pressure - entry) / entry : 0),
+          supportRate: signedPercent(entry > 0 ? (firstSupport - entry) / entry : 0) + " / " + signedPercent(entry > 0 ? (secondSupport - entry) / entry : 0)
         };
       }
 
@@ -3128,6 +3367,7 @@
         list.innerHTML = state.trialRecords.map(function (record) {
           var active = record.id === state.currentTrialId ? " is-active" : "";
           var summary = getTrialSummary(record);
+          var rangeClass = summary.inEntryRangeFirst ? " is-range-ok" : "";
           return '<div class="record-pill trial-pill is-breakout' + active + '" data-trial-id="' + record.id + '" role="button" tabindex="0">' +
             '<span class="record-actions">' +
               '<button type="button" class="record-delete" data-delete-trial="' + record.id + '" aria-label="删除试算">&times;</button>' +
@@ -3137,16 +3377,12 @@
               '<span class="logic-badge is-breakout">试算</span>' +
             '</span>' +
             '<span class="trial-metrics">' +
-              '<span>比 ' + escapeHtml(summary.ratio) + '</span>' +
-              '<span>入 ' + escapeHtml(summary.entry) + '</span>' +
-              '<span>止 ' + escapeHtml(summary.stop) + '</span>' +
-              '<span>目 ' + escapeHtml(summary.target) + '</span>' +
+              '<span>入场范围1 < ' + escapeHtml(summary.entryRangeFirst) + '</span>' +
             '</span>' +
             '<span class="record-compact">' +
               '<span class="record-compact-name">' + escapeHtml(compactTitle(summary.title)) + '</span>' +
-              '<span class="record-compact-logic is-breakout"></span>' +
-              '<span>' + escapeHtml(summary.ratio) + '</span>' +
-              '<span>试算</span>' +
+              '<span class="record-compact-logic is-breakout' + rangeClass + '"></span>' +
+              '<span>< ' + escapeHtml(summary.entryRangeFirst) + '</span>' +
             '</span>' +
           '</div>';
         }).join("");
@@ -3794,21 +4030,39 @@
 
       function recalcTrialCalculator() {
         var entry = parseFloat($("calcEntry").value) || 0;
-        var stop = parseFloat($("calcStop").value) || 0;
-        var target = parseFloat($("calcTarget").value) || 0;
-        var risk = Math.abs(entry - stop);
-        var reward = target - entry;
-        var ratio = risk > 0 ? Math.abs(reward / risk) : 0;
-        $("calcRatio").textContent = ratio.toFixed(2) + " : 1";
-        $("calcProfitRate").textContent = signedPercent(entry > 0 ? (target - entry) / entry : 0);
-        $("calcLossRate").textContent = signedPercent(entry > 0 ? (stop - entry) / entry : 0);
+        var firstSupport = parseFloat($("calcSupport1").value) || 0;
+        var secondSupport = parseFloat($("calcSupport2").value) || 0;
+        var pressure = parseFloat($("calcPressure").value) || 0;
+        var firstRisk = Math.abs(entry - firstSupport);
+        var secondRisk = Math.abs(entry - secondSupport);
+        var reward = pressure - entry;
+        var firstRatio = firstRisk > 0 ? Math.abs(reward / firstRisk) : 0;
+        var secondRatio = secondRisk > 0 ? Math.abs(reward / secondRisk) : 0;
+        $("calcRatioFirst").textContent = firstRatio.toFixed(2) + " : 1";
+        $("calcRatioSecond").textContent = secondRatio.toFixed(2) + " : 1";
+        $("calcProfitRate").textContent = signedPercent(entry > 0 ? (pressure - entry) / entry : 0);
+        $("calcSupportRate").textContent = signedPercent(entry > 0 ? (firstSupport - entry) / entry : 0) + " / " + signedPercent(entry > 0 ? (secondSupport - entry) / entry : 0);
+        updateTrialEntryRange(entry, firstSupport, secondSupport, pressure, firstRatio, secondRatio);
+      }
+
+      function updateTrialEntryRange(entry, firstSupport, secondSupport, pressure, firstRatio, secondRatio) {
+        var showRange = firstRatio < 2 || secondRatio < 2;
+        var firstLimit = ratioEntryLimit(firstSupport, pressure);
+        var secondLimit = ratioEntryLimit(secondSupport, pressure);
+        var parts = [];
+        if (firstLimit !== null) parts.push("\u5165\u573a\u8303\u56f41 < " + formatRecordValue(firstLimit, 4));
+        if (secondLimit !== null) parts.push("\u5165\u573a\u8303\u56f42 < " + formatRecordValue(secondLimit, 4));
+        $("calcEntryRange").textContent = parts.length ? parts.join(" / ") : "-";
+        $("calcEntryRangeRow").classList.toggle("is-hidden", !showRange || !parts.length || entry <= 0 || pressure <= 0);
       }
 
       function fillCalcFromMain() {
         $("calcName").value = $("symbol").value ? $("symbol").value + " 试算" : "";
+        $("calcCode").value = $("stockCode").value || "";
         $("calcEntry").value = $("currentPrice").value || $("entryPrice").value || "10";
-        $("calcStop").value = $("dynamicStopToggle").getAttribute("aria-pressed") === "true" ? $("dynamicStopPrice").value : $("stopPrice").value;
-        $("calcTarget").value = $("targetPrice").value || "12.5";
+        $("calcSupport1").value = $("dynamicStopToggle").getAttribute("aria-pressed") === "true" ? $("dynamicStopPrice").value : $("stopPrice").value;
+        $("calcSupport2").value = $("calcSupport1").value;
+        $("calcPressure").value = $("targetPrice").value || "12.5";
         state.currentTrialId = null;
         recalcTrialCalculator();
       }
@@ -3816,9 +4070,11 @@
       function saveTrialRecord() {
         var values = {
           name: $("calcName").value.trim() || "未命名试算",
+          code: $("calcCode").value.trim(),
           entry: $("calcEntry").value || "0",
-          stop: $("calcStop").value || "0",
-          target: $("calcTarget").value || "0"
+          firstSupport: $("calcSupport1").value || "0",
+          secondSupport: $("calcSupport2").value || "0",
+          pressure: $("calcPressure").value || "0"
         };
         var record = state.trialRecords.find(function (item) { return item.id === state.currentTrialId; });
         if (!record) {
@@ -3827,9 +4083,11 @@
           state.currentTrialId = record.id;
         } else {
           record.name = values.name;
+          record.code = values.code;
           record.entry = values.entry;
-          record.stop = values.stop;
-          record.target = values.target;
+          record.firstSupport = values.firstSupport;
+          record.secondSupport = values.secondSupport;
+          record.pressure = values.pressure;
           record.updatedAt = new Date().toISOString();
         }
         localStorage.setItem(storageKey, JSON.stringify(state));
@@ -3842,9 +4100,11 @@
         if (!record) return;
         state.currentTrialId = record.id;
         $("calcName").value = record.name || "";
+        $("calcCode").value = record.code || "";
         $("calcEntry").value = record.entry || "10";
-        $("calcStop").value = record.stop || "9";
-        $("calcTarget").value = record.target || "12.5";
+        $("calcSupport1").value = record.firstSupport || record.stop || "9";
+        $("calcSupport2").value = record.secondSupport || record.firstSupport || record.stop || "9";
+        $("calcPressure").value = record.pressure || record.target || "12.5";
         recalcTrialCalculator();
         renderTrialRecords();
         localStorage.setItem(storageKey, JSON.stringify(state));
@@ -3861,9 +4121,11 @@
       function clearTrialInputs() {
         state.currentTrialId = null;
         $("calcName").value = "";
+        $("calcCode").value = "";
         $("calcEntry").value = "";
-        $("calcStop").value = "";
-        $("calcTarget").value = "";
+        $("calcSupport1").value = "";
+        $("calcSupport2").value = "";
+        $("calcPressure").value = "";
         recalcTrialCalculator();
         renderTrialRecords();
         $("calcEntry").focus();
@@ -3871,17 +4133,19 @@
 
       function convertTrialToRecord() {
         var entry = $("calcEntry").value || "0";
-        var stop = $("calcStop").value || "0";
-        var target = $("calcTarget").value || "0";
+        var firstSupport = $("calcSupport1").value || "0";
+        var secondSupport = $("calcSupport2").value || firstSupport;
+        var pressure = $("calcPressure").value || "0";
         var fields = createDefaultFields();
         var quantity = parseFloat(fields.quantity) || 0;
         var entryNumber = parseFloat(entry) || 0;
         fields.symbol = $("calcName").value.trim().replace(/\s*试算$/, "") || "试算记录";
+        fields.stockCode = $("calcCode").value.trim();
         fields.entryPrice = entry;
         fields.currentPrice = entry;
-        fields.stopPrice = stop;
-        fields.dynamicStopPrice = stop;
-        fields.targetPrice = target;
+        fields.stopPrice = secondSupport || firstSupport;
+        fields.dynamicStopPrice = secondSupport || firstSupport;
+        fields.targetPrice = pressure;
         fields.dynamicStopEnabled = "0";
         fields.timeStopEnabled = "1";
         fields.entryAmount = (entryNumber * quantity).toFixed(2);
@@ -4235,6 +4499,10 @@
           pushUndoSnapshot();
           setTimeStopEnabled($("timeStopToggle").getAttribute("aria-pressed") !== "true", false);
         });
+        $("riskMarkToggle").addEventListener("click", function () {
+          pushUndoSnapshot();
+          setRiskMarkEnabled($("riskMarkToggle").getAttribute("aria-pressed") !== "true", false);
+        });
         $("dynamicStopToggle").addEventListener("click", function () {
           pushUndoSnapshot();
           setDynamicStopEnabled($("dynamicStopToggle").getAttribute("aria-pressed") !== "true", false);
@@ -4278,7 +4546,14 @@
           renderTrialRecords();
         });
         $("clearCalcTrialBtn").addEventListener("click", clearTrialInputs);
-        ["calcEntry", "calcStop", "calcTarget"].forEach(function (id) {
+        $("importCalcTrialsBtn").addEventListener("click", function () {
+          $("calcTrialImportFile").click();
+        });
+        $("calcTrialImportFile").addEventListener("change", function (event) {
+          importCalcTrialFile(event.target.files && event.target.files[0]);
+          event.target.value = "";
+        });
+        ["calcEntry", "calcSupport1", "calcSupport2", "calcPressure"].forEach(function (id) {
           $(id).addEventListener("input", recalcTrialCalculator);
         });
         $("exportRecordsBtn").addEventListener("click", exportRecords);
