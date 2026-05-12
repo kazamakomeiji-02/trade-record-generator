@@ -665,10 +665,21 @@
       display: block;
     }
 
-    .risk-note-wrap input {
+    .risk-note-wrap textarea {
+      display: block;
+      width: 100%;
+      min-height: 36px;
       border: 1px solid #f5d979;
       border-radius: 8px;
+      padding: 8px 10px;
       background: rgba(255, 255, 255, 0.74);
+      color: var(--ink);
+      font: inherit;
+      font-weight: 700;
+      line-height: 1.35;
+      outline: 0;
+      resize: none;
+      overflow: hidden;
     }
 
     .meta-field.time-field {
@@ -2149,7 +2160,7 @@
           <input id="symbol" data-save="symbol" type="text" placeholder="例如 AAPL / BTC">
           <button id="riskMarkToggle" class="risk-mark-toggle" type="button" aria-pressed="false">风险</button>
           <div class="risk-note-wrap" id="riskNoteWrap">
-            <input id="riskNote" data-save="riskNote" type="text" placeholder="输入当前风险">
+            <textarea id="riskNote" data-save="riskNote" rows="1" placeholder="输入当前风险"></textarea>
           </div>
         </div>
         <div class="meta-field code-field">
@@ -3045,6 +3056,7 @@
         if (!field || !toggle) return;
         field.classList.toggle("is-risk-marked", enabled);
         toggle.setAttribute("aria-pressed", enabled ? "true" : "false");
+        if (enabled) autoResizeTextArea($("riskNote"));
         if (!silent) {
           activeRecord().fields.riskMarkEnabled = enabled ? "1" : "0";
           writeStorage(true);
@@ -3053,6 +3065,12 @@
             window.setTimeout(function () { $("riskNote").focus(); }, 50);
           }
         }
+      }
+
+      function autoResizeTextArea(textarea) {
+        if (!textarea) return;
+        textarea.style.height = "auto";
+        textarea.style.height = textarea.scrollHeight + "px";
       }
 
       function setDynamicStopEnabled(enabled, silent) {
@@ -3087,6 +3105,7 @@
         if (!$("buyTime").value) {
           $("buyTime").value = nowInputValue().slice(0, 10);
         }
+        autoResizeTextArea($("riskNote"));
         setRiskMarkEnabled(fields.riskMarkEnabled === "1", true);
         setTimeStopEnabled(fields.timeStopEnabled !== "0", true);
         setDynamicStopEnabled(fields.dynamicStopEnabled !== "0", true);
@@ -4466,6 +4485,7 @@
             pushUndoSnapshot();
           });
           input.addEventListener("input", function () {
+            if (input.tagName === "TEXTAREA") autoResizeTextArea(input);
             recalc(input.id);
             writeStorage(true);
           });
