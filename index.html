@@ -211,12 +211,18 @@
       box-shadow: 0 8px 18px rgba(47, 111, 228, 0.28);
     }
 
-    .record-pill.is-risk-marked,
-    .record-pill.is-risk-marked.is-active {
+    .record-pill.is-risk-marked {
       border-color: #ffd452;
       background: linear-gradient(180deg, #fff8cf, #ffe77a);
       color: #1b2a43;
       box-shadow: 0 8px 18px rgba(230, 173, 0, 0.2);
+    }
+
+    .record-pill.is-risk-marked.is-active {
+      border-color: #e6a700;
+      background: linear-gradient(180deg, #ffd452, #d59100);
+      color: #1b2a43;
+      box-shadow: 0 8px 18px rgba(213, 145, 0, 0.28);
     }
 
     .record-pill.is-risk-marked .record-meta,
@@ -469,6 +475,25 @@
       filter: grayscale(0.2);
     }
 
+    .record-pill.is-time-stop-warning,
+    .record-pill.is-time-stop-warning.is-active {
+      border-color: #B46600;
+      background: #B46600;
+      color: #fff;
+      box-shadow: 0 8px 18px rgba(180, 102, 0, 0.28);
+    }
+
+    .record-pill.is-time-stop-warning .record-meta,
+    .record-pill.is-time-stop-warning .record-title,
+    .record-pill.is-time-stop-warning .record-name,
+    .record-pill.is-time-stop-warning .record-line span,
+    .record-pill.is-time-stop-warning .record-line strong,
+    .record-pill.is-time-stop-warning .record-detail,
+    .record-pill.is-time-stop-warning .record-compact,
+    .record-pill.is-time-stop-warning .record-compact-name {
+      color: #fff;
+    }
+
     .record-sort {
       position: absolute;
       right: 4px;
@@ -575,12 +600,90 @@
       background: #fff;
     }
 
+    .archive-review-grid {
+      display: none;
+      grid-template-columns: 1fr 1fr;
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+    }
+
+    body.archive-review-mode .risk-grid {
+      display: none;
+    }
+
+    body.archive-review-mode .archive-review-grid {
+      display: grid;
+    }
+
     .risk-field {
       display: grid;
       grid-template-columns: auto minmax(0, 1fr);
       align-items: center;
       min-height: 46px;
       border-right: 1px solid var(--line);
+    }
+
+    .archive-review-field {
+      display: grid;
+      gap: 3px;
+      min-height: 46px;
+      padding: 6px 14px;
+      border-right: 1px solid var(--line);
+      color: var(--ink);
+      font-weight: 900;
+    }
+
+    .archive-review-field.full {
+      grid-column: 1 / -1;
+      border-right: 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .archive-review-total {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 46px;
+      border-bottom: 1px solid var(--line);
+      color: var(--ink);
+      font-weight: 900;
+    }
+
+    .archive-review-total label {
+      display: grid;
+      gap: 3px;
+      min-width: 0;
+      padding: 6px 14px;
+    }
+
+    .archive-review-total label:first-child {
+      border-right: 1px solid var(--line);
+    }
+
+    .archive-review-field:nth-child(2n + 1) {
+      border-right: 0;
+    }
+
+    .archive-review-field span,
+    .archive-review-total span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .archive-review-field input,
+    .archive-review-field textarea,
+    .archive-review-total input {
+      width: 100%;
+      min-height: 28px;
+      border: 0;
+      outline: 0;
+      resize: vertical;
+      background: transparent;
+      color: var(--ink);
+      font: inherit;
+      font-size: 14px;
+      font-weight: 800;
     }
 
     .risk-field:last-child {
@@ -984,6 +1087,30 @@
       display: none;
     }
 
+    .batch-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
+      margin-bottom: 6px;
+      padding: 4px;
+      border-radius: 7px;
+      background: var(--field-soft);
+    }
+
+    .batch-tabs button {
+      min-height: 30px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #cfd6df;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .batch-tabs button.is-active {
+      background: var(--accent-soft);
+      color: #245bc9;
+    }
+
     .chip {
       flex: 0 0 auto;
       min-height: 22px;
@@ -1169,7 +1296,7 @@
     }
 
     .logic-head {
-      width: 150px;
+      width: 118px;
       font-size: 18px !important;
     }
 
@@ -1194,7 +1321,7 @@
     }
 
     .row-title {
-      width: 150px;
+      width: 118px;
       padding: 0 8px;
       text-align: center;
       vertical-align: middle !important;
@@ -1543,7 +1670,8 @@
     }
 
     .archive-form select,
-    .archive-form input {
+    .archive-form input,
+    .archive-form textarea {
       width: 100%;
       min-height: 40px;
       border: 1px solid #dce4ef;
@@ -1552,6 +1680,12 @@
       color: var(--ink);
       font: inherit;
       outline: 0;
+    }
+
+    .archive-form textarea {
+      min-height: 56px;
+      padding: 8px 10px;
+      resize: vertical;
     }
 
     .calc-actions {
@@ -1578,6 +1712,14 @@
       background: #e8f7ef;
       color: #16824c;
       border: 1px solid #bce7cf;
+    }
+
+    .calc-max-loss-row small {
+      margin-left: 8px;
+      color: #2f6fe4;
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
     }
 
     .trend-pressure {
@@ -1936,6 +2078,40 @@
         grid-template-columns: repeat(2, 1fr);
       }
 
+      .archive-review-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .archive-review-total {
+        grid-template-columns: 1fr 1fr;
+        min-height: 34px;
+      }
+
+      .archive-review-total label {
+        padding: 5px 8px;
+      }
+
+      .archive-review-field,
+      .archive-review-field.full {
+        grid-column: auto;
+        min-height: 34px;
+        padding: 5px 8px;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .archive-review-field span,
+      .archive-review-total span {
+        font-size: 10px;
+      }
+
+      .archive-review-field input,
+      .archive-review-field textarea,
+      .archive-review-total input {
+        min-height: 24px;
+        font-size: 13px;
+      }
+
       .risk-field {
         min-height: 34px;
         grid-template-columns: 1fr;
@@ -2064,6 +2240,17 @@
         margin-bottom: 4px;
         padding: 2px;
         gap: 4px;
+      }
+
+      .batch-tabs {
+        gap: 4px;
+        margin-bottom: 4px;
+        padding: 2px;
+      }
+
+      .batch-tabs button {
+        min-height: 24px;
+        font-size: 11px;
       }
 
       .chip {
@@ -2330,6 +2517,34 @@
           <input id="protectedProfitTotal" type="text" value="0.00" readonly>
         </div>
       </div>
+      <div class="archive-review-grid" id="archiveReviewGrid" aria-label="归档复盘">
+        <div class="archive-review-total">
+          <label>
+            <span>总盈利</span>
+            <input id="archiveTotalProfit" type="text" readonly value="0.00 元">
+          </label>
+          <label>
+            <span>总亏损</span>
+            <input id="archiveTotalLoss" type="text" readonly value="0.00 元">
+          </label>
+        </div>
+        <label class="archive-review-field">
+          <span>卖出价格</span>
+          <input id="archiveReviewSellPrice" type="number" inputmode="decimal" step="0.001" placeholder="卖出价格">
+        </label>
+        <label class="archive-review-field">
+          <span>归档盈亏</span>
+          <input id="archiveReviewPnl" type="text" readonly value="-">
+        </label>
+        <label class="archive-review-field">
+          <span>入场判断</span>
+          <textarea id="archiveReviewEntry" data-archive-review="entryJudgement" rows="2" placeholder="入场判断"></textarea>
+        </label>
+        <label class="archive-review-field">
+          <span>市场真相</span>
+          <textarea id="archiveReviewTruth" data-archive-review="marketTruth" rows="2" placeholder="市场真相"></textarea>
+        </label>
+      </div>
       <div class="meta-grid">
         <div class="meta-field symbol-field">
           <span class="symbol-label">名称:</span>
@@ -2354,6 +2569,11 @@
 
       <div class="calculator">
         <section class="dark-panel" aria-label="入场与止损">
+          <div class="batch-tabs" id="holdingBatchTabs" aria-label="持仓批次切换">
+            <button type="button" data-batch-index="0" class="is-active">持仓1</button>
+            <button type="button" data-batch-index="1">持仓2</button>
+            <button type="button" data-batch-index="2">持仓3</button>
+          </div>
           <div class="field-card combo-card" data-icon="入">
             <label class="field-mini">
               <span class="label">入场单价</span>
@@ -2515,6 +2735,18 @@
           <span>卖出价格</span>
           <input id="archiveSellPrice" type="number" inputmode="decimal" step="0.001" placeholder="输入卖出价格">
         </label>
+        <label>
+          <span>归档盈亏</span>
+          <input id="archivePnlPreview" type="text" value="-" readonly>
+        </label>
+        <label>
+          <span>入场判断</span>
+          <textarea id="archiveEntryJudgement" rows="2" placeholder="入场判断"></textarea>
+        </label>
+        <label>
+          <span>市场真相</span>
+          <textarea id="archiveMarketTruth" rows="2" placeholder="市场真相"></textarea>
+        </label>
         <div class="paste-actions">
           <button id="cancelArchiveBtn" type="button">取消</button>
           <button id="applyArchiveBtn" type="button">归档</button>
@@ -2548,6 +2780,7 @@
           <label><span>第二支撑</span><input id="calcSupport2" type="number" inputmode="decimal" step="0.001" value="9"></label>
         </div>
         <label><span>压力位</span><input id="calcPressure" type="number" inputmode="decimal" step="0.001" value="12.5"></label>
+        <label class="calc-max-loss-row"><span>最大亏损 <small id="calcMaxPosition">一 - / 二 -</small></span><input id="calcMaxLoss" type="number" inputmode="decimal" step="0.01" placeholder="输入最大亏损"></label>
         <div class="trend-pressure">
           <div class="trend-title">趋势压力计算</div>
           <div class="trend-grid">
@@ -2609,6 +2842,8 @@
         { id: "dynamicStop", label: "\u52a8\u6001\u6b62\u635f", icon: "\u52a8" }
       ];
       var tagRows = rows.concat(extraTagRows);
+      var batchFieldIds = ["entryPrice", "currentPrice", "stopPrice", "dynamicStopPrice", "targetPrice", "quantity", "entryAmount", "dynamicStopEnabled"];
+      var batchCount = 3;
       var state = {
         currentId: null,
         records: [],
@@ -2701,7 +2936,22 @@
         return now.toISOString().slice(0, 16);
       }
 
+      function createDefaultBatch(source, emptySize) {
+        source = source || {};
+        return {
+          entryPrice: source.entryPrice !== undefined ? String(source.entryPrice) : "10",
+          currentPrice: source.currentPrice !== undefined ? String(source.currentPrice) : "10",
+          stopPrice: source.stopPrice !== undefined ? String(source.stopPrice) : "9",
+          dynamicStopPrice: source.dynamicStopPrice !== undefined ? String(source.dynamicStopPrice) : "10",
+          targetPrice: source.targetPrice !== undefined ? String(source.targetPrice) : "12.5",
+          quantity: emptySize ? "0" : (source.quantity !== undefined ? String(source.quantity) : "100"),
+          entryAmount: emptySize ? "0" : (source.entryAmount !== undefined ? String(source.entryAmount) : "1000"),
+          dynamicStopEnabled: source.dynamicStopEnabled !== undefined ? String(source.dynamicStopEnabled) : "0"
+        };
+      }
+
       function createDefaultFields() {
+        var batch = createDefaultBatch();
         return {
           symbol: "",
           riskMarkEnabled: "0",
@@ -2711,22 +2961,29 @@
           timeStopEnabled: "1",
           timeStopDays: "7",
           dynamicStopEnabled: "0",
-          entryPrice: "10",
-          currentPrice: "10",
-          stopPrice: "9",
-          dynamicStopPrice: "10",
-          targetPrice: "12.5",
-          quantity: "100",
-          entryAmount: "1000"
+          entryPrice: batch.entryPrice,
+          currentPrice: batch.currentPrice,
+          stopPrice: batch.stopPrice,
+          dynamicStopPrice: batch.dynamicStopPrice,
+          targetPrice: batch.targetPrice,
+          quantity: batch.quantity,
+          entryAmount: batch.entryAmount
         };
       }
 
       function createRecord(fields, cells) {
         var id = "record-" + Date.now() + "-" + Math.random().toString(16).slice(2);
+        var normalizedFields = fields || createDefaultFields();
         return {
           id: id,
-          fields: fields || createDefaultFields(),
+          fields: normalizedFields,
           cells: cells || {},
+          currentBatchIndex: 0,
+          batches: [
+            createDefaultBatch(normalizedFields),
+            createDefaultBatch(normalizedFields, true),
+            createDefaultBatch(normalizedFields, true)
+          ],
           dynamicStopTags: [],
           archived: false,
           archiveInfo: null,
@@ -2746,6 +3003,7 @@
           firstSupport: String(data.firstSupport || data.stop || "9"),
           secondSupport: String(data.secondSupport || data.firstSupport || data.stop || "9"),
           pressure: String(data.pressure || data.target || "12.5"),
+          maxLoss: String(data.maxLoss || ""),
           trendShapeLow: String(data.trendShapeLow || ""),
           trendNeckline: String(data.trendNeckline || ""),
           trendStart: String(data.trendStart || ""),
@@ -2753,6 +3011,64 @@
           trendWaveHigh: String(data.trendWaveHigh || ""),
           updatedAt: new Date().toISOString()
         };
+      }
+
+      function isBatchField(id) {
+        return batchFieldIds.indexOf(id) !== -1;
+      }
+
+      function normalizeBatch(batch, fallback, emptySize) {
+        var source = Object.assign({}, fallback || {}, batch || {});
+        return createDefaultBatch(source, emptySize);
+      }
+
+      function normalizeRecordBatches(record) {
+        if (!record.fields) record.fields = createDefaultFields();
+        var baseBatch = createDefaultBatch(record.fields);
+        var sourceBatches = Array.isArray(record.batches) ? record.batches : [baseBatch];
+        record.batches = [];
+        for (var index = 0; index < batchCount; index += 1) {
+          record.batches.push(normalizeBatch(sourceBatches[index], baseBatch, index > 0 && !sourceBatches[index]));
+        }
+        var currentIndex = parseInt(record.currentBatchIndex, 10);
+        record.currentBatchIndex = Number.isFinite(currentIndex) && currentIndex >= 0 && currentIndex < batchCount ? currentIndex : 0;
+        syncActiveBatchToFields(record);
+        return record;
+      }
+
+      function activeBatch(record) {
+        record = normalizeRecordBatches(record || activeRecord());
+        return record.batches[record.currentBatchIndex || 0];
+      }
+
+      function syncActiveBatchToFields(record) {
+        if (!record || !record.fields || !Array.isArray(record.batches)) return;
+        var batch = record.batches[record.currentBatchIndex || 0] || record.batches[0];
+        batchFieldIds.forEach(function (id) {
+          record.fields[id] = batch[id] !== undefined ? String(batch[id]) : createDefaultBatch()[id];
+        });
+      }
+
+      function syncVisibleFieldsToRecord(record) {
+        record = normalizeRecordBatches(record || activeRecord());
+        var batch = activeBatch(record);
+        document.querySelectorAll("[data-save]").forEach(function (input) {
+          if (isBatchField(input.id)) {
+            batch[input.id] = input.value;
+          } else {
+            record.fields[input.id] = input.value;
+          }
+        });
+        if ($("dynamicStopToggle")) {
+          batch.dynamicStopEnabled = $("dynamicStopToggle").getAttribute("aria-pressed") === "true" ? "1" : "0";
+        }
+        syncActiveBatchToFields(record);
+        return record;
+      }
+
+      function batchNumber(batch, id) {
+        var value = parseFloat(batch && batch[id]);
+        return Number.isFinite(value) ? value : 0;
       }
 
       function activeRecord() {
@@ -2766,6 +3082,7 @@
         }
         if (!record.fields) record.fields = createDefaultFields();
         record.fields = Object.assign(createDefaultFields(), record.fields);
+        normalizeRecordBatches(record);
         if (!record.cells) record.cells = {};
         if (!Array.isArray(record.dynamicStopTags)) record.dynamicStopTags = [];
         record.archived = record.archived === true;
@@ -2802,6 +3119,7 @@
         normalized.firstSupport = String(record && (record.firstSupport || record.stop) || "9");
         normalized.secondSupport = String(record && (record.secondSupport || record.firstSupport || record.stop) || "9");
         normalized.pressure = String(record && (record.pressure || record.target) || "12.5");
+        normalized.maxLoss = String(record && record.maxLoss || "");
         normalized.trendShapeLow = String(record && record.trendShapeLow || "");
         normalized.trendNeckline = String(record && record.trendNeckline || "");
         normalized.trendStart = String(record && record.trendStart || "");
@@ -2816,7 +3134,7 @@
           var saved = JSON.parse(localStorage.getItem(storageKey) || "null");
           if (saved && Array.isArray(saved.records)) {
             state.currentId = saved.currentId || null;
-            state.records = saved.records.length ? saved.records : [createRecord()];
+            state.records = saved.records.length ? saved.records.map(normalizeImportedRecord) : [createRecord()];
             state.currentTrialId = saved.currentTrialId || null;
             state.trialRecords = Array.isArray(saved.trialRecords) ? saved.trialRecords.map(normalizeTrialRecord) : [];
             state.tagLibrary = normalizeTagLibrary(saved.tagLibrary);
@@ -2898,14 +3216,13 @@
 
       function writeStorage(silent) {
         var record = activeRecord();
-        document.querySelectorAll("[data-save]").forEach(function (input) {
-          record.fields[input.id] = input.value;
-        });
+        syncVisibleFieldsToRecord(record);
         document.querySelectorAll("[data-risk-save]").forEach(function (input) {
           state.riskSettings[input.id] = input.value;
         });
         record.fields.timeStopEnabled = $("timeStopToggle").getAttribute("aria-pressed") === "true" ? "1" : "0";
-        record.fields.dynamicStopEnabled = $("dynamicStopToggle").getAttribute("aria-pressed") === "true" ? "1" : "0";
+        activeBatch(record).dynamicStopEnabled = $("dynamicStopToggle").getAttribute("aria-pressed") === "true" ? "1" : "0";
+        syncActiveBatchToFields(record);
         record.fields.riskMarkEnabled = $("riskMarkToggle").getAttribute("aria-pressed") === "true" ? "1" : "0";
         record.updatedAt = new Date().toISOString();
         localStorage.setItem(storageKey, JSON.stringify(state));
@@ -2918,6 +3235,16 @@
         var fields = record && record.fields && typeof record.fields === "object" ? record.fields : {};
         normalized.id = record && record.id ? String(record.id) : "imported-" + Date.now() + "-" + index;
         normalized.fields = Object.assign(createDefaultFields(), fields);
+        normalized.currentBatchIndex = record && record.currentBatchIndex !== undefined ? parseInt(record.currentBatchIndex, 10) || 0 : 0;
+        normalized.batches = Array.isArray(record && record.batches)
+          ? record.batches.slice(0, batchCount).map(function (batch, batchIndex) {
+            return normalizeBatch(batch, normalized.fields, batchIndex > 0 && !batch);
+          })
+          : [createDefaultBatch(normalized.fields)];
+        while (normalized.batches.length < batchCount) {
+          normalized.batches.push(createDefaultBatch(normalized.fields, true));
+        }
+        normalizeRecordBatches(normalized);
         normalized.cells = {};
         normalized.dynamicStopTags = Array.isArray(record && record.dynamicStopTags)
           ? record.dynamicStopTags.filter(Boolean).map(String)
@@ -2926,8 +3253,15 @@
         normalized.archiveInfo = record && record.archiveInfo && typeof record.archiveInfo === "object" ? {
           result: record.archiveInfo.result === "loss" ? "loss" : "win",
           sellPrice: String(record.archiveInfo.sellPrice || ""),
-          archivedAt: record.archiveInfo.archivedAt ? String(record.archiveInfo.archivedAt) : ""
+          archivedAt: record.archiveInfo.archivedAt ? String(record.archiveInfo.archivedAt) : "",
+          profitText: record.archiveInfo.profitText ? String(record.archiveInfo.profitText) : "",
+          entryJudgement: record.archiveInfo.entryJudgement ? String(record.archiveInfo.entryJudgement) : "",
+          marketTruth: record.archiveInfo.marketTruth ? String(record.archiveInfo.marketTruth) : ""
         } : null;
+        if (normalized.archiveInfo && normalized.archiveInfo.sellPrice) {
+          normalized.archiveInfo.profitText = archivePnlText(normalized, normalized.archiveInfo.sellPrice);
+          normalized.archiveInfo.result = recordArchivePnl(normalized, normalized.archiveInfo.sellPrice) < 0 ? "loss" : "win";
+        }
         normalized.selectedLogic = record && record.selectedLogic === "pullback" ? "pullback" : "breakout";
         normalized.updatedAt = record && record.updatedAt ? String(record.updatedAt) : new Date().toISOString();
 
@@ -3188,7 +3522,12 @@
               record.fields = Object.assign(createDefaultFields(), record.fields);
               var code = normalizeStockCode(record.fields.stockCode);
               if (!code || !priceMap[code]) return;
-              record.fields.currentPrice = String(parseFloat(priceMap[code].price.replace(/,/g, "")));
+              normalizeRecordBatches(record);
+              var importedPrice = String(parseFloat(priceMap[code].price.replace(/,/g, "")));
+              record.batches.forEach(function (batch) {
+                batch.currentPrice = importedPrice;
+              });
+              record.fields.currentPrice = importedPrice;
               if (!String(record.fields.symbol || "").trim() && priceMap[code].name) {
                 record.fields.symbol = priceMap[code].name;
               }
@@ -3292,7 +3631,9 @@
         toggle.setAttribute("aria-pressed", enabled ? "true" : "false");
         recalc();
         if (!silent) {
-          activeRecord().fields.dynamicStopEnabled = enabled ? "1" : "0";
+          var record = activeRecord();
+          activeBatch(record).dynamicStopEnabled = enabled ? "1" : "0";
+          syncActiveBatchToFields(record);
           writeStorage(true);
           renderRecords();
         }
@@ -3300,12 +3641,16 @@
 
       function hydrateFields() {
         populateTimeStopOptions();
-        var fields = activeRecord().fields;
+        var record = activeRecord();
+        var fields = record.fields;
+        var batch = activeBatch(record);
         document.querySelectorAll("[data-risk-save]").forEach(function (input) {
           input.value = state.riskSettings && state.riskSettings[input.id] !== undefined ? state.riskSettings[input.id] : "";
         });
         document.querySelectorAll("[data-save]").forEach(function (input) {
-          if (fields[input.id] !== undefined) {
+          if (isBatchField(input.id) && batch[input.id] !== undefined) {
+            input.value = batch[input.id];
+          } else if (fields[input.id] !== undefined) {
             input.value = input.id === "buyTime" ? String(fields[input.id]).slice(0, 10) : fields[input.id];
           } else if (createDefaultFields()[input.id] !== undefined) {
             input.value = createDefaultFields()[input.id];
@@ -3319,6 +3664,32 @@
         setRiskMarkEnabled(fields.riskMarkEnabled === "1", true);
         setTimeStopEnabled(fields.timeStopEnabled !== "0", true);
         setDynamicStopEnabled(fields.dynamicStopEnabled !== "0", true);
+        renderBatchTabs();
+        hydrateArchiveReview();
+      }
+
+      function renderBatchTabs() {
+        var wrap = $("holdingBatchTabs");
+        if (!wrap) return;
+        var record = activeRecord();
+        normalizeRecordBatches(record);
+        Array.prototype.forEach.call(wrap.querySelectorAll("[data-batch-index]"), function (button) {
+          var index = parseInt(button.dataset.batchIndex, 10);
+          button.classList.toggle("is-active", index === record.currentBatchIndex);
+        });
+      }
+
+      function setActiveBatch(index) {
+        var record = activeRecord();
+        if (index < 0 || index >= batchCount || index === record.currentBatchIndex) return;
+        pushUndoSnapshot();
+        syncVisibleFieldsToRecord(record);
+        record.currentBatchIndex = index;
+        syncActiveBatchToFields(record);
+        hydrateFields();
+        renderDynamicStopTags();
+        recalc();
+        writeStorage(true);
       }
 
       function getRecordTitle(record) {
@@ -3335,23 +3706,62 @@
       }
 
       function recordExpectedLoss(record) {
-        var fields = record.fields || {};
-        if (fields.dynamicStopEnabled !== "0") return 0;
-        var entry = parseRecordNumber(record, "entryPrice");
-        var stop = parseRecordNumber(record, "stopPrice");
-        var quantity = parseRecordNumber(record, "quantity");
-        var loss = (stop - entry) * quantity;
-        return loss < 0 ? Math.abs(loss) : 0;
+        normalizeRecordBatches(record);
+        return record.batches.reduce(function (total, batch) {
+          if (batch.dynamicStopEnabled !== "0") return total;
+          var entry = batchNumber(batch, "entryPrice");
+          var stop = batchNumber(batch, "stopPrice");
+          var quantity = batchNumber(batch, "quantity");
+          var loss = (stop - entry) * quantity;
+          return total + (loss < 0 ? Math.abs(loss) : 0);
+        }, 0);
       }
 
       function recordProtectedProfit(record) {
-        var fields = record.fields || {};
-        if (fields.dynamicStopEnabled === "0") return 0;
-        var entry = parseRecordNumber(record, "entryPrice");
-        var dynamicStop = parseRecordNumber(record, "dynamicStopPrice");
-        var quantity = parseRecordNumber(record, "quantity");
-        var profit = (dynamicStop - entry) * quantity;
-        return profit > 0 ? profit : 0;
+        normalizeRecordBatches(record);
+        return record.batches.reduce(function (total, batch) {
+          if (batch.dynamicStopEnabled === "0") return total;
+          var entry = batchNumber(batch, "entryPrice");
+          var dynamicStop = batchNumber(batch, "dynamicStopPrice");
+          var quantity = batchNumber(batch, "quantity");
+          var profit = (dynamicStop - entry) * quantity;
+          return total + (profit > 0 ? profit : 0);
+        }, 0);
+      }
+
+      function recordTotalQuantity(record) {
+        normalizeRecordBatches(record);
+        return record.batches.reduce(function (total, batch) {
+          return total + batchNumber(batch, "quantity");
+        }, 0);
+      }
+
+      function recordArchivePnl(record, sellPrice) {
+        var price = parseFloat(sellPrice);
+        if (!Number.isFinite(price)) return 0;
+        normalizeRecordBatches(record);
+        return record.batches.reduce(function (total, batch) {
+          var entry = batchNumber(batch, "entryPrice");
+          var quantity = batchNumber(batch, "quantity");
+          return total + (price - entry) * quantity;
+        }, 0);
+      }
+
+      function archivePnlText(record, sellPrice) {
+        if (!sellPrice || !Number.isFinite(parseFloat(sellPrice))) return "-";
+        var pnl = recordArchivePnl(record, sellPrice);
+        var absValue = Math.abs(pnl);
+        return pnl < 0 ? ("亏损 -" + money(absValue)) : ("盈利 +" + money(absValue));
+      }
+
+      function archiveTotals() {
+        return state.records.reduce(function (totals, record) {
+          if (record.archived !== true || !record.archiveInfo || !record.archiveInfo.sellPrice) return totals;
+          var pnl = recordArchivePnl(record, record.archiveInfo.sellPrice);
+          if (pnl >= 0) totals.profit += pnl;
+          if (pnl < 0) totals.loss += Math.abs(pnl);
+          return totals;
+        }, { profit: 0, loss: 0 });
       }
 
       function formatRecordValue(value, digits) {
@@ -3494,19 +3904,30 @@
         recalcTrialCalculator();
       }
 
+      function archiveSummaryText(info) {
+        if (!info || !info.sellPrice) return "待复盘";
+        var result = info.result === "loss" ? "输" : "赢";
+        return result + " / " + info.sellPrice + (info.profitText && info.profitText !== "-" ? " / " + info.profitText : "");
+      }
+
       function getRecordSummary(record) {
+        normalizeRecordBatches(record);
         var fields = record.fields || {};
         var logicId = record.selectedLogic || "breakout";
-        var entry = parseRecordNumber(record, "entryPrice");
-        var stop = parseRecordNumber(record, "stopPrice");
-        var target = parseRecordNumber(record, "targetPrice");
-        var quantity = parseRecordNumber(record, "quantity");
-        var amount = parseRecordNumber(record, "entryAmount");
+        var batch = record.batches[record.currentBatchIndex || 0] || record.batches[0];
+        var entry = batchNumber(batch, "entryPrice");
+        var stop = batchNumber(batch, "stopPrice");
+        var target = batchNumber(batch, "targetPrice");
+        var quantity = record.batches.reduce(function (total, item) { return total + batchNumber(item, "quantity"); }, 0);
+        var amount = record.batches.reduce(function (total, item) { return total + batchNumber(item, "entryAmount"); }, 0);
         var risk = Math.abs(entry - stop);
         var reward = Math.abs(target - entry);
         var ratio = risk > 0 ? reward / risk : 0;
         var expectedLoss = recordExpectedLoss(record);
         var singleLimit = parseFloat(state.riskSettings && state.riskSettings.singleLossLimit);
+        var holdingDays = holdingTradingDays(fields.buyTime);
+        var timeStopLimit = parseInt(fields.timeStopDays, 10);
+        var timeStopExceeded = fields.timeStopEnabled !== "0" && holdingDays !== null && Number.isFinite(timeStopLimit) && holdingDays > timeStopLimit;
         return {
           title: (fields.symbol || "未命名记录").trim() || "未命名记录",
           time: fields.buyTime ? fields.buyTime.replace("T", " ") : "未设置时间",
@@ -3522,12 +3943,13 @@
           riskNote: fields.riskNote || "",
           logic: getLogicLabel(logicId),
           logicId: logicId,
-          dynamicStopActive: fields.dynamicStopEnabled !== "0",
-          dynamicStop: fields.dynamicStopEnabled === "0" ? "\u672a\u542f\u7528" : ((record.dynamicStopTags || []).join(" / ") || "-"),
+          dynamicStopActive: record.batches.some(function (item) { return item.dynamicStopEnabled !== "0"; }),
+          dynamicStop: record.batches.some(function (item) { return item.dynamicStopEnabled !== "0"; }) ? ((record.dynamicStopTags || []).join(" / ") || "-") : "\u672a\u542f\u7528",
           archiveInfo: record.archiveInfo || null,
-          archiveText: record.archiveInfo ? ((record.archiveInfo.result === "loss" ? "\u8f93" : "\u8d62") + " / " + record.archiveInfo.sellPrice) : "-",
+          archiveText: record.archiveInfo ? archiveSummaryText(record.archiveInfo) : "-",
           timeStopDays: fields.timeStopEnabled === "0" ? "\u672a\u542f\u7528" : (fields.timeStopDays || "7") + " 天",
-          holdingDays: holdingDaysFrom(fields.buyTime)
+          holdingDays: holdingDaysFrom(fields.buyTime),
+          timeStopExceeded: timeStopExceeded
         };
       }
 
@@ -3535,6 +3957,53 @@
         var text = String(title || "未命名").trim();
         if (text.length <= 4) return text;
         return text.slice(0, 4);
+      }
+
+      function renderRecordCard(record, index, total) {
+        var active = record.id === state.currentId ? " is-active" : "";
+        var summary = getRecordSummary(record);
+        var logicClass = summary.logicId === "pullback" ? "is-pullback" : "is-breakout";
+        var isFirst = index === 0;
+        var isLast = index === total - 1;
+        var archivedClass = record.archived ? " is-archived" : "";
+        var riskMarkedClass = summary.riskMarked ? " is-risk-marked" : "";
+        var dynamicStopClass = summary.dynamicStopActive ? " is-dynamic-stop" : "";
+        var timeStopClass = summary.timeStopExceeded ? " is-time-stop-warning" : "";
+        return '<div class="record-pill ' + logicClass + active + archivedClass + riskMarkedClass + dynamicStopClass + timeStopClass + '" data-record-id="' + record.id + '" role="button" tabindex="0">' +
+          '<span class="record-sort" aria-label="\u8bb0\u5f55\u6392\u5e8f">' +
+            '<button type="button" class="' + (isFirst ? "is-highlight" : "") + '" data-sort-record="' + record.id + '" data-sort-action="top" aria-label="\u7f6e\u9876">\u21e7</button>' +
+            '<button type="button" data-sort-record="' + record.id + '" data-sort-action="up" aria-label="\u4e0a\u79fb"' + (isFirst ? " hidden" : "") + '>\u2191</button>' +
+            '<button type="button" data-sort-record="' + record.id + '" data-sort-action="down" aria-label="\u4e0b\u79fb"' + (isLast ? " hidden" : "") + '>\u2193</button>' +
+          '</span>' +
+          '<span class="record-actions">' +
+            '<button type="button" class="record-archive" data-archive-record="' + record.id + '" aria-label="' + (record.archived ? "\u8fd8\u539f\u8bb0\u5f55" : "\u5f52\u6863\u8bb0\u5f55") + '">' + (record.archived ? "\u8fd8" : "\u5f52") + '</button>' +
+            '<button type="button" class="record-delete" data-delete-record="' + record.id + '" aria-label="\u5220\u9664\u8bb0\u5f55">&times;</button>' +
+          '</span>' +
+          '<span class="record-title">' +
+            '<span class="record-name">' + escapeHtml(summary.title) + '</span>' +
+            '<span class="logic-badge ' + logicClass + '">' + escapeHtml(summary.logic) + '</span>' +
+          '</span>' +
+          '<span class="record-meta">' + escapeHtml(summary.time) + '</span>' +
+          '<span class="record-detail">' +
+            '<span class="record-line"><span>\u5165\u573a</span><strong>' + escapeHtml(summary.entry) + '</strong></span>' +
+            '<span class="record-line"><span>\u76ee\u6807</span><strong>' + escapeHtml(summary.target) + '</strong></span>' +
+            '<span class="record-line' + (summary.lossRiskExceeded ? " is-risk-warning" : "") + '"><span>\u6b62\u635f</span><strong>' + escapeHtml(summary.stop) + '</strong></span>' +
+            '<span class="record-line"><span>\u6301\u4ed3</span><strong>' + escapeHtml(summary.quantity) + '</strong></span>' +
+            '<span class="record-line"><span>\u5e02\u503c</span><strong>' + escapeHtml(summary.amount) + '</strong></span>' +
+            '<span class="record-line"><span>\u76c8\u4e8f\u6bd4</span><strong>' + escapeHtml(summary.ratio) + '</strong></span>' +
+            '<span class="record-line"><span>\u52a8\u6001\u6b62\u635f</span><strong>' + escapeHtml(summary.dynamicStop) + '</strong></span>' +
+            (summary.riskMarked ? '<span class="record-line"><span>\u98ce\u9669</span><strong>' + escapeHtml(summary.riskNote || "\u5df2\u6807\u8bb0") + '</strong></span>' : '') +
+            (record.archived ? '<span class="record-line"><span>\u5f52\u6863</span><strong>' + escapeHtml(summary.archiveText) + '</strong></span>' : '') +
+            '<span class="record-line"><span>\u65f6\u95f4\u6b62\u635f</span><strong>' + escapeHtml(summary.timeStopDays) + '</strong></span>' +
+            '<span class="record-line"><span>\u6301\u6709</span><strong>' + escapeHtml(summary.holdingDays) + '</strong></span>' +
+          '</span>' +
+          '<span class="record-compact">' +
+            '<span class="record-compact-name">' + escapeHtml(compactTitle(summary.title)) + '</span>' +
+            '<span class="record-compact-logic ' + logicClass + '"></span>' +
+            '<span>' + escapeHtml(summary.ratio) + '</span>' +
+            '<span>' + escapeHtml(summary.holdingDays) + '</span>' +
+          '</span>' +
+        '</div>';
       }
 
       function renderRecords() {
@@ -3559,49 +4028,7 @@
           return;
         }
         list.innerHTML = visibleRecords.map(function (record, index) {
-          var active = record.id === state.currentId ? " is-active" : "";
-          var summary = getRecordSummary(record);
-          var logicClass = summary.logicId === "pullback" ? "is-pullback" : "is-breakout";
-          var isFirst = index === 0;
-          var isLast = index === visibleRecords.length - 1;
-          var archivedClass = record.archived ? " is-archived" : "";
-          var riskMarkedClass = summary.riskMarked ? " is-risk-marked" : "";
-          var dynamicStopClass = summary.dynamicStopActive ? " is-dynamic-stop" : "";
-          return '<div class="record-pill ' + logicClass + active + archivedClass + riskMarkedClass + dynamicStopClass + '" data-record-id="' + record.id + '" role="button" tabindex="0">' +
-            '<span class="record-sort" aria-label="\u8bb0\u5f55\u6392\u5e8f">' +
-              '<button type="button" class="' + (isFirst ? "is-highlight" : "") + '" data-sort-record="' + record.id + '" data-sort-action="top" aria-label="\u7f6e\u9876">\u21e7</button>' +
-              '<button type="button" data-sort-record="' + record.id + '" data-sort-action="up" aria-label="\u4e0a\u79fb"' + (isFirst ? " hidden" : "") + '>\u2191</button>' +
-              '<button type="button" data-sort-record="' + record.id + '" data-sort-action="down" aria-label="\u4e0b\u79fb"' + (isLast ? " hidden" : "") + '>\u2193</button>' +
-            '</span>' +
-            '<span class="record-actions">' +
-              '<button type="button" class="record-archive" data-archive-record="' + record.id + '" aria-label="' + (record.archived ? "\u8fd8\u539f\u8bb0\u5f55" : "\u5f52\u6863\u8bb0\u5f55") + '">' + (record.archived ? "\u8fd8" : "\u5f52") + '</button>' +
-              '<button type="button" class="record-delete" data-delete-record="' + record.id + '" aria-label="\u5220\u9664\u8bb0\u5f55">&times;</button>' +
-            '</span>' +
-            '<span class="record-title">' +
-              '<span class="record-name">' + escapeHtml(summary.title) + '</span>' +
-              '<span class="logic-badge ' + logicClass + '">' + escapeHtml(summary.logic) + '</span>' +
-            '</span>' +
-            '<span class="record-meta">' + escapeHtml(summary.time) + '</span>' +
-            '<span class="record-detail">' +
-              '<span class="record-line"><span>\u5165\u573a</span><strong>' + escapeHtml(summary.entry) + '</strong></span>' +
-              '<span class="record-line"><span>\u76ee\u6807</span><strong>' + escapeHtml(summary.target) + '</strong></span>' +
-              '<span class="record-line' + (summary.lossRiskExceeded ? " is-risk-warning" : "") + '"><span>\u6b62\u635f</span><strong>' + escapeHtml(summary.stop) + '</strong></span>' +
-              '<span class="record-line"><span>\u6570\u91cf</span><strong>' + escapeHtml(summary.quantity) + '</strong></span>' +
-              '<span class="record-line"><span>\u91d1\u989d</span><strong>' + escapeHtml(summary.amount) + '</strong></span>' +
-              '<span class="record-line"><span>\u76c8\u4e8f\u6bd4</span><strong>' + escapeHtml(summary.ratio) + '</strong></span>' +
-              '<span class="record-line"><span>\u52a8\u6001\u6b62\u635f</span><strong>' + escapeHtml(summary.dynamicStop) + '</strong></span>' +
-              (summary.riskMarked ? '<span class="record-line"><span>\u98ce\u9669</span><strong>' + escapeHtml(summary.riskNote || "\u5df2\u6807\u8bb0") + '</strong></span>' : '') +
-              (record.archived ? '<span class="record-line"><span>\u5f52\u6863</span><strong>' + escapeHtml(summary.archiveText) + '</strong></span>' : '') +
-              '<span class="record-line"><span>\u65f6\u95f4\u6b62\u635f</span><strong>' + escapeHtml(summary.timeStopDays) + '</strong></span>' +
-              '<span class="record-line"><span>\u6301\u6709</span><strong>' + escapeHtml(summary.holdingDays) + '</strong></span>' +
-            '</span>' +
-            '<span class="record-compact">' +
-              '<span class="record-compact-name">' + escapeHtml(compactTitle(summary.title)) + '</span>' +
-              '<span class="record-compact-logic ' + logicClass + '"></span>' +
-              '<span>' + escapeHtml(summary.ratio) + '</span>' +
-              '<span>' + escapeHtml(summary.holdingDays) + '</span>' +
-            '</span>' +
-          '</div>';
+          return renderRecordCard(record, index, visibleRecords.length);
         }).join("");
       }
 
@@ -3727,11 +4154,14 @@
           if (record.archived === true) return total;
           return total + (record.id === currentId ? Math.max(0, currentProtected || 0) : recordProtectedProfit(record));
         }, 0);
-        var currentMaxLoss = Math.max(0, totalExpectedLoss - protectedTotal);
+        var netRisk = totalExpectedLoss - protectedTotal;
+        var currentMaxLoss = Math.abs(netRisk);
         var currentMaxLossPercent = Number.isFinite(globalLimit) && globalLimit > 0 ? currentMaxLoss / globalLimit : 0;
-        var globalExceeded = Number.isFinite(globalLimit) && globalLimit > 0 && currentMaxLoss > globalLimit;
+        var globalExceeded = netRisk > 0 && Number.isFinite(globalLimit) && globalLimit > 0 && netRisk > globalLimit;
         $("lossSummaryRow").classList.toggle("is-risk-warning", singleExceeded);
         $("globalLossLimitField").classList.toggle("is-warning", globalExceeded);
+        var currentLabel = $("currentMaxLossField").querySelector("label");
+        if (currentLabel) currentLabel.firstChild.nodeValue = netRisk < 0 ? "预计最低盈利 " : "预计最大亏损 ";
         $("currentMaxLossTotal").value = money(currentMaxLoss);
         $("currentMaxLossPercent").textContent = signedPercent(currentMaxLossPercent).replace("+", "");
         $("protectedProfitTotal").value = money(protectedTotal);
@@ -4000,6 +4430,7 @@
       }
 
       function recalc(source) {
+        var record = syncVisibleFieldsToRecord(activeRecord());
         var baseEntry = numberValue("entryPrice");
         var current = numberValue("currentPrice");
         var baseStop = numberValue("stopPrice");
@@ -4032,6 +4463,8 @@
         var dynamicProtectedRate = baseEntry > 0 ? (dynamicStop - baseEntry) / baseEntry : 0;
         var currentRate = baseEntry > 0 ? (current - baseEntry) / baseEntry : 0;
         var remainingRate = baseEntry > 0 ? (target - current) / baseEntry : 0;
+        var totalExpectedLoss = recordExpectedLoss(record);
+        var totalProtectedAmount = recordProtectedProfit(record);
 
         $("lossMeta").textContent = signedFixed(baseStop - baseEntry) + " （" + signedPercent(baseEntry > 0 ? (baseStop - baseEntry) / baseEntry : 0) + "）";
         $("currentMeta").textContent = signedPercent(currentRate);
@@ -4042,9 +4475,9 @@
         $("realRatioText").textContent = realRatioText(profitRate, lossRate);
         $("profitAmount").textContent = money(profitAmount);
         $("profitPercent").textContent = signedPercent(profitRate);
-        $("lossAmount").textContent = money(lossAmount);
+        $("lossAmount").textContent = money(-totalExpectedLoss);
         $("lossPercent").textContent = signedPercent(baseEntry > 0 ? (baseStop - baseEntry) / baseEntry : 0);
-        $("protectedAmount").textContent = money(dynamicProtectedAmount);
+        $("protectedAmount").textContent = money(totalProtectedAmount);
         $("protectedPercent").textContent = signedPercent(dynamicProtectedRate);
         $("targetAmount").textContent = money(target * quantity);
         $("stopAmount").textContent = money((dynamicMode ? dynamicStop : baseStop) * quantity);
@@ -4054,7 +4487,7 @@
         var timeStopLimit = parseInt($("timeStopDays").value, 10);
         var timeStopEnabled = $("timeStopToggle").getAttribute("aria-pressed") === "true";
         $("timeStopField").classList.toggle("is-time-warning", timeStopEnabled && holdingDays !== null && Number.isFinite(timeStopLimit) && holdingDays > timeStopLimit);
-        updateRiskComparison(dynamicMode ? 0 : lossAmount, dynamicMode ? dynamicProtectedAmount : 0);
+        updateRiskComparison(totalExpectedLoss, totalProtectedAmount);
       }
 
       function applyRatio(ratio) {
@@ -4222,7 +4655,13 @@
           var fieldId = fieldLabels[key];
 
           if (fieldId) {
-            record.fields[fieldId] = fieldId === "buyTime" ? value.slice(0, 10) : stripUnit(value);
+            var cleanValue = fieldId === "buyTime" ? value.slice(0, 10) : stripUnit(value);
+            if (isBatchField(fieldId)) {
+              activeBatch(record)[fieldId] = cleanValue;
+              syncActiveBatchToFields(record);
+            } else {
+              record.fields[fieldId] = cleanValue;
+            }
             return;
           }
 
@@ -4243,10 +4682,12 @@
 
           if (key === "\u52a8\u6001\u6b62\u635f") {
             if (value.indexOf("\u672a\u542f\u7528") !== -1) {
-              record.fields.dynamicStopEnabled = "0";
+              activeBatch(record).dynamicStopEnabled = "0";
+              syncActiveBatchToFields(record);
               return;
             }
-            record.fields.dynamicStopEnabled = "1";
+            activeBatch(record).dynamicStopEnabled = "1";
+            syncActiveBatchToFields(record);
             record.dynamicStopTags = parseHashTags(value);
             rememberTags("dynamicStop", record.dynamicStopTags);
             return;
@@ -4320,6 +4761,7 @@
         var firstSupport = parseFloat($("calcSupport1").value) || 0;
         var secondSupport = parseFloat($("calcSupport2").value) || 0;
         var pressure = parseFloat($("calcPressure").value) || 0;
+        var maxLoss = parseFloat($("calcMaxLoss").value) || 0;
         var firstRisk = Math.abs(entry - firstSupport);
         var secondRisk = Math.abs(entry - secondSupport);
         var reward = pressure - entry;
@@ -4334,8 +4776,16 @@
         $("calcRealRatioSecond").textContent = realRatioText(trialProfitRate, secondLossRate);
         $("calcProfitRate").textContent = signedPercent(trialProfitRate);
         $("calcSupportRate").textContent = signedPercent(firstLossRate) + " / " + signedPercent(secondLossRate);
+        $("calcMaxPosition").textContent = "一 " + maxPositionText(maxLoss, firstRisk) + " / 二 " + maxPositionText(maxLoss, secondRisk);
         recalcTrendPressure();
         updateTrialEntryRange(entry, firstSupport, secondSupport, pressure, firstRatio, secondRatio);
+      }
+
+      function maxPositionText(maxLoss, riskPerUnit) {
+        if (maxLoss <= 0 || riskPerUnit <= 0) return "-";
+        var units = Math.floor(maxLoss / riskPerUnit);
+        units = Math.floor(units / 100) * 100;
+        return units > 0 ? formatRecordValue(units, 0) : "0";
       }
 
       function updateTrialEntryRange(entry, firstSupport, secondSupport, pressure, firstRatio, secondRatio) {
@@ -4356,6 +4806,7 @@
         $("calcSupport1").value = $("dynamicStopToggle").getAttribute("aria-pressed") === "true" ? $("dynamicStopPrice").value : $("stopPrice").value;
         $("calcSupport2").value = $("calcSupport1").value;
         $("calcPressure").value = $("targetPrice").value || "12.5";
+        $("calcMaxLoss").value = state.riskSettings && state.riskSettings.singleLossLimit ? state.riskSettings.singleLossLimit : "";
         $("trendShapeLow").value = $("calcSupport1").value || "";
         $("trendNeckline").value = $("calcEntry").value || "";
         $("trendStart").value = $("calcEntry").value || "";
@@ -4373,6 +4824,7 @@
           firstSupport: $("calcSupport1").value || "0",
           secondSupport: $("calcSupport2").value || "0",
           pressure: $("calcPressure").value || "0",
+          maxLoss: $("calcMaxLoss").value || "",
           trendShapeLow: $("trendShapeLow").value || "",
           trendNeckline: $("trendNeckline").value || "",
           trendStart: $("trendStart").value || "",
@@ -4391,6 +4843,7 @@
           record.firstSupport = values.firstSupport;
           record.secondSupport = values.secondSupport;
           record.pressure = values.pressure;
+          record.maxLoss = values.maxLoss;
           record.trendShapeLow = values.trendShapeLow;
           record.trendNeckline = values.trendNeckline;
           record.trendStart = values.trendStart;
@@ -4413,6 +4866,7 @@
         $("calcSupport1").value = record.firstSupport || record.stop || "9";
         $("calcSupport2").value = record.secondSupport || record.firstSupport || record.stop || "9";
         $("calcPressure").value = record.pressure || record.target || "12.5";
+        $("calcMaxLoss").value = record.maxLoss || "";
         $("trendShapeLow").value = record.trendShapeLow || "";
         $("trendNeckline").value = record.trendNeckline || "";
         $("trendStart").value = record.trendStart || "";
@@ -4439,6 +4893,7 @@
         $("calcSupport1").value = "";
         $("calcSupport2").value = "";
         $("calcPressure").value = "";
+        $("calcMaxLoss").value = "";
         $("trendShapeLow").value = "";
         $("trendNeckline").value = "";
         $("trendStart").value = "";
@@ -4514,6 +4969,12 @@
         pushUndoSnapshot();
         var record = activeRecord();
         record.fields = createDefaultFields();
+        record.currentBatchIndex = 0;
+        record.batches = [
+          createDefaultBatch(record.fields),
+          createDefaultBatch(record.fields, true),
+          createDefaultBatch(record.fields, true)
+        ];
         record.cells = {};
         record.dynamicStopTags = [];
         record.archived = false;
@@ -4586,19 +5047,38 @@
 
       function setArchiveView(showArchived) {
         state.showArchived = showArchived;
+        var next = state.records.find(function (record) {
+          return showArchived ? record.archived === true : record.archived !== true;
+        });
+        var current = state.records.find(function (record) { return record.id === state.currentId; });
+        if (next && (!current || current.archived !== showArchived)) {
+          state.currentId = next.id;
+          hydrateFields();
+          renderDynamicStopTags();
+          renderMatrix();
+          recalc();
+        }
         localStorage.setItem(storageKey, JSON.stringify(state));
+        hydrateArchiveReview();
         renderRecords();
       }
 
       function archiveRecord(recordId) {
         var record = state.records.find(function (item) { return item.id === recordId; });
         if (!record) return;
-        if (!record.archived) {
-          openArchivePage(recordId);
-          return;
-        }
         pushUndoSnapshot();
-        record.archived = !record.archived;
+        if (!record.archived) {
+          record.archiveInfo = record.archiveInfo && typeof record.archiveInfo === "object" ? record.archiveInfo : {};
+          record.archiveInfo.result = record.archiveInfo.result || "win";
+          record.archiveInfo.sellPrice = record.archiveInfo.sellPrice || "";
+          record.archiveInfo.profitText = record.archiveInfo.profitText || "-";
+          record.archiveInfo.entryJudgement = record.archiveInfo.entryJudgement || "";
+          record.archiveInfo.marketTruth = record.archiveInfo.marketTruth || "";
+          record.archiveInfo.archivedAt = record.archiveInfo.archivedAt || new Date().toISOString();
+          record.archived = true;
+        } else {
+          record.archived = false;
+        }
         if (record.archived && state.currentId === recordId && !state.showArchived) {
           var next = state.records.find(function (item) {
             return item.archived !== true;
@@ -4613,6 +5093,20 @@
           renderMatrix();
           recalc();
         }
+        if (!record.archived && state.currentId === recordId && state.showArchived) {
+          var nextArchived = state.records.find(function (item) {
+            return item.archived === true;
+          });
+          if (nextArchived) {
+            state.currentId = nextArchived.id;
+          } else {
+            state.showArchived = false;
+          }
+          hydrateFields();
+          renderDynamicStopTags();
+          renderMatrix();
+          recalc();
+        }
         writeStorage(true);
         renderRecords();
         showToast(record.archived ? "\u5df2\u5f52\u6863" : "\u5df2\u8fd8\u539f");
@@ -4622,6 +5116,9 @@
         pendingArchiveId = recordId;
         $("archiveResult").value = "win";
         $("archiveSellPrice").value = "";
+        $("archiveEntryJudgement").value = "";
+        $("archiveMarketTruth").value = "";
+        updateArchivePnlPreview();
         $("archivePage").classList.add("is-open");
         window.setTimeout(function () {
           $("archiveSellPrice").focus();
@@ -4631,6 +5128,54 @@
       function closeArchivePage() {
         pendingArchiveId = null;
         $("archivePage").classList.remove("is-open");
+      }
+
+      function updateArchivePnlPreview() {
+        var record = state.records.find(function (item) { return item.id === pendingArchiveId; });
+        if (!$("archivePnlPreview")) return;
+        $("archivePnlPreview").value = record ? archivePnlText(record, $("archiveSellPrice").value.trim()) : "-";
+      }
+
+      function hydrateArchiveReview() {
+        var record = activeRecord();
+        var info = record.archiveInfo || {};
+        var archived = record.archived === true && state.showArchived === true;
+        document.body.classList.toggle("archive-review-mode", archived);
+        if (!$("archiveReviewPnl")) return;
+        var totals = archiveTotals();
+        $("archiveTotalProfit").value = money(totals.profit);
+        $("archiveTotalLoss").value = money(totals.loss);
+        $("archiveReviewSellPrice").value = info.sellPrice || "";
+        $("archiveReviewPnl").value = info.profitText || "-";
+        $("archiveReviewEntry").value = info.entryJudgement || "";
+        $("archiveReviewTruth").value = info.marketTruth || "";
+      }
+
+      function saveArchiveSellPrice(value) {
+        var record = activeRecord();
+        if (record.archived !== true) return;
+        if (!record.archiveInfo) record.archiveInfo = {};
+        record.archiveInfo.sellPrice = value;
+        var pnl = recordArchivePnl(record, value);
+        record.archiveInfo.result = Number.isFinite(parseFloat(value)) && pnl < 0 ? "loss" : "win";
+        record.archiveInfo.profitText = archivePnlText(record, value);
+        record.updatedAt = new Date().toISOString();
+        if ($("archiveReviewPnl")) $("archiveReviewPnl").value = record.archiveInfo.profitText || "-";
+        var totals = archiveTotals();
+        if ($("archiveTotalProfit")) $("archiveTotalProfit").value = money(totals.profit);
+        if ($("archiveTotalLoss")) $("archiveTotalLoss").value = money(totals.loss);
+        localStorage.setItem(storageKey, JSON.stringify(state));
+        renderRecords();
+      }
+
+      function saveArchiveReviewField(field, value) {
+        var record = activeRecord();
+        if (record.archived !== true) return;
+        if (!record.archiveInfo) record.archiveInfo = {};
+        record.archiveInfo[field] = value;
+        record.updatedAt = new Date().toISOString();
+        localStorage.setItem(storageKey, JSON.stringify(state));
+        renderRecords();
       }
 
       function applyArchivePage() {
@@ -4645,10 +5190,14 @@
           return;
         }
         pushUndoSnapshot();
+        var result = $("archiveResult").value === "loss" ? "loss" : "win";
         record.archiveInfo = {
-          result: $("archiveResult").value === "loss" ? "loss" : "win",
+          result: result,
           sellPrice: sellPrice,
-          archivedAt: new Date().toISOString()
+          archivedAt: new Date().toISOString(),
+          profitText: archivePnlText(record, sellPrice),
+          entryJudgement: $("archiveEntryJudgement").value.trim(),
+          marketTruth: $("archiveMarketTruth").value.trim()
         };
         record.archived = true;
         if (state.currentId === record.id && !state.showArchived) {
@@ -4794,6 +5343,14 @@
           });
         });
 
+        if ($("holdingBatchTabs")) {
+          $("holdingBatchTabs").addEventListener("click", function (event) {
+            var button = event.target.closest("[data-batch-index]");
+            if (!button) return;
+            setActiveBatch(parseInt(button.dataset.batchIndex, 10));
+          });
+        }
+
         document.querySelectorAll("[data-risk-save]").forEach(function (input) {
           input.addEventListener("focus", function () {
             pushUndoSnapshot();
@@ -4857,6 +5414,20 @@
         $("closeArchivePageBtn").addEventListener("click", closeArchivePage);
         $("cancelArchiveBtn").addEventListener("click", closeArchivePage);
         $("applyArchiveBtn").addEventListener("click", applyArchivePage);
+        ["archiveSellPrice", "archiveResult"].forEach(function (id) {
+          $(id).addEventListener("input", updateArchivePnlPreview);
+          $(id).addEventListener("change", updateArchivePnlPreview);
+        });
+        document.querySelectorAll("[data-archive-review]").forEach(function (input) {
+          input.addEventListener("input", function () {
+            saveArchiveReviewField(input.dataset.archiveReview, input.value);
+          });
+        });
+        if ($("archiveReviewSellPrice")) {
+          $("archiveReviewSellPrice").addEventListener("input", function () {
+            saveArchiveSellPrice($("archiveReviewSellPrice").value.trim());
+          });
+        }
         $("closeCalcPageBtn").addEventListener("click", closeCalcPage);
         $("saveCalcTrialBtn").addEventListener("click", saveTrialRecord);
         $("convertCalcTrialBtn").addEventListener("click", convertTrialToRecord);
@@ -4872,7 +5443,7 @@
           importCalcTrialFile(event.target.files && event.target.files[0]);
           event.target.value = "";
         });
-        ["calcEntry", "calcSupport1", "calcSupport2", "calcPressure", "trendShapeLow", "trendNeckline", "trendStart", "trendWaveLow", "trendWaveHigh"].forEach(function (id) {
+        ["calcEntry", "calcSupport1", "calcSupport2", "calcPressure", "calcMaxLoss", "trendShapeLow", "trendNeckline", "trendStart", "trendWaveLow", "trendWaveHigh"].forEach(function (id) {
           $(id).addEventListener("input", recalcTrialCalculator);
         });
         ["trendShapeApply", "trendMapApply", "trendGoldenApply"].forEach(function (id) {
