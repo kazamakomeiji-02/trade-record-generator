@@ -1,0 +1,479 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#2f6fe4">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="交易记录生成器">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./icon.svg">
+  <link rel="stylesheet" href="./src/styles/app.css">
+  <title>交易记录生成器</title>
+</head>
+<body>
+  <section class="system-home" id="systemHome" aria-label="交易系统主页">
+    <div class="system-home-inner">
+      <div class="system-home-title">
+        <span>交易系统记录工具</span>
+        <strong>选择当前工作台</strong>
+      </div>
+      <div class="home-account-panel" aria-label="账户总览">
+        <label>
+          <span>总资产</span>
+          <input id="homeTotalAssets" data-account-save="totalAssets" type="number" inputmode="decimal" step="0.01" placeholder="输入总资产">
+        </label>
+        <div class="home-position-stat">
+          <span>总仓位</span>
+          <strong id="homeTotalPosition">0.00 元</strong>
+          <small id="homeTotalPositionRate">0%</small>
+        </div>
+      </div>
+      <div class="system-entry-grid">
+        <button id="homeTargetBtn" class="system-entry" type="button">
+          <span>1</span>
+          <strong>目标记录</strong>
+          <small>目标、支撑、压力和入场范围</small>
+        </button>
+        <button id="homeSignalBtn" class="system-entry" type="button">
+          <span>2</span>
+          <strong>信号验证</strong>
+          <small>承接目标记录发送来的信号标签</small>
+        </button>
+        <button id="homeHoldingBtn" class="system-entry" type="button">
+          <span>3</span>
+          <strong>持仓记录</strong>
+          <small>持仓、止损、风险和交易执行</small>
+        </button>
+        <button id="homeArchiveBtn" class="system-entry" type="button">
+          <span>4</span>
+          <strong>归档记录</strong>
+          <small>独立复盘、卖出价格和盈亏统计</small>
+        </button>
+      </div>
+    </div>
+  </section>
+<div class="sidebar-swipe-zone" id="sidebarSwipeZone" aria-hidden="true"></div>
+  <nav class="toolbar" aria-label="页面操作">
+    <button id="homeBtn" type="button" class="secondary">主页</button>
+    <button id="newBtn" type="button" class="secondary">新建</button>
+    <button id="saveBtn" type="button">保存</button>
+    <button id="undoBtn" type="button" class="secondary">撤销</button>
+    <button id="redoBtn" type="button" class="secondary">重做</button>
+    <button id="tagManageBtn" type="button" class="secondary">标签管理</button>
+    <button id="copyBtn" type="button" class="secondary">复制文本</button>
+    <button id="importPriceBtn" type="button" class="secondary">导入价格</button>
+    <button id="pasteBtn" type="button" class="secondary">粘贴文本</button>
+    <input id="priceImportFile" type="file" accept=".xls,.csv,.txt,text/plain,application/vnd.ms-excel" hidden>
+  </nav>
+
+  <div class="side-backdrop" id="sideBackdrop"></div>
+  <div class="layout" id="layout">
+    <aside class="sidebar" id="sidebar" aria-label="已保存记录">
+      <div class="side-title">
+        <span id="sideTitleLabel">保存记录</span>
+        <button id="sidebarToggle" class="side-toggle" type="button">收起</button>
+      </div>
+      <div class="side-actions" id="recordBackupActions">
+        <button id="exportRecordsBtn" type="button">导出</button>
+        <button id="importRecordsBtn" type="button">导入</button>
+        <input id="importRecordsFile" type="file" accept="application/json,.json" hidden>
+      </div>
+      <div class="record-list" id="recordList"></div>
+    </aside>
+
+    <main class="app">
+      <section class="sheet" id="recordSheet">
+      <div class="risk-grid" aria-label="风险对比">
+        <div class="risk-field" id="singleLossLimitField">
+          <label for="singleLossLimit">单笔亏损上限</label>
+          <input id="singleLossLimit" data-risk-save="singleLossLimit" type="number" inputmode="decimal" step="0.01" placeholder="0">
+        </div>
+        <div class="risk-field" id="globalLossLimitField">
+          <label for="globalLossLimit">全局亏损上限</label>
+          <input id="globalLossLimit" data-risk-save="globalLossLimit" type="number" inputmode="decimal" step="0.01" placeholder="0">
+        </div>
+        <div class="risk-field output" id="currentMaxLossField">
+          <label for="currentMaxLossTotal">预计最大亏损 <small id="currentMaxLossPercent">0%</small></label>
+          <div class="risk-output-line">
+            <input id="currentMaxLossTotal" type="text" value="0.00" readonly>
+          </div>
+        </div>
+        <div class="risk-field output" id="protectedProfitField">
+          <label for="protectedProfitTotal">保底盈利</label>
+          <input id="protectedProfitTotal" type="text" value="0.00" readonly>
+        </div>
+      </div>
+      <div class="archive-review-grid" id="archiveReviewGrid" aria-label="归档复盘">
+        <div class="archive-review-total">
+          <label>
+            <span>总盈利</span>
+            <input id="archiveTotalProfit" type="text" readonly value="0.00 元">
+          </label>
+          <label>
+            <span>总亏损</span>
+            <input id="archiveTotalLoss" type="text" readonly value="0.00 元">
+          </label>
+        </div>
+        <label class="archive-review-field">
+          <span>卖出价格</span>
+          <input id="archiveReviewSellPrice" type="number" inputmode="decimal" step="0.001" placeholder="卖出价格">
+        </label>
+        <label class="archive-review-field">
+          <span>归档盈亏</span>
+          <input id="archiveReviewPnl" type="text" readonly value="-">
+        </label>
+        <label class="archive-review-field">
+          <span>入场判断</span>
+          <textarea id="archiveReviewEntry" data-archive-review="entryJudgement" rows="2" placeholder="入场判断"></textarea>
+        </label>
+        <label class="archive-review-field">
+          <span>市场真相</span>
+          <textarea id="archiveReviewTruth" data-archive-review="marketTruth" rows="2" placeholder="市场真相"></textarea>
+        </label>
+      </div>
+      <div class="meta-grid">
+        <div class="meta-field symbol-field">
+          <span class="symbol-label">名称:</span>
+          <input id="symbol" data-save="symbol" type="text" placeholder="例如 AAPL / BTC">
+          <button id="riskMarkToggle" class="risk-mark-toggle" type="button" aria-pressed="false">风险</button>
+          <div class="risk-note-wrap" id="riskNoteWrap">
+            <textarea id="riskNote" data-save="riskNote" rows="1" placeholder="输入当前风险"></textarea>
+          </div>
+        </div>
+        <div class="meta-field code-field">
+          <input id="stockCode" data-save="stockCode" type="text" inputmode="numeric" placeholder="输入代码" aria-label="代码">
+        </div>
+        <div class="meta-field time-field">
+          <label for="buyTime">买入时间</label>
+          <input id="buyTime" data-save="buyTime" type="date">
+        </div>
+        <div class="meta-field full-row" id="timeStopField">
+          <button id="timeStopToggle" class="time-stop-toggle" type="button" aria-pressed="true">时间止损</button>
+          <select id="timeStopDays" data-save="timeStopDays" aria-label="时间止损天数"></select>
+        </div>
+      </div>
+
+      <div class="calculator">
+        <section class="dark-panel" aria-label="入场与止损">
+          <div class="batch-tabs" id="holdingBatchTabs" aria-label="持仓批次切换">
+            <button type="button" data-batch-index="0" class="is-active">持仓1</button>
+            <button type="button" data-batch-index="1">持仓2</button>
+            <button type="button" data-batch-index="2">持仓3</button>
+          </div>
+          <div class="field-card combo-card" data-icon="入">
+            <label class="field-mini">
+              <span class="label">入场单价</span>
+              <input id="entryPrice" data-save="entryPrice" type="number" inputmode="decimal" step="0.001" value="10">
+            </label>
+            <label class="field-mini">
+              <span class="label">当前价格 <small id="currentMeta">0%</small></span>
+              <input id="currentPrice" data-save="currentPrice" type="number" inputmode="decimal" step="0.001" value="10">
+            </label>
+          </div>
+          <div class="chip-row" aria-label="止损快捷比例">
+            <button class="chip" type="button" data-loss="0.05">15% / -5%</button>
+            <button class="chip" type="button" data-loss="0.03">10% / -3%</button>
+            <button class="chip" type="button" data-loss="0.003">0.8% / -0.3%</button>
+          </div>
+          <div class="field-card combo-card" data-icon="止">
+            <label class="field-mini">
+              <span class="label">止损价格 <small id="lossMeta">-1.0000 （-10%）</small></span>
+              <input id="stopPrice" data-save="stopPrice" type="number" inputmode="decimal" step="0.001" value="9">
+            </label>
+            <label class="field-mini dynamic-stop-field">
+              <span class="label">动态止损价 <small id="dynamicStopMeta">0.0000 （0%）</small></span>
+              <input id="dynamicStopPrice" data-save="dynamicStopPrice" type="number" inputmode="decimal" step="0.001" value="10">
+            </label>
+          </div>
+          <div class="dynamic-stop" id="dynamicStopControl" aria-label="&#21160;&#24577;&#27490;&#25439;">
+            <div class="dynamic-stop-head">
+              <button id="dynamicStopToggle" class="dynamic-stop-label" type="button" aria-pressed="false">&#21160;&#24577;&#27490;&#25439;</button>
+              <div class="tag-list" id="dynamicStopList"></div>
+            </div>
+            <div class="dynamic-stop-body" id="dynamicStopBody">
+              <div class="tag-control">
+                <select id="dynamicStopSelect" aria-label="&#21160;&#24577;&#27490;&#25439;&#36873;&#39033;"></select>
+                <button type="button" id="dynamicStopOpenAdd" aria-label="&#28155;&#21152;&#21160;&#24577;&#27490;&#25439;">+</button>
+              </div>
+              <div class="new-tag" id="dynamicStopNewTag">
+                <input id="dynamicStopInput" type="text" placeholder="&#36755;&#20837;&#21160;&#24577;&#27490;&#25439;">
+                <button type="button" id="dynamicStopSaveTag" aria-label="&#20445;&#23384;&#21160;&#24577;&#27490;&#25439;">&#10003;</button>
+              </div>
+            </div>
+          </div>
+          <div class="chip-row" aria-label="盈亏比快捷选择">
+            <button class="chip" type="button" data-ratio="3">3 : 1</button>
+            <button class="chip" type="button" data-ratio="2.8">2.8 : 1</button>
+            <button class="chip" type="button" data-ratio="2.5">2.5 : 1</button>
+            <button class="chip" type="button" data-ratio="2.2">2.2 : 1</button>
+            <button class="chip" type="button" data-ratio="2">2 : 1</button>
+          </div>
+        </section>
+
+        <section class="dark-panel" aria-label="目标与金额">
+          <label class="field-card" data-icon="目">
+            <span class="label">目标价格 <small id="profitMeta">2.5000 （+25%）</small><small id="remainingMeta">剩余 +25%</small></span>
+            <input id="targetPrice" data-save="targetPrice" type="number" inputmode="decimal" step="0.001" value="12.5">
+          </label>
+          <div class="field-card combo-card" data-icon="额">
+            <label class="field-mini">
+              <span class="label">持仓数量</span>
+              <input id="quantity" data-save="quantity" type="number" inputmode="decimal" step="1" value="100">
+            </label>
+            <label class="field-mini">
+              <span class="label">市值</span>
+              <input id="entryAmount" data-save="entryAmount" type="number" inputmode="decimal" step="0.01" value="1000">
+            </label>
+          </div>
+        </section>
+
+        <section class="dark-panel summary" aria-label="计算结果">
+          <div class="summary-row" data-icon="比">
+            <span>盈亏比</span>
+            <strong id="ratioText">2.50 : 1</strong>
+            <small id="realRatioText" class="real-ratio">真实 2.18 : 1</small>
+          </div>
+          <div class="summary-row" data-icon="盈">
+            <span>目标利润</span>
+            <strong id="profitAmount">250.00 元</strong>
+            <small id="profitPercent">+25%</small>
+          </div>
+          <div class="summary-row" id="lossSummaryRow" data-icon="亏">
+            <span>预计亏损</span>
+            <strong id="lossAmount">-100.00 元</strong>
+            <small id="lossPercent">-10%</small>
+          </div>
+          <div class="summary-row is-hidden" id="protectedSummaryRow" data-icon="保">
+            <span>保底盈利</span>
+            <strong id="protectedAmount">0.00 元</strong>
+            <small id="protectedPercent">0%</small>
+          </div>
+          <div class="summary-row" data-icon="目">
+            <span>目标总金额</span>
+            <strong id="targetAmount">1,250.00 元</strong>
+          </div>
+          <div class="summary-row" data-icon="止">
+            <span>止损总金额</span>
+            <strong id="stopAmount">900.00 元</strong>
+          </div>
+        </section>
+      </div>
+
+      <table class="matrix" id="recordMatrix" aria-label="交易依据记录表">
+        <thead>
+          <tr>
+            <th class="logic-head">逻辑</th>
+            <th class="breakout-col">
+              <button class="logic-choice" type="button" data-logic-choice="breakout">形态突破</button>
+            </th>
+            <th class="pullback-col">
+              <button class="logic-choice" type="button" data-logic-choice="pullback">回调反弹</button>
+            </th>
+          </tr>
+        </thead>
+        <tbody id="matrixBody"></tbody>
+      </table>
+      </section>
+    </main>
+  </div>
+
+  <section class="subpage" id="tagPage" aria-label="标签管理">
+    <div class="subpage-inner">
+      <header class="subpage-head">
+        <h2>标签管理</h2>
+        <button id="closeTagPageBtn" type="button" aria-label="关闭标签管理">×</button>
+      </header>
+      <div class="tag-manager" id="tagManager"></div>
+    </div>
+  </section>
+
+  <section class="subpage" id="pastePage" aria-label="粘贴文本">
+    <div class="subpage-inner">
+      <header class="subpage-head">
+        <h2>粘贴文本</h2>
+        <button id="closePastePageBtn" type="button" aria-label="关闭粘贴文本">×</button>
+      </header>
+      <div class="paste-panel">
+        <textarea id="pasteTextArea" placeholder="在这里粘贴复制文本"></textarea>
+        <div class="paste-actions">
+          <button id="cancelPasteBtn" type="button">取消</button>
+          <button id="applyPasteBtn" type="button">填充</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="subpage" id="archivePage" aria-label="归档记录">
+    <div class="subpage-inner">
+      <header class="subpage-head">
+        <h2>归档记录</h2>
+        <button id="closeArchivePageBtn" type="button" aria-label="关闭归档记录">×</button>
+      </header>
+      <div class="archive-form">
+        <label>
+          <span>结果</span>
+          <select id="archiveResult">
+            <option value="win">赢</option>
+            <option value="loss">输</option>
+          </select>
+        </label>
+        <label>
+          <span>卖出价格</span>
+          <input id="archiveSellPrice" type="number" inputmode="decimal" step="0.001" placeholder="输入卖出价格">
+        </label>
+        <label>
+          <span>归档盈亏</span>
+          <input id="archivePnlPreview" type="text" value="-" readonly>
+        </label>
+        <label>
+          <span>入场判断</span>
+          <textarea id="archiveEntryJudgement" rows="2" placeholder="入场判断"></textarea>
+        </label>
+        <label>
+          <span>市场真相</span>
+          <textarea id="archiveMarketTruth" rows="2" placeholder="市场真相"></textarea>
+        </label>
+        <div class="paste-actions">
+          <button id="cancelArchiveBtn" type="button">取消</button>
+          <button id="applyArchiveBtn" type="button">归档</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="subpage" id="calcPage" aria-label="目标记录">
+    <div class="subpage-inner">
+      <header class="subpage-head">
+        <h2 id="calcPageTitle">目标记录</h2>
+        <button id="closeCalcPageBtn" type="button" aria-label="关闭目标记录">×</button>
+      </header>
+      <div class="archive-form">
+        <div class="calc-actions">
+          <button id="saveCalcTrialBtn" type="button">保存目标</button>
+          <button id="sendSignalBtn" class="signal-send-btn" type="button">发送信号</button>
+
+          <button id="newCalcTrialBtn" type="button" class="secondary">新目标</button>
+          <button id="clearCalcTrialBtn" type="button" class="secondary">清空</button>
+          <button id="importCalcTrialsBtn" type="button" class="secondary">批量导入</button>
+          <input id="calcTrialImportFile" type="file" accept=".xls,.csv,.txt,text/plain,application/vnd.ms-excel" hidden>
+        </div>
+        <div class="calc-name-row">
+          <label><span>目标名称</span><input id="calcName" type="text" placeholder="例如 突破前目标"></label>
+          <input id="calcCode" type="text" inputmode="numeric" placeholder="输入代码" aria-label="代码">
+        </div>
+        <div class="calc-entry-row">
+          <label><span>入场价</span><input id="calcEntry" type="number" inputmode="decimal" step="0.001" value="10"></label>
+          <label><span>持仓数量</span><input id="calcQuantity" type="number" inputmode="numeric" step="100" placeholder="持仓数量"></label>
+        </div>
+        <div class="calc-support-row">
+          <label><span>第一支撑</span><input id="calcSupport1" type="number" inputmode="decimal" step="0.001" value="9"></label>
+          <label><span>第二支撑</span><input id="calcSupport2" type="number" inputmode="decimal" step="0.001" value="9"></label>
+        </div>
+        <label><span>压力位</span><input id="calcPressure" type="number" inputmode="decimal" step="0.001" value="12.5"></label>
+        <label class="calc-max-loss-row"><span>最大亏损</span><input id="calcMaxLoss" type="number" inputmode="decimal" step="0.01" placeholder="输入最大亏损"><small id="calcMaxPosition">一 - / 二 -</small></label>
+        <div class="trend-pressure">
+          <div class="trend-title">趋势压力计算</div>
+          <div class="trend-grid">
+            <label><span>形态低点</span><input id="trendShapeLow" type="number" inputmode="decimal" step="0.001" placeholder="低点"></label>
+            <label><span>颈线价</span><input id="trendNeckline" type="number" inputmode="decimal" step="0.001" placeholder="颈线"></label>
+            <label><span>启动价</span><input id="trendStart" type="number" inputmode="decimal" step="0.001" placeholder="入场价"></label>
+            <label><span>前波低</span><input id="trendWaveLow" type="number" inputmode="decimal" step="0.001" placeholder="起点"></label>
+            <label><span>前波高</span><input id="trendWaveHigh" type="number" inputmode="decimal" step="0.001" placeholder="高点"></label>
+          </div>
+          <div class="trend-results">
+            <button id="trendShapeApply" type="button" data-trend-apply="shape"><span>形态压力</span><strong id="trendShapePressure">-</strong></button>
+            <button id="trendMapApply" type="button" data-trend-apply="map"><span>映射压力</span><strong id="trendMapPressure">-</strong></button>
+            <button id="trendGoldenApply" type="button" data-trend-apply="golden"><span>黄金比压力</span><strong id="trendGoldenPressure">-</strong></button>
+          </div>
+        </div>
+        <div class="summary-row entry-range-row is-hidden" id="calcEntryRangeRow" data-icon="范">
+          <strong id="calcEntryRange">-</strong>
+        </div>
+        <div class="summary-row" data-icon="比">
+          <span>第一盈亏比</span>
+          <strong id="calcRatioFirst">2.50 : 1</strong>
+          <small id="calcRealRatioFirst" class="real-ratio">真实 2.18 : 1</small>
+        </div>
+        <div class="summary-row" data-icon="比">
+          <span>第二盈亏比</span>
+          <strong id="calcRatioSecond">2.50 : 1</strong>
+          <small id="calcRealRatioSecond" class="real-ratio">真实 2.18 : 1</small>
+        </div>
+        <div class="summary-row" data-icon="盈">
+          <span>盈利空间</span>
+          <strong id="calcProfitRate">+25%</strong>
+        </div>
+        <div class="summary-row" data-icon="亏">
+          <span>支撑空间</span>
+          <strong id="calcSupportRate">-10% / -10%</strong>
+        </div>
+        <table class="matrix trial-matrix" id="trialMatrix" aria-label="目标逻辑记录表">
+          <thead>
+            <tr>
+              <th class="logic-head">逻辑</th>
+              <th class="breakout-col">
+                <button class="logic-choice" type="button" data-trial-logic-choice="breakout">形态突破</button>
+              </th>
+              <th class="pullback-col">
+                <button class="logic-choice" type="button" data-trial-logic-choice="pullback">回调反弹</button>
+              </th>
+            </tr>
+          </thead>
+          <tbody id="trialMatrixBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="subpage" id="signalPage" aria-label="信号验证">
+    <div class="subpage-inner signal-page-inner">
+      <header class="subpage-head">
+        <h2>信号验证</h2>
+        <button id="closeSignalPageBtn" type="button" aria-label="关闭信号验证">×</button>
+      </header>
+      <div class="signal-workspace">
+        <aside class="signal-sidebar" id="signalSidebar" aria-label="信号记录">
+          <div class="signal-side-head">
+            <strong>信号记录</strong>
+            <button id="signalSidebarToggle" class="side-toggle" type="button">收起</button>
+            <small id="signalExpireHint">到期后进入历史</small>
+          </div>
+          <div class="signal-empty" id="signalEmpty">还没有信号，从目标记录发送后会出现在这里。</div>
+          <div class="signal-list" id="signalList"></div>
+        </aside>
+        <div class="signal-detail" id="signalDetail"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="subpage signal-build-page" id="signalBuildPage" aria-label="触发建仓">
+    <div class="subpage-inner signal-build-inner">
+      <header class="subpage-head">
+        <h2>触发建仓</h2>
+        <button id="closeSignalBuildPageBtn" type="button" aria-label="关闭触发建仓">×</button>
+      </header>
+      <div class="archive-form signal-build-form">
+        <label>
+          <span>入场价格</span>
+          <input id="signalBuildEntry" type="number" inputmode="decimal" step="0.001" placeholder="输入实际入场价格">
+        </label>
+        <label>
+          <span>仓位%</span>
+          <input id="signalBuildPosition" type="number" inputmode="decimal" step="0.01" placeholder="例如 20">
+        </label>
+        <div class="signal-build-hint" id="signalBuildHint">会按总资产把仓位向下取整到 5% 档，再换算 100 股。</div>
+        <div class="paste-actions">
+          <button id="cancelSignalBuildBtn" type="button">取消</button>
+          <button id="applySignalBuildBtn" type="button">建仓</button>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script type="module" src="./src/js/app.js"></script>
+  <script type="module" src="./src/js/pwa.js"></script>
+</body>
+</html>
